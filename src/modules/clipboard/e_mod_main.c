@@ -772,6 +772,7 @@ e_modapi_init (E_Module *m)
   /* Create an invisible window for clipboard input purposes
    *   It is my understanding this should not displayed.*/
   clip_inst->win = ecore_x_window_input_new(0, 10, 10, 100, 100);
+  ecore_x_icccm_name_class_set(clip_inst->win, "cbinput", "clipboard");
 
   /* Now add some callbacks to handle clipboard events */
   E_LIST_HANDLER_APPEND(clip_inst->handle, ECORE_X_EVENT_SELECTION_NOTIFY, _cb_event_selection, clip_inst);
