@@ -9,11 +9,13 @@
 static void      _e_startup(void);
 static void      _e_startup_next_cb(void *data);
 static Eina_Bool _e_startup_event_cb(void *data, int ev_type, void *ev);
+static Eina_Bool _e_startup_time_exceeded(void *data);
 
 /* local subsystem globals */
 static E_Order *startup_apps = NULL;
 static int start_app_pos = -1;
 static Ecore_Event_Handler *desktop_cache_update_handler = NULL;
+static Ecore_Timer *timer = NULL;
 static E_Startup_Mode start_mode = E_STARTUP_START;
 
 /* externally accessible functions */
@@ -39,6 +41,8 @@ e_startup(E_Startup_Mode mode)
      ecore_event_handler_add(EFREET_EVENT_DESKTOP_CACHE_BUILD,
                              _e_startup_event_cb,
                              strdup(buf));
+   if (timer) ecore_timer_del(timer);
+   timer = ecore_timer_add(5.0, _e_startup_time_exceeded, NULL);
    e_init_undone();
 }
 
@@ -147,6 +151,9 @@ static Eina_Bool
 _e_startup_event_cb(void *data, int ev_type __UNUSED__, void *ev)
 {
    char *buf;
+   
+   if (timer) ecore_timer_del(timer);
+   timer = NULL;
 #if (EFREET_VERSION_MAJOR > 1) || (EFREET_VERSION_MINOR >= 8)
    Efreet_Event_Cache_Update *e;
 
@@ -183,3 +190,12 @@ _e_startup_event_cb(void *data, int ev_type __UNUSED__, void *ev)
    return ECORE_CALLBACK_PASS_ON;
 }
 
+static Eina_Bool
+_e_startup_time_exceeded(void *data EINA_UNUSED)
+{
+   fprintf(stderr, "Moksha: efreet didn't notify about cache update\n");
+   _e_startup_error_dialog("Moksha: Efreet did not update cache. "
+                           "Please check your Efreet setup");
+   timer = NULL;
+   return ECORE_CALLBACK_CANCEL;
+}
