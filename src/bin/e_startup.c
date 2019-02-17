@@ -16,11 +16,13 @@ static E_Order *startup_apps = NULL;
 static int start_app_pos = -1;
 static Ecore_Event_Handler *desktop_cache_update_handler = NULL;
 static Ecore_Timer *timer = NULL;
+static Eina_Bool desktop_cache_update = EINA_FALSE;
 static E_Startup_Mode start_mode = E_STARTUP_START;
+static Eina_Bool started = EINA_FALSE;
 
 /* externally accessible functions */
 EAPI void
-e_startup(E_Startup_Mode mode)
+e_startup_mode_set(E_Startup_Mode mode)
 {
    char buf[PATH_MAX];
 
@@ -45,6 +47,16 @@ e_startup(E_Startup_Mode mode)
    timer = ecore_timer_add(5.0, _e_startup_time_exceeded, NULL);
    e_init_undone();
 }
+
+EAPI void
+e_startup(void)
+{
+   if (!desktop_cache_update)
+     started = EINA_TRUE;
+   else
+     _e_startup();
+}
+
 
 /* local subsystem functions */
 static Eina_Bool
@@ -167,6 +179,7 @@ _e_startup_event_cb(void *data, int ev_type __UNUSED__, void *ev)
 #else
    (void)ev;
 #endif
+   desktop_cache_update = EINA_TRUE;
    ecore_event_handler_del(desktop_cache_update_handler);
    buf = data;
    startup_apps = e_order_new(buf);
