@@ -57,8 +57,7 @@ static void      _cb_dialog_delete(void *data __UNUSED__);
 static void      _cb_dialog_keep(void *data __UNUSED__);
 static void      _cb_action_switch(E_Object *o __UNUSED__, const char *params, Instance *data, Evas *evas __UNUSED__, Evas_Object *obj __UNUSED__, Mouse_Event *event);
 static void      _cb_config_show(void *data __UNUSED__, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__);
-static Eina_Bool _cb_xclip_apply_data(void *data __UNUSED__);
-static void 	 _cb_xclip_save_data(void);
+static void      _cb_xclip_apply_data(const char *text);
 
 /*   And then some auxillary functions */
 static void      _clip_config_new(E_Module *m);
@@ -478,30 +477,15 @@ _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Even
   return ECORE_CALLBACK_DONE;
 }
 
-static Eina_Bool
-_cb_xclip_apply_data(void *data __UNUSED__) 
+void
+_cb_xclip_apply_data(const char *text) 
 {
   Ecore_Exe *exe;
   char buf[PATH_MAX];
   
-  snprintf(buf, sizeof(buf), "%s", "cat ~/.xclip_clip.txt | xclip -selection clipboard");
-
+  snprintf(buf, sizeof(buf), "xclip -selection clipboard <<EOF\n%s\nEOF\n\n", text);
   exe = e_util_exe_safe_run(buf, NULL);
   if (exe) ecore_exe_free(exe);
-  return ECORE_CALLBACK_DONE;
-}
-
-static void 
-_cb_xclip_save_data(void)
-{
-  Ecore_Exe *exe;
-  char buf[PATH_MAX];
-  
-  snprintf(buf, sizeof(buf), "xclip -selection clipboard -o > ~/.xclip_clip.txt");
-
-  exe = e_util_exe_safe_run(buf, NULL);
-  if (exe) ecore_exe_free(exe);
-  ecore_timer_add(0.2, _cb_xclip_apply_data, NULL);
 }
 
 /* Updates clipboard content with the selected text of the modules Menu */
@@ -510,14 +494,14 @@ _x_clipboard_update(const char *text)
 {
   EINA_SAFETY_ON_NULL_RETURN(clip_inst);
   EINA_SAFETY_ON_NULL_RETURN(text);
-
+  WRN("UPdate %s", text);
   clipboard.set(clip_inst->win, text, strlen(text) + 1);
   
   /* calling xclip callback */
   /* temporary solution for pasting content to the GTK environment
   *  xclip needs to be installed as dependency 
   *                                                             */
-  _cb_xclip_save_data();
+  _cb_xclip_apply_data(text);
 }
 
 static void
