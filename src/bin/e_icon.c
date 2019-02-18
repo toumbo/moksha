@@ -356,8 +356,8 @@ e_icon_fdo_icon_set(Evas_Object *obj, const char *icon)
       if (e_util_strcmp(e_config->icon_theme, "hicolor"))
         path = efreet_icon_path_find("hicolor", sd->fdo, sd->size);
       if (!path) return EINA_FALSE;
-   } 
-   
+   }
+
    len = strlen(icon);
    if ((len > 4) && (!strcasecmp(icon + len - 4, ".edj")))
      return e_icon_file_edje_set(obj, path, "icon");

@@ -163,7 +163,7 @@ static Eina_Bool
 _e_startup_event_cb(void *data, int ev_type __UNUSED__, void *ev)
 {
    char *buf;
-   
+
    if (timer) ecore_timer_del(timer);
    timer = NULL;
 #if (EFREET_VERSION_MAJOR > 1) || (EFREET_VERSION_MINOR >= 8)

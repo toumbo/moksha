@@ -682,7 +682,7 @@ _e_sys_action_do(E_Sys_Action a, char *param __UNUSED__, Eina_Bool raw)
       case E_SYS_RESTART:
         // XXX TODO: check for e_fm_op_registry entries and confirm
         // FIXME: we dont   share out immortal info to restarted e. :(
-//	if (!e_util_immortal_check())
+//  if (!e_util_immortal_check())
       {
          restart = 1;
          ecore_main_loop_quit();
