@@ -56,8 +56,8 @@ static void      _cb_clear_history(Instance *inst);
 static void      _cb_dialog_delete(void *data __UNUSED__);
 static void      _cb_dialog_keep(void *data __UNUSED__);
 static void      _cb_action_switch(E_Object *o __UNUSED__, const char *params, Instance *data, Evas *evas __UNUSED__, Evas_Object *obj __UNUSED__, Mouse_Event *event);
-static void      _cb_config_show(void *data __UNUSED__, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__);
-static void      _cb_xclip_apply_data(const char *text);
+static void      _cb_config_show(void *data__UNUSED__, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__);
+void             _cb_xclip_apply_data(void *data);
 
 /*   And then some auxillary functions */
 static void      _clip_config_new(E_Module *m);
@@ -471,21 +471,24 @@ _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Even
   EINA_SAFETY_ON_NULL_RETURN_VAL(event, ECORE_CALLBACK_DONE);
   /* If we lost owner of clipboard */
   if (event->reason)
-    //~ /* Reset clipboard and gain ownership of it */
+     /* Reset clipboard and gain ownership of it */
     _cb_menu_item(eina_list_data_get(clip_inst->items));
-
   return ECORE_CALLBACK_DONE;
 }
 
 void
-_cb_xclip_apply_data(const char *text) 
+_cb_xclip_apply_data(void *data)
 {
-  Ecore_Exe *exe;
-  char buf[PATH_MAX];
-  
-  snprintf(buf, sizeof(buf), "xclip -selection clipboard <<EOF\n%s\nEOF\n\n", text);
-  exe = e_util_exe_safe_run(buf, NULL);
-  if (exe) ecore_exe_free(exe);
+  EINA_SAFETY_ON_NULL_RETURN(data);
+  FILE * xclip = popen("xclip -selection clipboard", "w");
+  if (!xclip)
+     WRN("%s", strerror(errno));
+  const char * text = (const char *) data;
+  size_t n = fwrite(text, 1, strlen(text), xclip);
+  if (n != strlen(text))
+     WRN("xclip pipe error");
+
+  pclose(xclip);
 }
 
 /* Updates clipboard content with the selected text of the modules Menu */
@@ -494,14 +497,22 @@ _x_clipboard_update(const char *text)
 {
   EINA_SAFETY_ON_NULL_RETURN(clip_inst);
   EINA_SAFETY_ON_NULL_RETURN(text);
-  WRN("UPdate %s", text);
-  clipboard.set(clip_inst->win, text, strlen(text) + 1);
+
+  Clip_Data * last;
+  //clipboard.set(clip_inst->win, text, strlen(text) + 1);
   
   /* calling xclip callback */
   /* temporary solution for pasting content to the GTK environment
   *  xclip needs to be installed as dependency 
   *                                                             */
-  _cb_xclip_apply_data(text);
+  last =  (Clip_Data *) eina_list_data_get (clip_inst->items);
+  _cb_xclip_apply_data((void *) text);
+
+  if (!strcmp(text, last->content))
+  {  // Avoid the data being added twice 
+     clip_inst->items = eina_list_remove(clip_inst->items, last);
+     free_clip_data(last);
+  }
 }
 
 static void
@@ -755,7 +766,6 @@ e_modapi_init (E_Module *m)
   /* Create an invisible window for clipboard input purposes
    *   It is my understanding this should not displayed.*/
   clip_inst->win = ecore_x_window_input_new(0, 10, 10, 100, 100);
-  ecore_x_icccm_name_class_set(clip_inst->win, "cbinput", "clipboard");
 
   /* Now add some callbacks to handle clipboard events */
   E_LIST_HANDLER_APPEND(clip_inst->handle, ECORE_X_EVENT_SELECTION_NOTIFY, _cb_event_selection, clip_inst);
