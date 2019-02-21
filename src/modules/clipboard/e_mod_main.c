@@ -6,7 +6,6 @@
 #include "history.h"
 
 EINTERN int _e_clipboard_log_dom = -1;
-#define TIMEOUT_1 1.0
 
 /* Stuff for convenience to compress code */
 #define CLIP_TRIM_MODE(x) (x->trim_nl + 2 * (x->trim_ws))
