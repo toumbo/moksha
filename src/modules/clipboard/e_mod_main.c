@@ -57,7 +57,7 @@ static void      _cb_dialog_delete(void *data __UNUSED__);
 static void      _cb_dialog_keep(void *data __UNUSED__);
 static void      _cb_action_switch(E_Object *o __UNUSED__, const char *params, Instance *data, Evas *evas __UNUSED__, Evas_Object *obj __UNUSED__, Mouse_Event *event);
 static void      _cb_config_show(void *data__UNUSED__, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__);
-static void     _cb_xclip_apply_data(void *data);
+static void     _cb_xclip_apply_data(const char *text);
 
 /*   And then some auxillary functions */
 static void      _clip_config_new(E_Module *m);
@@ -477,13 +477,12 @@ _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Even
 }
 
 void
-_cb_xclip_apply_data(void *data)
+_cb_xclip_apply_data(const char *text)
 {
-  EINA_SAFETY_ON_NULL_RETURN(data);
+  EINA_SAFETY_ON_NULL_RETURN(text);
   FILE * xclip = popen("xclip -selection clipboard", "w");
   if (!xclip)
      WRN("%s", strerror(errno));
-  const char * text = (const char *) data;
   size_t n = fwrite(text, 1, strlen(text), xclip);
   if (n != strlen(text))
      WRN("xclip pipe error");
@@ -498,21 +497,13 @@ _x_clipboard_update(const char *text)
   EINA_SAFETY_ON_NULL_RETURN(clip_inst);
   EINA_SAFETY_ON_NULL_RETURN(text);
 
-  Clip_Data * last;
   //clipboard.set(clip_inst->win, text, strlen(text) + 1);
   
   /* calling xclip callback */
   /* temporary solution for pasting content to the GTK environment
   *  xclip needs to be installed as dependency 
   *                                                             */
-  last =  (Clip_Data *) eina_list_data_get (clip_inst->items);
-  _cb_xclip_apply_data((void *) text);
-
-  if (!strcmp(text, last->content))
-  {  // Avoid the data being added twice 
-     clip_inst->items = eina_list_remove(clip_inst->items, last);
-     free_clip_data(last);
-  }
+  _cb_xclip_apply_data(text);
 }
 
 static void
