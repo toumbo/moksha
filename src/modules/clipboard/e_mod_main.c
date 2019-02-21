@@ -421,7 +421,6 @@ _menu_fill(Instance *inst, Eina_Bool mouse_event)
   return dir;
 }
 
-
 static Eina_Bool
 _cb_event_selection(Instance *instance, int type __UNUSED__, Ecore_X_Event_Selection_Notify * event)
 {
@@ -473,6 +472,8 @@ _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Even
   if (event->reason)
      /* Reset clipboard and gain ownership of it */
     _cb_menu_item(eina_list_data_get(clip_inst->items));
+  else
+    _cb_clipboard_request(NULL);
   return ECORE_CALLBACK_DONE;
 }
 
@@ -497,7 +498,7 @@ _x_clipboard_update(const char *text)
   EINA_SAFETY_ON_NULL_RETURN(clip_inst);
   EINA_SAFETY_ON_NULL_RETURN(text);
 
-  //clipboard.set(clip_inst->win, text, strlen(text) + 1);
+  clipboard.set(clip_inst->win, text, strlen(text) + 1);
   
   /* calling xclip callback */
   /* temporary solution for pasting content to the GTK environment
@@ -759,10 +760,10 @@ e_modapi_init (E_Module *m)
   clip_inst->win = ecore_x_window_input_new(0, 10, 10, 100, 100);
 
   /* Now add some callbacks to handle clipboard events */
+  ecore_x_fixes_selection_notification_request(ecore_x_atom_get("CLIPBOARD"));
   E_LIST_HANDLER_APPEND(clip_inst->handle, ECORE_X_EVENT_SELECTION_NOTIFY, _cb_event_selection, clip_inst);
   E_LIST_HANDLER_APPEND(clip_inst->handle, ECORE_X_EVENT_FIXES_SELECTION_NOTIFY, _cb_event_owner, clip_inst);
   clipboard.request(clip_inst->win, ECORE_X_SELECTION_TARGET_UTF8_STRING);
-  clip_inst->check_timer = ecore_timer_add(TIMEOUT_1, _cb_clipboard_request, clip_inst);
 
   /* Read History file and set clipboard */
   hist_err = read_history(&(clip_inst->items), clip_cfg->ignore_ws, clip_cfg->label_length);
@@ -819,8 +820,6 @@ e_modapi_shutdown (E_Module *m __UNUSED__)
     ecore_x_window_free(clip_inst->win);
   E_FREE_LIST(clip_inst->handle, ecore_event_handler_del);
   clip_inst->handle = NULL;
-  ecore_timer_del(clip_inst->check_timer);
-  clip_inst->check_timer = NULL;
   E_FREE_LIST(clip_inst->items, free_clip_data);
   _clip_inst_free(clip_inst->inst);
   E_FREE(clip_inst);
