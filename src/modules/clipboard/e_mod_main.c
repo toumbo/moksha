@@ -1,5 +1,5 @@
 /* This is a test */
-
+#include <X11/Xlib.h>
 #include "e_mod_main.h"
 #include "x_clipboard.h"
 #include "config_defaults.h"
@@ -56,7 +56,6 @@ static void      _cb_dialog_delete(void *data __UNUSED__);
 static void      _cb_dialog_keep(void *data __UNUSED__);
 static void      _cb_action_switch(E_Object *o __UNUSED__, const char *params, Instance *data, Evas *evas __UNUSED__, Evas_Object *obj __UNUSED__, Mouse_Event *event);
 static void      _cb_config_show(void *data__UNUSED__, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__);
-static void     _cb_xclip_apply_data(const char *text);
 
 /*   And then some auxillary functions */
 static void      _clip_config_new(E_Module *m);
@@ -467,6 +466,13 @@ static Eina_Bool
 _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Event_Fixes_Selection_Notify * event)
 {
   EINA_SAFETY_ON_NULL_RETURN_VAL(event, ECORE_CALLBACK_DONE);
+
+  static Ecore_X_Window  last_owner = 0;
+  Ecore_X_Window owner = ecore_x_selection_owner_get(event->atom);
+
+  if (owner == last_owner)
+	  return ECORE_CALLBACK_PASS_ON;
+  last_owner = owner;
   /* If we lost owner of clipboard */
   if (event->reason)
      /* Reset clipboard and gain ownership of it */
@@ -474,20 +480,6 @@ _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Even
   else
     _cb_clipboard_request(NULL);
   return ECORE_CALLBACK_DONE;
-}
-
-void
-_cb_xclip_apply_data(const char *text)
-{
-  EINA_SAFETY_ON_NULL_RETURN(text);
-  FILE * xclip = popen("xclip -selection clipboard", "w");
-  if (!xclip)
-     WRN("%s", strerror(errno));
-  size_t n = fwrite(text, 1, strlen(text), xclip);
-  if (n != strlen(text))
-     WRN("xclip pipe error");
-
-  pclose(xclip);
 }
 
 /* Updates clipboard content with the selected text of the modules Menu */
@@ -498,12 +490,6 @@ _x_clipboard_update(const char *text)
   EINA_SAFETY_ON_NULL_RETURN(text);
 
   clipboard.set(clip_inst->win, text, strlen(text) + 1);
-  
-  /* calling xclip callback */
-  /* temporary solution for pasting content to the GTK environment
-  *  xclip needs to be installed as dependency 
-  *                                                             */
-  _cb_xclip_apply_data(text);
 }
 
 static void
@@ -756,7 +742,8 @@ e_modapi_init (E_Module *m)
 
   /* Create an invisible window for clipboard input purposes
    *   It is my understanding this should not displayed.*/
-  clip_inst->win = ecore_x_window_input_new(0, 10, 10, 100, 100);
+  //clip_inst->win = ecore_x_window_input_new(0, 10, 10, 100, 100);
+   clip_inst->win = ecore_x_window_new(0, 0, 0, 1, 1);
 
   /* Now add some callbacks to handle clipboard events */
   ecore_x_fixes_selection_notification_request(ecore_x_atom_get("CLIPBOARD"));

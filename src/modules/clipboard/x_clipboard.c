@@ -11,6 +11,8 @@ void       _request      (Ecore_X_Window w, const char *target);
 void       _request_none (Ecore_X_Window w __UNUSED__, const char *target __UNUSED__);
 void       _request_both (Ecore_X_Window w, const char *target);
 Eina_Bool  _set          (Ecore_X_Window w, const void *data, int size);
+Eina_Bool  _set_clipboard   (Ecore_X_Window w __UNUSED__, const void *data, int size);
+Eina_Bool  _set_primary     (Ecore_X_Window w __UNUSED__, const void *data, int size);
 Eina_Bool  _set_none     (Ecore_X_Window w __UNUSED__, const void *data __UNUSED__, int size __UNUSED__);
 Eina_Bool  _set_both     (Ecore_X_Window w, const void *data, int size);
 void       _sync(const Eina_Bool state);
@@ -53,8 +55,8 @@ void (*jmp_table_request[CLIP_MAX_MODE] )
 
 Eina_Bool (*jmp_table_set[CLIP_MAX_MODE] )
     (Ecore_X_Window w, const void *data, int size) = { _set_none,
-                                                       ecore_x_selection_clipboard_set,
-                                                       ecore_x_selection_primary_set,
+                                                       _set_clipboard,
+                                                       _set_primary,
                                                        _set_both};
 
 Ecore_X_Selection_Data_Text *(*jmp_table_get_text[CLIP_MAX_MODE])
@@ -112,6 +114,37 @@ _set(Ecore_X_Window w, const void *data, int size)
   return (*jmp_table_set[clipboard.track_mode])(w, data, size);
 }
 
+/* Using xclip to set clipboard contents
+ *  as a temporary solution for pasting content to the GTK environment
+ *  xclip needs to be installed as dependency 
+ */             
+Eina_Bool  
+_set_clipboard(Ecore_X_Window w __UNUSED__, const void *data, int size)
+{
+  FILE *xclip = popen("xclip -selection c", "w");
+  if (!xclip)
+     WRN("%s", strerror(errno));
+  size_t n = fwrite((const char*) data, 1, size, xclip);
+  if ( (int) n != size)
+     WRN("xclip pipe error");
+  pclose(xclip);
+  return EINA_TRUE;
+}
+
+Eina_Bool
+_set_primary(Ecore_X_Window w __UNUSED__, const void *data, int size)
+{ 
+  FILE *xclip = popen("xclip -selection p", "w");
+  if (!xclip)
+     WRN("%s", strerror(errno));
+  //const char * text = (const char *) data;
+  size_t n = fwrite((const char*) data, 1, size, xclip);
+  if ((int) n != size)
+     WRN("xclip pipe error");
+  pclose(xclip);
+  return EINA_TRUE;
+}
+
 Eina_Bool
 _set_none(Ecore_X_Window w __UNUSED__, const void *data __UNUSED__, int size __UNUSED__)
 {
@@ -121,8 +154,8 @@ _set_none(Ecore_X_Window w __UNUSED__, const void *data __UNUSED__, int size __U
 Eina_Bool
 _set_both(Ecore_X_Window w, const void *data, int size)
 {
-  return (ecore_x_selection_clipboard_set(w, data, size) &&
-          ecore_x_selection_primary_set(w, data, size));
+  return (_set_clipboard(w, data, size) &&
+          _set_primary(w, data, size));
 }
 
 void
@@ -197,8 +230,9 @@ _get_text_primary(Ecore_X_Event_Selection_Notify *event)
 
 Ecore_X_Selection_Data_Text *
 _get_text_both(Ecore_X_Event_Selection_Notify *event)
-{
+{ 
   Ecore_X_Selection_Data_Text *text_data;
+  static int count = 0;
 
   if (((event->selection == ECORE_X_SELECTION_CLIPBOARD) ||
        (event->selection == ECORE_X_SELECTION_PRIMARY)) &&
@@ -212,10 +246,20 @@ _get_text_both(Ecore_X_Event_Selection_Notify *event)
       /* If we are syncing clipboard
        *   Ensure both clipboards contain selection. */
       if (clipboard.sync_mode)
-        clipboard.set(clip_inst->win, text_data->text, strlen(text_data->text) + 1);
+      {
+		if(count++ < 2) 
+		{
+           if (event->selection == ECORE_X_SELECTION_CLIPBOARD) 
+             _set_primary(clip_inst->win, text_data->text, strlen(text_data->text) + 1);
+           if (event->selection == ECORE_X_SELECTION_PRIMARY)
+             _set_clipboard(clip_inst->win, text_data->text, strlen(text_data->text) + 1);
+        }
+        else count = 0;
+      }
       return text_data;
     }
   }
+
   return NULL;
 }
 
