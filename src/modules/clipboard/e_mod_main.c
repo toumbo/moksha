@@ -471,7 +471,9 @@ _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Even
   Ecore_X_Window owner = ecore_x_selection_owner_get(event->atom);
 
   if (owner == last_owner)
-	  return ECORE_CALLBACK_PASS_ON;
+  {    _cb_clipboard_request(NULL);
+	  return ECORE_CALLBACK_DONE;
+  }
   last_owner = owner;
   /* If we lost owner of clipboard */
   if (event->reason)
