@@ -119,11 +119,11 @@ _set(Ecore_X_Window w, const void *data, int size)
  *  xclip needs to be installed as dependency 
  */             
 Eina_Bool  
-_set_clipboard(Ecore_X_Window w, const void *data, int size)
+_set_clipboard(Ecore_X_Window w __UNUSED__, const void *data, int size)
 {
   FILE *xclip = popen("xclip -selection c", "w");
   if (!xclip)
-     WRN("HERE %s", strerror(errno));
+     WRN("%s", strerror(errno));
   size_t n = fwrite((const char*) data, 1, size, xclip);
   if ( (int) n != size)
      WRN("xclip pipe error");
@@ -135,12 +135,11 @@ _set_clipboard(Ecore_X_Window w, const void *data, int size)
 }
 
 Eina_Bool
-_set_primary(Ecore_X_Window w, const void *data, int size)
+_set_primary(Ecore_X_Window w __UNUSED__, const void *data, int size)
 { 
   FILE *xclip = popen("xclip -selection p", "w");
   if (!xclip)
      WRN("%s", strerror(errno));
-  //const char * text = (const char *) data;
   size_t n = fwrite((const char*) data, 1, size, xclip);
   if ((int) n != size)
      WRN("xclip pipe error");
