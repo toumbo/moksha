@@ -437,7 +437,7 @@ _cb_event_selection(Instance *instance, int type __UNUSED__, Ecore_X_Event_Selec
         return ECORE_CALLBACK_DONE;
       if (clip_cfg->ignore_ws_copy && is_empty(text_data->text)) {
         clipboard.clear();
-        return ECORE_CALLBACK_DONE;
+        return ECORE_CALLBACK_PASS_ON;
       }
       cd = E_NEW(Clip_Data, 1);
       if (!set_clip_content(&cd->content, text_data->text,
@@ -459,7 +459,7 @@ _cb_event_selection(Instance *instance, int type __UNUSED__, Ecore_X_Event_Selec
     }
   }
   error:
-  return ECORE_CALLBACK_DONE;
+  return ECORE_CALLBACK_PASS_ON;
 }
 
 static Eina_Bool
