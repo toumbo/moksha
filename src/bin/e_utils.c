@@ -1671,3 +1671,56 @@ e_util_exe_safe_run(const char *cmd, void *data)
 #endif
    return ecore_exe_pipe_run(cmd, flags, data);
 }
+
+EAPI void
+e_util_clipboard(Ecore_X_Window w, const char *text, Ecore_X_Selection type)
+{
+   EINA_SAFETY_ON_NULL_RETURN(text);
+   
+   FILE *cmd = NULL;
+   unsigned const int size = strlen(text)+1;
+   
+   if  (ecore_file_app_installed("xclip"))
+   {
+      if (type == ECORE_X_SELECTION_CLIPBOARD)
+          cmd = popen("xclip -selection c", "w");
+      else if (type == ECORE_X_SELECTION_PRIMARY)
+         cmd = popen("xclip -selection p", "w");
+   }
+   else
+   if (ecore_file_app_installed("xsel"))
+   { WRN("XSEL");
+	   if (type == ECORE_X_SELECTION_CLIPBOARD)
+          cmd = popen("xsel -ib", "w");
+      else if (type == ECORE_X_SELECTION_PRIMARY)
+         cmd = popen("xsel -ip", "w");
+   }
+   else
+      goto fallback;
+
+   if (!cmd)
+   {
+	 fprintf(stderr, "Moksha:clipboard %s\n", strerror(errno));
+     goto fallback;
+   }
+   size_t n = fwrite((const char*) text, 1, size, cmd);
+   if ( (unsigned int) n != size)
+   {
+	 fprintf(stderr, "Moksha:clipboard pipe error\n");
+     goto fallback;
+   }
+
+   if (pclose(cmd))
+   { 
+	 fprintf(stderr, "Moksha:clipboard command error\n" );
+     goto fallback;
+   }
+   return;
+   
+fallback:
+   if (type == ECORE_X_SELECTION_CLIPBOARD)
+      ecore_x_selection_clipboard_set(w, text, size);
+   else if (type == ECORE_X_SELECTION_PRIMARY)
+      ecore_x_selection_primary_set(w, text, size);
+   
+}

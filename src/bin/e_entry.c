@@ -980,7 +980,7 @@ _e_entry_cb_copy(void *data, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__)
                   xwin = ecore_evas_window_get(con->bg_ecore_evas);
                }
           }
-        ecore_x_selection_clipboard_set(xwin, range, strlen(range) + 1);
+        e_util_clipboard(xwin, range, ECORE_X_SELECTION_CLIPBOARD);
      }
 }
 

@@ -11,8 +11,8 @@ void       _request      (Ecore_X_Window w, const char *target);
 void       _request_none (Ecore_X_Window w __UNUSED__, const char *target __UNUSED__);
 void       _request_both (Ecore_X_Window w, const char *target);
 Eina_Bool  _set          (Ecore_X_Window w, const void *data, int size);
-Eina_Bool  _set_clipboard   (Ecore_X_Window w __UNUSED__, const void *data, int size);
-Eina_Bool  _set_primary     (Ecore_X_Window w __UNUSED__, const void *data, int size);
+Eina_Bool  _set_clipboard   (Ecore_X_Window w __UNUSED__, const void *data, int size __UNUSED__);
+Eina_Bool  _set_primary     (Ecore_X_Window w __UNUSED__, const void *data, int size __UNUSED__);
 Eina_Bool  _set_none     (Ecore_X_Window w __UNUSED__, const void *data __UNUSED__, int size __UNUSED__);
 Eina_Bool  _set_both     (Ecore_X_Window w, const void *data, int size);
 void       _sync(const Eina_Bool state);
@@ -119,34 +119,16 @@ _set(Ecore_X_Window w, const void *data, int size)
  *  xclip needs to be installed as dependency 
  */             
 Eina_Bool  
-_set_clipboard(Ecore_X_Window w __UNUSED__, const void *data, int size)
+_set_clipboard(Ecore_X_Window w __UNUSED__, const void *data, int size __UNUSED__)
 {
-  FILE *xclip = popen("xclip -selection c", "w");
-  if (!xclip)
-     WRN("%s", strerror(errno));
-  size_t n = fwrite((const char*) data, 1, size, xclip);
-  if ( (int) n != size)
-     WRN("xclip pipe error");
-
-  if (pclose(xclip)) 
-     ecore_x_selection_clipboard_set(w, data, size);
-
+  e_util_clipboard(w, (const char *) data, ECORE_X_SELECTION_CLIPBOARD);
   return EINA_TRUE;
 }
 
 Eina_Bool
-_set_primary(Ecore_X_Window w __UNUSED__, const void *data, int size)
+_set_primary(Ecore_X_Window w __UNUSED__, const void *data, int size __UNUSED__)
 { 
-  FILE *xclip = popen("xclip -selection p", "w");
-  if (!xclip)
-     WRN("%s", strerror(errno));
-  size_t n = fwrite((const char*) data, 1, size, xclip);
-  if ((int) n != size)
-     WRN("xclip pipe error");
-
-  if (pclose(xclip)) 
-     ecore_x_selection_primary_set(w, data, size);
-
+  e_util_clipboard(w, (const char *) data, ECORE_X_SELECTION_PRIMARY);
   return EINA_TRUE;
 }
 
