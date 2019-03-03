@@ -88,7 +88,7 @@ _clip_config_new(E_Module *m)
     clip_cfg->hist_items     = CF_DEFAULT_HIST_ITEMS;
     clip_cfg->confirm_clear  = CF_DEFAULT_CONFIRM;
     clip_cfg->autosave       = CF_DEFAULT_AUTOSAVE;
-    clip_cfg->save_timer     = 60;
+    clip_cfg->save_timer     = CF_DEFAULT_SAVE_TIMER;
     clip_cfg->label_length   = CF_DEFAULT_LABEL_LENGTH;
     clip_cfg->ignore_ws      = CF_DEFAULT_IGNORE_WS;
     clip_cfg->ignore_ws_copy = CF_DEFAULT_IGNORE_WS_COPY;
@@ -102,7 +102,7 @@ _clip_config_new(E_Module *m)
   E_CONFIG_LIMIT(clip_cfg->hist_reverse, 0, 1);
   E_CONFIG_LIMIT(clip_cfg->hist_items, HIST_MIN, HIST_MAX);
   E_CONFIG_LIMIT(clip_cfg->label_length, LABEL_MIN, LABEL_MAX);
-  E_CONFIG_LIMIT(clip_cfg->save_timer, 0, 120);
+  E_CONFIG_LIMIT(clip_cfg->save_timer, TIMER_MIN, TIMER_MAX);
   E_CONFIG_LIMIT(clip_cfg->confirm_clear, 0, 1);
   E_CONFIG_LIMIT(clip_cfg->autosave, 0, 1);
   E_CONFIG_LIMIT(clip_cfg->ignore_ws, 0, 1);
@@ -612,7 +612,7 @@ _cb_clipboard_request(void *data __UNUSED__)
 }
 
 Eina_Bool 
-_cb_clipboard_save(void *data __UNUSED__)
+cb_clipboard_save(void *data __UNUSED__)
 {
 	clip_save(clip_inst->items, EINA_TRUE);
 	return EINA_TRUE;
@@ -792,7 +792,7 @@ e_modapi_init (E_Module *m)
 
   clip_inst->update_history = EINA_FALSE;
   if (clip_cfg->persistence && !clip_cfg->autosave)
-    clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, _cb_clipboard_save, NULL);
+    clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, cb_clipboard_save, NULL);
   /* Tell any gadget containers (shelves, etc) that we provide a module */
   e_gadcon_provider_register(&_gadcon_class);
 

@@ -84,7 +84,7 @@ _fill_data(E_Config_Dialog_Data *cfdata)
   cfdata->confirm_clear   = clip_cfg->confirm_clear;
   cfdata->autosave        = clip_cfg->autosave;
   cfdata->save.autostate  = clip_cfg->autosave;
-  cfdata->save_timer      = clip_cfg->save_timer;
+  cfdata->save_timer      = clip_cfg->save_timer/60; // Time is in seconds
   cfdata->label_length    = clip_cfg->label_length;
   cfdata->ignore_ws       = clip_cfg->ignore_ws;
   cfdata->ignore_ws_copy  = clip_cfg->ignore_ws_copy;
@@ -110,20 +110,23 @@ _basic_apply_data(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfdata)
   clip_cfg->hist_items     = cfdata->hist_items;
   clip_cfg->confirm_clear  = cfdata->confirm_clear;
   clip_cfg->autosave       = cfdata->autosave;
-  clip_cfg->save_timer     = cfdata->save_timer;
+  if (cfdata->save_timer)
+    clip_cfg->save_timer   = 60*cfdata->save_timer; // Time in seconds
+  else
+    clip_cfg->save_timer   = 1;
   /* Do we need to kill or restart save_timer */
   if (cfdata->persistence && !cfdata->autosave)
   {
     if (!clip_inst->save_timer)
     { 
       clip_save(clip_inst->items, EINA_TRUE); // Save history before start timer */
-      clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, _cb_clipboard_save, NULL);
+      clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, cb_clipboard_save, NULL);
     }
     else if (cfdata->save_timer != cfdata->init_save_timer)
     {
       clip_save(clip_inst->items, EINA_TRUE); // Save history before stopping timer */
       ecore_timer_del(clip_inst->save_timer);
-      clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, _cb_clipboard_save, NULL);
+      clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, cb_clipboard_save, NULL);
 	}
   }
   else if (!cfdata->persistence || cfdata->autosave)
@@ -212,7 +215,7 @@ _basic_create_widgets(E_Config_Dialog *cfd, Evas *evas, E_Config_Dialog_Data *cf
   cfdata->label_timer_widget = ob;
   WIDGET_DISABLED_SET(!cfdata->save.state || cfdata->autosave, ob, EINA_TRUE);
   e_widget_framelist_object_append(of, ob);
-  ob = e_widget_slider_add(evas, 1, 0, "%2.0f", 0, 120, 1.0, 0, &(cfdata->save_timer), NULL, 40);
+  ob = e_widget_slider_add(evas, 1, 0, "%2.0f", TIMER_MIN, TIMER_MAX, 1.0, 0, &(cfdata->save_timer), NULL, 40);
   cfdata->save_timer_widget = ob;
   WIDGET_DISABLED_SET(!cfdata->save.state || cfdata->autosave, ob, EINA_TRUE);
   e_widget_framelist_object_append(of, ob);

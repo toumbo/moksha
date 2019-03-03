@@ -40,7 +40,7 @@ EAPI int   e_modapi_shutdown (E_Module *m __UNUSED__);
 EAPI int   e_modapi_save     (E_Module *m __UNUSED__);
 
 /* Needed elsewhere */
-Eina_Bool _cb_clipboard_save(void *data __UNUSED__);
+Eina_Bool   cb_clipboard_save(void *data __UNUSED__);
 Eet_Error   clip_save(Eina_List *items, Eina_Bool force);
 
 #endif

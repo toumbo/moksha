@@ -10,6 +10,8 @@
 #define MAGIC_IGNORE_WS   0
 #define LABEL_MIN  5
 #define LABEL_MAX  100
+#define TIMER_MIN  0
+#define TIMER_MAX  240
 
 /* Stuff for convenience to compress code */
 #define IF_TRUE_RETURN(exp)             \
