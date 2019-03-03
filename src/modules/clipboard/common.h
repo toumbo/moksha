@@ -69,6 +69,10 @@ struct _Mod_Inst
     Eina_List *handle;
     /* Stores Clipboard History */
     Eina_List *items;
+    /* History update Flag */
+    Eina_Bool update_history;
+    /* Timer callback function to save Clipboard History */
+    Ecore_Timer *save_timer;
 };
 
 void cb_mod_log(const Eina_Log_Domain *d, Eina_Log_Level level, const char *file, const char *fnc, int line, const char *fmt, void *data, va_list args);

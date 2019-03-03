@@ -1,5 +1,3 @@
-/* This is a test */
-#include <X11/Xlib.h>
 #include "e_mod_main.h"
 #include "x_clipboard.h"
 #include "config_defaults.h"
@@ -43,8 +41,9 @@ static E_Config_DD *conf_item_edd = NULL;
 Mod_Inst *clip_inst = NULL; /* Need by e_mod_config.c */
 static E_Action *act = NULL;
 
-/*   First some call backs   */
+/*   First some callbacks   */
 static Eina_Bool _cb_clipboard_request(void *data __UNUSED__);
+
 static Eina_Bool _cb_event_selection(Instance *instance, int type __UNUSED__, Ecore_X_Event_Selection_Notify * event);
 static Eina_Bool _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Event_Fixes_Selection_Notify * event);
 static void      _cb_menu_item(Clip_Data *selected_clip);
@@ -88,6 +87,8 @@ _clip_config_new(E_Module *m)
     clip_cfg->hist_reverse   = CF_DEFAULT_HIST_REVERSE;
     clip_cfg->hist_items     = CF_DEFAULT_HIST_ITEMS;
     clip_cfg->confirm_clear  = CF_DEFAULT_CONFIRM;
+    clip_cfg->autosave       = CF_DEFAULT_AUTOSAVE;
+    clip_cfg->save_timer     = 60;
     clip_cfg->label_length   = CF_DEFAULT_LABEL_LENGTH;
     clip_cfg->ignore_ws      = CF_DEFAULT_IGNORE_WS;
     clip_cfg->ignore_ws_copy = CF_DEFAULT_IGNORE_WS_COPY;
@@ -101,7 +102,9 @@ _clip_config_new(E_Module *m)
   E_CONFIG_LIMIT(clip_cfg->hist_reverse, 0, 1);
   E_CONFIG_LIMIT(clip_cfg->hist_items, HIST_MIN, HIST_MAX);
   E_CONFIG_LIMIT(clip_cfg->label_length, LABEL_MIN, LABEL_MAX);
+  E_CONFIG_LIMIT(clip_cfg->save_timer, 0, 120);
   E_CONFIG_LIMIT(clip_cfg->confirm_clear, 0, 1);
+  E_CONFIG_LIMIT(clip_cfg->autosave, 0, 1);
   E_CONFIG_LIMIT(clip_cfg->ignore_ws, 0, 1);
   E_CONFIG_LIMIT(clip_cfg->ignore_ws_copy, 0, 1);
   E_CONFIG_LIMIT(clip_cfg->trim_ws, 0, 1);
@@ -523,7 +526,8 @@ _clip_add_item(Clip_Data *cd)
   }
 
   /* saving list to the file */
-  clip_save(clip_inst->items);
+  clip_inst->update_history = EINA_TRUE;
+  clip_save(clip_inst->items, EINA_FALSE);
 }
 
 static Eina_List *
@@ -552,15 +556,18 @@ _clear_history(void)
 
   /* Ensure clipboard is clear and save history */
   clipboard.clear();
-
-  clip_save(clip_inst->items);
+  clip_inst->update_history = EINA_TRUE;
+  clip_save(clip_inst->items, EINA_TRUE);
 }
 
 Eet_Error
-clip_save(Eina_List *items)
+clip_save(Eina_List *items, Eina_Bool force)
 {
-  if(clip_cfg->persistence)
+  if(clip_inst->update_history && clip_cfg->persistence && (clip_cfg->autosave || force))
+  { 
+    clip_inst->update_history = EINA_FALSE;
     return save_history(items);
+  }
   else
     return EET_ERROR_NONE;
 }
@@ -602,6 +609,13 @@ _cb_clipboard_request(void *data __UNUSED__)
   ecore_x_fixes_selection_notification_request(ECORE_X_ATOM_SELECTION_CLIPBOARD);
   clipboard.request(clip_inst->win, ECORE_X_SELECTION_TARGET_UTF8_STRING);
   return EINA_TRUE;
+}
+
+Eina_Bool 
+_cb_clipboard_save(void *data __UNUSED__)
+{
+	clip_save(clip_inst->items, EINA_TRUE);
+	return EINA_TRUE;
 }
 
 static void
@@ -697,6 +711,8 @@ e_modapi_init (E_Module *m)
   E_CONFIG_VAL(D, T, hist_reverse, INT);
   E_CONFIG_VAL(D, T, hist_items, DOUBLE);
   E_CONFIG_VAL(D, T, confirm_clear, INT);
+  E_CONFIG_VAL(D, T, autosave, INT);
+  E_CONFIG_VAL(D, T, save_timer, DOUBLE);
   E_CONFIG_VAL(D, T, label_length, DOUBLE);
   E_CONFIG_VAL(D, T, ignore_ws, INT);
   E_CONFIG_VAL(D, T, ignore_ws_copy, INT);
@@ -754,6 +770,7 @@ e_modapi_init (E_Module *m)
   clipboard.request(clip_inst->win, ECORE_X_SELECTION_TARGET_UTF8_STRING);
 
   /* Read History file and set clipboard */
+  clip_inst->update_history = EINA_TRUE;
   hist_err = read_history(&(clip_inst->items), clip_cfg->ignore_ws, clip_cfg->label_length);
 
   if (hist_err == EET_ERROR_NONE && eina_list_count(clip_inst->items))
@@ -761,7 +778,7 @@ e_modapi_init (E_Module *m)
   else
     /* Something must be wrong with history file
      *   so we create a new one */
-    clip_save(clip_inst->items);
+    clip_save(clip_inst->items, EINA_TRUE);
   /* Make sure the history read has no more items than allowed
    *  by clipboard config file. This should never happen without user
    *  intervention of some kind. */
@@ -772,6 +789,10 @@ e_modapi_init (E_Module *m)
       WRN("History File truncation!");
       truncate_history(clip_cfg->hist_items);
   }
+
+  clip_inst->update_history = EINA_FALSE;
+  if (clip_cfg->persistence && !clip_cfg->autosave)
+    clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, _cb_clipboard_save, NULL);
   /* Tell any gadget containers (shelves, etc) that we provide a module */
   e_gadcon_provider_register(&_gadcon_class);
 
@@ -782,9 +803,6 @@ e_modapi_init (E_Module *m)
 static void
 _cb_config_show(void *data __UNUSED__, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__)
 {
-  //Instance *inst = NULL;
-
-  //inst = data;
   if (!clip_cfg) return;
   if (clip_cfg->config_dialog) return;
   config_clipboard_module(NULL, NULL);
@@ -803,6 +821,8 @@ e_modapi_shutdown (E_Module *m __UNUSED__)
    *  and I usually avoid gotos but here I feel their use is harmless */
   EINA_SAFETY_ON_NULL_GOTO(clip_inst, noclip);
 
+  /* Be sure history is saved              */
+  clip_save(clip_inst->items, EINA_TRUE);
   /* Kill our clip_inst window and cleanup */
   if (clip_inst->win)
     ecore_x_window_free(clip_inst->win);
@@ -810,6 +830,8 @@ e_modapi_shutdown (E_Module *m __UNUSED__)
   clip_inst->handle = NULL;
   E_FREE_LIST(clip_inst->items, free_clip_data);
   _clip_inst_free(clip_inst->inst);
+  if (clip_inst->save_timer)
+      ecore_timer_del(clip_inst->save_timer);
   E_FREE(clip_inst);
 
 noclip:
