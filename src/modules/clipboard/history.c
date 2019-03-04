@@ -74,7 +74,7 @@ _set_data_path(char *path)
      */
     temp_str = getenv("XDG_DATA_HOME");
     if (temp_str && temp_str[0] == '/' ) {
-      const int len = snprintf(NULL, 0, "%s", temp_str) 
+      const int len = snprintf(NULL, 0, "%s", temp_str)
                               + 1 + (temp_str[strlen(temp_str)] != '/');
       if (len <= PATH_MAX) {
         snprintf(path, strlen(temp_str)+1, "%s", temp_str);

@@ -116,9 +116,9 @@ _set(Ecore_X_Window w, const void *data, int size)
 
 /* Using xclip to set clipboard contents
  *  as a temporary solution for pasting content to the GTK environment
- *  xclip needs to be installed as dependency 
- */             
-Eina_Bool  
+ *  xclip needs to be installed as dependency
+ */
+Eina_Bool
 _set_clipboard(Ecore_X_Window w __UNUSED__, const void *data, int size __UNUSED__)
 {
   e_util_clipboard(w, (const char *) data, ECORE_X_SELECTION_CLIPBOARD);
@@ -127,7 +127,7 @@ _set_clipboard(Ecore_X_Window w __UNUSED__, const void *data, int size __UNUSED_
 
 Eina_Bool
 _set_primary(Ecore_X_Window w __UNUSED__, const void *data, int size __UNUSED__)
-{ 
+{
   e_util_clipboard(w, (const char *) data, ECORE_X_SELECTION_PRIMARY);
   return EINA_TRUE;
 }
@@ -193,7 +193,7 @@ _get_text_clipboard(Ecore_X_Event_Selection_Notify *event)
         (text_data->text))
         return text_data;
   }
-  
+
   return NULL;
 }
 
@@ -211,13 +211,13 @@ _get_text_primary(Ecore_X_Event_Selection_Notify *event)
         (text_data->text))
       return text_data;
   }
-  
+
   return NULL;
 }
 
 Ecore_X_Selection_Data_Text *
 _get_text_both(Ecore_X_Event_Selection_Notify *event)
-{ 
+{
   Ecore_X_Selection_Data_Text *text_data;
   static int count = 0;
 
@@ -234,9 +234,9 @@ _get_text_both(Ecore_X_Event_Selection_Notify *event)
        *   Ensure both clipboards contain selection. */
       if (clipboard.sync_mode)
       {
-		if(count++ < 2) 
-		{
-           if (event->selection == ECORE_X_SELECTION_CLIPBOARD) 
+        if(count++ < 2)
+        {
+           if (event->selection == ECORE_X_SELECTION_CLIPBOARD)
              _set_primary(clip_inst->win, text_data->text, strlen(text_data->text) + 1);
            if (event->selection == ECORE_X_SELECTION_PRIMARY)
              _set_clipboard(clip_inst->win, text_data->text, strlen(text_data->text) + 1);

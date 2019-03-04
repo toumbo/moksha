@@ -458,7 +458,7 @@ _cb_event_selection(Instance *instance, int type __UNUSED__, Ecore_X_Event_Selec
         goto error;
       }
       _clip_add_item(cd);
-      
+
     }
   }
   error:
@@ -475,7 +475,7 @@ _cb_event_owner(Instance *instance __UNUSED__, int type __UNUSED__, Ecore_X_Even
 
   if (owner == last_owner)
   {    _cb_clipboard_request(NULL);
-	  return ECORE_CALLBACK_DONE;
+      return ECORE_CALLBACK_DONE;
   }
   last_owner = owner;
   /* If we lost owner of clipboard */
@@ -564,7 +564,7 @@ Eet_Error
 clip_save(Eina_List *items, Eina_Bool force)
 {
   if(clip_inst->update_history && clip_cfg->persistence && (clip_cfg->autosave || force))
-  { 
+  {
     clip_inst->update_history = EINA_FALSE;
     return save_history(items);
   }
@@ -603,7 +603,7 @@ _cb_dialog_delete(void *data __UNUSED__)
   _clear_history();
 }
 
-static Eina_Bool 
+static Eina_Bool
 _cb_clipboard_request(void *data __UNUSED__)
 {
   ecore_x_fixes_selection_notification_request(ECORE_X_ATOM_SELECTION_CLIPBOARD);
@@ -611,11 +611,11 @@ _cb_clipboard_request(void *data __UNUSED__)
   return EINA_TRUE;
 }
 
-Eina_Bool 
+Eina_Bool
 cb_clipboard_save(void *data __UNUSED__)
 {
-	clip_save(clip_inst->items, EINA_TRUE);
-	return EINA_TRUE;
+    clip_save(clip_inst->items, EINA_TRUE);
+    return EINA_TRUE;
 }
 
 static void

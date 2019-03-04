@@ -66,7 +66,7 @@ struct _Mod_Inst
     /* A pointer to an Ecore window used to
      * recieve or send clipboard events to */
     Ecore_X_Window win;
-    
+
     /* Callback function to handle clipboard events */
     Eina_List *handle;
     /* Stores Clipboard History */
