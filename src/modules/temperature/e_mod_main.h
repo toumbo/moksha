@@ -31,7 +31,7 @@ typedef struct _Config_Face Config_Face;
 
 typedef enum _Unit
 {
-   CELCIUS,
+   CELSIUS,
    FAHRENHEIT
 } Unit;
 
