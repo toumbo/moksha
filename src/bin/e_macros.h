@@ -126,5 +126,7 @@
           _w = 0; _h = 0;                                         \
        }                                                          \
   }
+// E backports
+#define E_BITFIELD :1
 
 #endif
