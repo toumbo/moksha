@@ -65,6 +65,7 @@ static void      _cpufreq_menu_frequency(void *data, E_Menu *m, E_Menu_Item *mi)
 static void      _cpufreq_poll_interval_update(void);
 
 static E_Config_DD *conf_edd = NULL;
+static Eina_Bool ismenu;
 
 Config *cpufreq_config = NULL;
 
@@ -341,7 +342,7 @@ _button_cb_mouse_down(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED_
              e_menu_item_submenu_set(mi, cpufreq_config->menu_governor);
           }
 
-        if (cpufreq_config->menu_frequency)
+        if (cpufreq_config->menu_frequency && ismenu)
           {
              mi = e_menu_item_new(mg);
              e_menu_item_label_set(mi, _("Set CPU Speed"));
@@ -641,7 +642,7 @@ _cpufreq_status_check_available(Status *s)
    if (f)
      {
         char *freq;
-
+           
         if (s->frequencies)
           {
              eina_list_free(s->frequencies);
@@ -671,6 +672,63 @@ _cpufreq_status_check_available(Status *s)
                                         eina_list_count(s->frequencies),
                                         _cpufreq_cb_sort);
      }
+     else
+     {
+	   ismenu = EINA_FALSE;
+   
+	   f = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", "r");
+		if (f)
+		 {
+			char *freq;
+
+			if (s->frequencies)
+			  {
+				 eina_list_free(s->frequencies);
+				 s->frequencies = NULL;
+			  }
+
+			if (fgets(buf, sizeof(buf), f) == NULL)
+			  {
+				 fclose(f);
+				 return;
+			  }
+			fclose(f);
+
+			freq = strtok(buf, " ");
+				 if (atoi(freq) != 0)
+				   {
+					  s->frequencies = eina_list_append(s->frequencies,
+														(void *)(long)atoi(freq));
+				   }
+				 freq = strtok(NULL, " ");
+		 }
+		
+	   f = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", "r");
+		if (f)
+		 {
+			char *freq;
+
+			if (fgets(buf, sizeof(buf), f) == NULL)
+			  {
+				 fclose(f);
+				 return;
+			  }
+			fclose(f);
+
+			freq = strtok(buf, " ");
+			 printf("Ffreq strtok is: %s\n", freq);
+				 if (atoi(freq) != 0)
+				   {
+					  s->frequencies = eina_list_append(s->frequencies,
+														(void *)(long)atoi(freq));
+				   }
+				 freq = strtok(NULL, " ");
+
+			s->frequencies = eina_list_sort(s->frequencies,
+											eina_list_count(s->frequencies),
+											_cpufreq_cb_sort);
+		 }
+	}	
 
    f = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors", "r");
    if (f)
@@ -883,7 +941,7 @@ _cpufreq_face_update_current(Instance *inst)
    Edje_Message_Int_Set *frequency_msg;
    Edje_Message_String governor_msg;
 
-   frequency_msg = malloc(sizeof(Edje_Message_Int_Set) + (sizeof(int) * 4));
+   frequency_msg = malloc(sizeof(Edje_Message_Int_Set) + (sizeof(int) * 5));
    EINA_SAFETY_ON_NULL_RETURN(frequency_msg);
    frequency_msg->count = 5;
    frequency_msg->val[0] = cpufreq_config->status->cur_frequency;
@@ -891,6 +949,7 @@ _cpufreq_face_update_current(Instance *inst)
    frequency_msg->val[2] = cpufreq_config->status->cur_min_frequency;
    frequency_msg->val[3] = cpufreq_config->status->cur_max_frequency;
    frequency_msg->val[4] = 0; // pad
+   
    edje_object_message_send(inst->o_cpu, EDJE_MESSAGE_INT_SET, 3,
                             frequency_msg);
    free(frequency_msg);
