@@ -20,7 +20,7 @@ static int          _basic_apply_data(E_Config_Dialog *cfd, E_Config_Dialog_Data
 static int          _basic_check_changed(E_Config_Dialog *cfd, E_Config_Dialog_Data *cfdata);
 
 E_Config_Dialog *
-e_int_config_cpufreq_module(Evas_Object *parent EINA_UNUSED, const char *params EINA_UNUSED)
+e_int_config_cpufreq_module(E_Container *parent EINA_UNUSED, const char *params EINA_UNUSED)
 {
    E_Config_Dialog *cfd;
    E_Config_Dialog_View *v;
