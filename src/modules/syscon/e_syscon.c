@@ -78,6 +78,7 @@ e_syscon_show(E_Zone *zone, const char *defact)
         return 0;
      }
 
+   if (e_desklock_state_get()) return 0;
    input_window = ecore_x_window_input_new(zone->container->win, zone->x,
                                            zone->y, zone->w, zone->h);
    ecore_x_window_show(input_window);
