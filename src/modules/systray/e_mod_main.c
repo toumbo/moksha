@@ -1,28 +1,4 @@
-/**
- * @addtogroup Optional_Gadgets
- * @{
- *
- * @defgroup Module_Systray Systray (System Icons Tray)
- *
- * Shows system icons in a box.
- *
- * The icons come from the FreeDesktop.Org systray specification.
- *
- * @see http://standards.freedesktop.org/systemtray-spec/systemtray-spec-latest.html
- * @}
- */
-/**
- * systray implementation following freedesktop.org specification.
- *
- * @see: http://standards.freedesktop.org/systemtray-spec/latest/
- *
- * @todo: implement xembed, mostly done, at least relevant parts are done.
- *        http://standards.freedesktop.org/xembed-spec/latest/
- *
- * @todo: implement messages/popup part of the spec (anyone using this at all?)
- */
-
-#include "e.h"
+#include "e_mod_main.h"
 
 #define RETRY_TIMEOUT                     2.0
 
@@ -53,43 +29,6 @@
 #define XEMBED_FOCUS_FIRST                1
 #define XEMBED_FOCUS_LAST                 2
 
-typedef struct _Instance Instance;
-typedef struct _Icon     Icon;
-
-struct _Icon
-{
-   Ecore_X_Window win;
-   Evas_Object   *o;
-   Instance      *inst;
-};
-
-struct _Instance
-{
-   E_Gadcon_Client *gcc;
-   E_Container     *con;
-   Evas            *evas;
-   struct
-   {
-      Ecore_X_Window parent;
-      Ecore_X_Window base;
-      Ecore_X_Window selection;
-   } win;
-   struct
-   {
-      Evas_Object *gadget;
-   } ui;
-   Eina_List *handlers;
-   struct
-   {
-      Ecore_Timer *retry;
-   } timer;
-   struct
-   {
-      Ecore_Job *size_apply;
-   } job;
-   Eina_List *icons;
-};
-
 static const char _Name[] = "Systray";
 static const char _name[] = "systray";
 static const char _group_gadget[] = "e/modules/systray/main";
@@ -110,7 +49,7 @@ static Ecore_X_Atom _atom_st_num = 0;
 static int _last_st_num = -1;
 
 static E_Module *systray_mod = NULL;
-static Instance *instance = NULL; /* only one systray ever possible */
+EINTERN Instance *instance = NULL; /* only one systray ever possible */
 static char tmpbuf[4096]; /* general purpose buffer, just use immediately */
 
 static Eina_Bool
