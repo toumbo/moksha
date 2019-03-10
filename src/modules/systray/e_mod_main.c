@@ -78,15 +78,7 @@ struct _Instance
    {
       Evas_Object *gadget;
    } ui;
-   struct
-   {
-      Ecore_Event_Handler *message;
-      Ecore_Event_Handler *destroy;
-      Ecore_Event_Handler *show;
-      Ecore_Event_Handler *reparent;
-      Ecore_Event_Handler *sel_clear;
-      Ecore_Event_Handler *configure;
-   } handler;
+   Eina_List *handlers;
    struct
    {
       Ecore_Timer *retry;
@@ -998,20 +990,13 @@ _gc_init(E_Gadcon *gc, const char *name, const char *id, const char *style)
                                   _systray_cb_move, inst);
    evas_object_event_callback_add(inst->ui.gadget, EVAS_CALLBACK_RESIZE,
                                   _systray_cb_resize, inst);
-
-   inst->handler.message = ecore_event_handler_add
-       (ECORE_X_EVENT_CLIENT_MESSAGE, _systray_cb_client_message, inst);
-   inst->handler.destroy = ecore_event_handler_add
-       (ECORE_X_EVENT_WINDOW_DESTROY, _systray_cb_window_destroy, inst);
-   inst->handler.show = ecore_event_handler_add
-       (ECORE_X_EVENT_WINDOW_SHOW, _systray_cb_window_show, inst);
-   inst->handler.reparent = ecore_event_handler_add
-       (ECORE_X_EVENT_WINDOW_REPARENT, _systray_cb_reparent_notify, inst);
-   inst->handler.sel_clear = ecore_event_handler_add
-       (ECORE_X_EVENT_SELECTION_CLEAR, _systray_cb_selection_clear, inst);
-   inst->handler.configure = ecore_event_handler_add
-       (ECORE_X_EVENT_WINDOW_CONFIGURE, _systray_cb_window_configure, inst);
-
+   E_LIST_HANDLER_APPEND(inst->handlers, ECORE_X_EVENT_CLIENT_MESSAGE, _systray_cb_client_message, inst);
+   E_LIST_HANDLER_APPEND(inst->handlers, ECORE_X_EVENT_WINDOW_DESTROY, _systray_cb_window_destroy, inst);
+   E_LIST_HANDLER_APPEND(inst->handlers, ECORE_X_EVENT_WINDOW_SHOW, _systray_cb_window_show, inst);
+   E_LIST_HANDLER_APPEND(inst->handlers, ECORE_X_EVENT_WINDOW_REPARENT, _systray_cb_reparent_notify, inst);
+   E_LIST_HANDLER_APPEND(inst->handlers, ECORE_X_EVENT_SELECTION_CLEAR, _systray_cb_selection_clear, inst);
+   E_LIST_HANDLER_APPEND(inst->handlers, ECORE_X_EVENT_WINDOW_CONFIGURE, _systray_cb_window_configure, inst);
+ 
    instance = inst;
    return inst->gcc;
 }
@@ -1030,18 +1015,7 @@ _gc_shutdown(E_Gadcon_Client *gcc)
    _systray_deactivate(inst);
    evas_object_del(inst->ui.gadget);
 
-   if (inst->handler.message)
-     ecore_event_handler_del(inst->handler.message);
-   if (inst->handler.destroy)
-     ecore_event_handler_del(inst->handler.destroy);
-   if (inst->handler.show)
-     ecore_event_handler_del(inst->handler.show);
-   if (inst->handler.reparent)
-     ecore_event_handler_del(inst->handler.reparent);
-   if (inst->handler.sel_clear)
-     ecore_event_handler_del(inst->handler.sel_clear);
-   if (inst->handler.configure)
-     ecore_event_handler_del(inst->handler.configure);
+   E_FREE_LIST(inst->handlers, ecore_event_handler_del);
    if (inst->timer.retry)
      ecore_timer_del(inst->timer.retry);
    if (inst->job.size_apply)
