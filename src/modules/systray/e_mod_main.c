@@ -29,6 +29,9 @@
 #define XEMBED_FOCUS_FIRST                1
 #define XEMBED_FOCUS_LAST                 2
 
+#define SYSTRAY_MIN_W 16
+#define SYSTRAY_MIN_H 8
+
 static const char _Name[] = "Systray";
 static const char _name[] = "systray";
 static const char _group_gadget[] = "e/modules/systray/main";
@@ -446,7 +449,11 @@ _systray_base_create(Instance *inst)
    evas_object_geometry_get(o, &x, &y, &w, &h);
    if (w < 1) w = 1;
    if (h < 1) h = 1;
-   inst->win.base = ecore_x_window_new(0, 0, 0, w, h);
+   inst->win.base = ecore_x_window_override_new(0, x, y, 1, 1);
+   ecore_x_netwm_window_type_set(inst->win.base, ECORE_X_WINDOW_TYPE_DOCK);
+   ecore_x_icccm_title_set(inst->win.base, "noshadow_systray_base");
+   ecore_x_icccm_name_class_set(inst->win.base, "systray", "holder");
+   ecore_x_netwm_name_set(inst->win.base, "noshadow_systray_base");
    ecore_x_window_reparent(inst->win.base, inst->win.parent, x, y);
    ecore_x_window_background_color_set(inst->win.base, r, g, b);
    ecore_x_window_show(inst->win.base);
