@@ -171,7 +171,7 @@ _gc_init(E_Gadcon *gc, const char *name, const char *id, const char *style)
    inst->module = temperature_config->module;
    inst->have_temp = EINA_FALSE;
    
-#ifdef HAVE_EEEZ_UDEV
+#ifdef HAVE_EEZE
    eeze_init();
 #endif
 
@@ -189,7 +189,7 @@ _gc_shutdown(E_Gadcon_Client *gcc)
 
    inst = gcc->data;
 
-#ifdef HAVE_EEEZ_UDEV
+#ifdef HAVE_EEZE
     eeze_shutdown();
  #endif
    if (inst->o_temp) evas_object_del(inst->o_temp);
@@ -291,7 +291,7 @@ _temperature_face_cb_menu_configure(void *data, E_Menu *m __UNUSED__, E_Menu_Ite
 }
 
 static Eina_Bool
-_temperature_face_shutdown(const Eina_Hash *hash __UNUSED__, const void *key __UNUSED__, void *hdata, void *fdata __UNUSED__)
+_temperature_face_shutdown(const Eina_Hash *hash EINA_UNUSED, const void *key EINA_UNUSED, void *hdata, void *fdata EINA_UNUSED)
 {
    Config_Face *inst;
 
@@ -354,7 +354,7 @@ _temperature_check_notify(void *data, Ecore_Thread *th, void *msg)
 }
 
 static void
-_temperature_check_done(void *data, Ecore_Thread *th __UNUSED__)
+_temperature_check_done(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    _temperature_thread_free(data);
 }
