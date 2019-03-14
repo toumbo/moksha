@@ -1,4 +1,7 @@
 #include "e.h"
+#ifdef HAVE_ELEMENTARY
+# include <Elementary.h>
+#endif
 
 EAPI E_Path *path_data = NULL;
 EAPI E_Path *path_images = NULL;
@@ -1724,3 +1727,46 @@ fallback:
       ecore_x_selection_primary_set(w, text, size);
    
 }
+
+#ifdef HAVE_ELEMENTARY
+
+EAPI Eina_Bool
+e_util_have_elm_theme(const char *name)
+{
+   Eina_List *list, *li;
+   char *th;
+   Eina_Bool ret = EINA_FALSE;
+   
+   list = elm_theme_name_available_list_new();
+   EINA_LIST_FOREACH(list, li, th)
+   {
+      if (!strcmp(th, name))
+      {  ret = EINA_TRUE;
+         break;
+      }
+   }
+   elm_theme_name_available_list_free(list);
+   return ret;
+}
+
+EAPI Eina_Bool
+e_util_elm_theme_set(const char *path)
+{
+   Eina_Bool ret = EINA_FALSE;
+   char buf[4096];
+   char *th_name;
+
+   th_name =  ecore_file_strip_ext(ecore_file_file_get(path));
+   printf("ELM %s %s \n", th_name, path);
+   if (e_util_have_elm_theme(th_name))
+   {
+      snprintf(buf, sizeof(buf), "%s:%s", th_name, elm_theme_get(NULL));
+      elm_theme_set(NULL, buf);
+      elm_config_all_flush();
+      ret = EINA_TRUE;
+   }
+   free(th_name);
+   return ret;
+}
+
+#endif

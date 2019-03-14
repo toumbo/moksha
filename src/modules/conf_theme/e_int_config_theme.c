@@ -807,6 +807,9 @@ _basic_apply_data(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfdata)
    ct = e_theme_config_get("theme");
    if ((ct) && (!strcmp(ct->file, cfdata->theme))) return 1;
 
+#ifdef HAVE_ELEMENTARY
+   e_util_elm_theme_set(cfdata->theme);
+#endif
    e_theme_config_set("theme", cfdata->theme);
    e_config_save_queue();
 

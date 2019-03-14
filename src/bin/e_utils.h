@@ -4,6 +4,8 @@
 #ifndef E_UTILS_H
 #define E_UTILS_H
 
+#include "e.h"
+
 #define e_util_dialog_show(title, args...) \
 { \
    char __tmpbuf[4096]; \
@@ -77,6 +79,10 @@ e_util_container_current_get(void)
 }
 // Bodhi additions
 EAPI void e_util_clipboard(Ecore_X_Window w, const char *text, Ecore_X_Selection type);
+#ifdef HAVE_ELEMENTARY
+EAPI Eina_Bool e_util_have_elm_theme(const char *name);
+EAPI Eina_Bool e_util_elm_theme_set(const char *path);
+#endif
 // Upstream ports
 EAPI Ecore_Exe *e_util_open(const char *exe, void *data);
 EAPI Ecore_Exe *e_util_exe_safe_run(const char *cmd, void *data);
