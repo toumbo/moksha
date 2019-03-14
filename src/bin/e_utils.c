@@ -1752,12 +1752,14 @@ e_util_have_elm_theme(const char *name)
 EAPI Eina_Bool
 e_util_elm_theme_set(const char *path)
 {
+   EINA_SAFETY_ON_NULL_RETURN_VAL(path, EINA_FALSE);
+   if (getenv("MOKSHA_ELM_THEME_OVERRIDE")) return EINA_FALSE;
+     
    Eina_Bool ret = EINA_FALSE;
    char buf[4096];
    char *th_name;
 
    th_name =  ecore_file_strip_ext(ecore_file_file_get(path));
-   printf("ELM %s %s \n", th_name, path);
    if (e_util_have_elm_theme(th_name))
    {
       snprintf(buf, sizeof(buf), "%s:%s", th_name, elm_theme_get(NULL));
