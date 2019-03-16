@@ -1805,7 +1805,7 @@ _e_menu_items_layout_update(E_Menu *m)
 {
    Eina_List *l;
    E_Menu_Item *mi;
-   Evas_Coord bw, bh, mw, mh;
+   Evas_Coord bw, bh, mw = 0, mh = 0;
    int toggles_on = 0;
    int icons_on = 0;
    int labels_on = 0;
@@ -1815,7 +1815,7 @@ _e_menu_items_layout_update(E_Menu *m)
    int min_submenu_w = 0, min_submenu_h = 0;
    int min_toggle_w = 0, min_toggle_h = 0;
    int min_w = 0, min_h = 1;
-   int zh = 0, ms = 0; //maxh = 0;
+   int ms = 0; //zh = 0, maxh = 0;
    unsigned int cur_items = 0, max_items = -1;
 
    e_box_freeze(m->container_object);
@@ -1899,7 +1899,7 @@ _e_menu_items_layout_update(E_Menu *m)
 
    EINA_LIST_FOREACH(m->items, l, mi)
      {
-        if ((cur_items >= max_items) || (zh && ((ms + (2 * mh) >= zh) || (ms + (2 * mi->separator_h) >= zh))))
+         if (cur_items >= max_items)
           {
              _e_menu_item_unrealize(mi);
              continue;
