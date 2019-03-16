@@ -242,7 +242,9 @@ _basic_apply_data(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfdata)
 
    EINA_LIST_FOREACH_SAFE(cfdata->binding.wheel, l, l2, bw)
      {
-        if ((!bw->modifiers) && ((bw->context == E_BINDING_CONTEXT_WINDOW) || (bw->context == E_BINDING_CONTEXT_ANY)))
+        if ((!bw->modifiers) && 
+            (bw->direction == 0) &&
+            ((bw->context == E_BINDING_CONTEXT_WINDOW) || (bw->context == E_BINDING_CONTEXT_ANY)))
           {
              const char *msg = _("Unable to set a mouse wheel binding without modifiers<br>"
                                   "on a window: conflict with existing edje signal bindings.<br>"
