@@ -1825,6 +1825,7 @@ e_util_elm_theme_set(const char *path)
       snprintf(buf, sizeof(buf), "%s:%s", th_name, elm_theme_get(NULL));
       elm_theme_set(NULL, buf);
       elm_config_all_flush();
+      elm_config_save();
       ret = EINA_TRUE;
    }
    free(th_name);
