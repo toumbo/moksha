@@ -193,8 +193,6 @@ e_menu_init(void)
 EINTERN int
 e_menu_shutdown(void)
 {
-   E_Menu *m;
-
    E_FN_DEL(ecore_event_handler_del, _e_menu_key_down_handler);
    E_FN_DEL(ecore_event_handler_del, _e_menu_key_up_handler);
    E_FN_DEL(ecore_event_handler_del, _e_menu_mouse_down_handler);
@@ -204,15 +202,7 @@ e_menu_shutdown(void)
    E_FN_DEL(ecore_event_handler_del, _e_menu_window_shape_handler);
 
    if (!x_fatal)
-     {
-        EINA_LIST_FREE(_e_active_menus, m)
-          {
-             m->active = 0;
-             _e_menu_unrealize(m);
-             m->in_active_list = 0;
-             e_object_unref(E_OBJECT(m));
-          }
-     }
+      e_menu_hide_all();
    _e_active_menus = NULL;
    if (_e_menu_categories)
      {
@@ -230,6 +220,20 @@ e_menu_shutdown(void)
    e_int_menus_shutdown();
 
    return 1;
+}
+
+EAPI void
+e_menu_hide_all(void)
+{
+   E_Menu *m;
+
+   EINA_LIST_FREE(_e_active_menus, m)
+     {
+        m->active = 0;
+        _e_menu_unrealize(m);
+        m->in_active_list = 0;
+        e_object_unref(E_OBJECT(m));
+     }
 }
 
 EAPI E_Menu *
