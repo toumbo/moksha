@@ -39,6 +39,7 @@ struct _E_Config_Dialog_Data
 
    /* Dialog */
    E_Win           *win_import;
+   Ecore_Job *theme_check;
 };
 
 static const char *parts_list[] =
@@ -603,6 +604,7 @@ _fill_data(E_Config_Dialog_Data *cfdata)
      cfdata->fmdir = 1;
 }
 
+static void
 _open_test_cb(void *data)
 {
    E_Config_Dialog_Data *cfdata = data;
@@ -630,7 +632,8 @@ _open_done_cb(void *data, Eio_File *handler, Eet_File *file)
    E_Config_Dialog_Data *cfdata = data;
    cfdata->themes = eina_list_append(cfdata->themes, file);
    cfdata->theme_init = eina_list_remove(cfdata->theme_init, handler);
-   ecore_job_add(_open_test_cb, file);
+   if (!cfdata->theme_init)
+     cfdata->theme_check = ecore_job_add(_open_test_cb, cfdata);
 }
 
 static void
@@ -709,6 +712,7 @@ _free_data(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfdata)
         eina_stringshare_del(t->category);
         free(t);
      }
+   E_FN_DEL(ecore_job_del, cfdata->theme_check);
    if (cfdata->eio[0]) eio_file_cancel(cfdata->eio[0]);
    if (cfdata->eio[1]) eio_file_cancel(cfdata->eio[1]);
    EINA_LIST_FOREACH(cfdata->theme_init, l, ls)
