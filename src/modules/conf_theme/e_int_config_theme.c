@@ -603,13 +603,25 @@ _fill_data(E_Config_Dialog_Data *cfdata)
      cfdata->fmdir = 1;
 }
 
-static void
-_open_test_cb(void *file)
+_open_test_cb(void *data)
 {
-   if (!edje_file_group_exists(eet_file_get(file), "e/desktop/background"))
-     e_util_dialog_show(_("Theme File Error"),
-                        _("%s is probably not an Moksha theme!"),
-                        eet_file_get(file));
+   E_Config_Dialog_Data *cfdata = data;
+   Eina_List *l, *fails = NULL;
+   Eet_File *file;
+   Eina_Strbuf *buf;
+
+   cfdata->theme_check = NULL;
+   EINA_LIST_FOREACH(cfdata->themes, l, file)
+     if (!edje_file_group_exists(eet_file_get(file), "e/desktop/background"))
+       fails = eina_list_append(fails, file);
+   if (!fails) return;
+   buf = eina_strbuf_new();
+   EINA_LIST_FREE(fails, file)
+     eina_strbuf_append_printf(buf, "<b>%s</b><ps/>", eet_file_get(file));
+   e_util_dialog_show(_("Theme File Error"),
+                      _("The listed files are probably not Moksha themes:<ps/>%s"),
+                      eina_strbuf_string_get(buf));
+   eina_strbuf_free(buf);
 }
 
 static void
