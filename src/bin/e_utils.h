@@ -87,5 +87,11 @@ EAPI Eina_Bool e_util_elm_theme_set(const char *path);
 EAPI Ecore_Exe *e_util_open(const char *exe, void *data);
 EAPI Ecore_Exe *e_util_exe_safe_run(const char *cmd, void *data);
 EAPI void e_util_size_debug(Evas_Object *obj);
+
+static inline Eina_Bool
+dblequal(double a, double b)
+{
+   return fabs(a - b) < DBL_EPSILON;
+}
 #endif
 #endif
