@@ -115,7 +115,7 @@ _basic_check_changed(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfda
           (e_config->resize_info_follows != cfdata->resize_info_follows) ||
           (e_config->border_shade_animate != cfdata->border_shade_animate) ||
           (e_config->border_shade_transition != cfdata->border_shade_transition) ||
-          (e_config->border_shade_speed != cfdata->border_shade_speed) ||
+          (!EINA_DBL_EQ(e_config->border_shade_speed, cfdata->border_shade_speed)) ||
           (e_config->use_app_icon != cfdata->use_app_icon) ||
           (e_config->desk_auto_switch != cfdata->desk_auto_switch) ||
           (e_config->screen_limits != cfdata->screen_limits);
