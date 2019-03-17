@@ -149,7 +149,7 @@ _basic_check_changed(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfda
 	   (e_config->gadget_resist != cfdata->gadget_resist) ||
 	   (e_config->geometry_auto_resize_limit != cfdata->geometry_auto_resize_limit) ||
            (e_config->geometry_auto_move != cfdata->geometry_auto_move) ||
-	   (e_config->border_keyboard.timeout != cfdata->border_keyboard.timeout) ||
+       (!EINA_DBL_EQ(e_config->border_keyboard.timeout, cfdata->border_keyboard.timeout)) ||
 	   (e_config->border_keyboard.move.dx != cfdata->border_keyboard.move.dx) ||
 	   (e_config->border_keyboard.move.dy != cfdata->border_keyboard.move.dx) ||
 	   (e_config->border_keyboard.resize.dx != cfdata->border_keyboard.resize.dx) ||

@@ -202,7 +202,7 @@ _advanced_check_changed(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *c
 	   (e_config->focus_revert_on_hide_or_close != cfdata->focus_revert_on_hide_or_close) ||
 	   (e_config->pointer_slide != cfdata->pointer_slide) ||
 	   (e_config->use_auto_raise != cfdata->use_auto_raise) ||
-	   (e_config->auto_raise_delay != cfdata->auto_raise_delay) ||
+	   (!EINA_DBL_EQ(e_config->auto_raise_delay, cfdata->auto_raise_delay)) ||
 	   (e_config->border_raise_on_mouse_action != cfdata->border_raise_on_mouse_action) ||
 	   (e_config->border_raise_on_focus != cfdata->border_raise_on_focus));
 }

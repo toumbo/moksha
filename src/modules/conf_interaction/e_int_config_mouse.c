@@ -84,9 +84,9 @@ _basic_check_changed(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfda
 	    (cfdata->use_e_cursor == e_config->use_e_cursor) &&
 	    (cfdata->cursor_size == e_config->cursor_size) &&
 	    (cfdata->mouse_hand == e_config->mouse_hand) &&
-	    (cfdata->numerator == e_config->mouse_accel_numerator) &&
-	    (cfdata->denominator == e_config->mouse_accel_denominator) &&
-	    (cfdata->threshold == e_config->mouse_accel_threshold));
+	    EINA_DBL_EQ(cfdata->numerator, e_config->mouse_accel_numerator) &&
+	    EINA_DBL_EQ(cfdata->denominator, e_config->mouse_accel_denominator) &&
+	    EINA_DBL_EQ(cfdata->threshold, e_config->mouse_accel_threshold));
 }
 
 static void
