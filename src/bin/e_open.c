@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <errno.h>
+#include <sys/wait.h>
 
 static const char *
 xdg_defaults_get(const char *path, const char *mime)
@@ -288,7 +289,7 @@ terminal_open(void)
    const char *terms[] =
      {
         "terminology.desktop",
-        "xterm.desktop",
+        "lxterminal.desktop",
         "rxvt.desktop",
         "gnome-terimnal.desktop",
         "konsole.desktop",
@@ -371,7 +372,7 @@ local_open(const char *path)
         char **ret = mime_open(mime, &path, 1);
         if (ret)
           return ret;
-        return single_command_open("enlightenment_filemanager", &path, 1);
+        return single_command_open("pcmanfm", &path, 1);
      }
 
    fprintf(stderr, "ERROR: Could not get mime type for: %s\n", path);
