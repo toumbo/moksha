@@ -104,25 +104,25 @@ _basic_apply_data(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfdata)
   cfdata->save.state = cfdata->persistence;
 
   /* Do we need to Truncate our history list? */
-  if (clip_cfg->hist_items != cfdata->hist_items)
+  if (!EINA_DBL_EQ(clip_cfg->hist_items, cfdata->hist_items))
     truncate_history(cfdata-> hist_items);
 
   clip_cfg->hist_items     = cfdata->hist_items;
   clip_cfg->confirm_clear  = cfdata->confirm_clear;
   clip_cfg->autosave       = cfdata->autosave;
-  if (cfdata->save_timer)
+  if (EINA_DBL_NONZERO(cfdata->save_timer))
     clip_cfg->save_timer   = 60*cfdata->save_timer; // Time in seconds
   else
     clip_cfg->save_timer   = 1;
   /* Do we need to kill or restart save_timer */
   if (cfdata->persistence && !cfdata->autosave)
   {
-    if (!clip_inst->save_timer)
+    if (clip_inst->save_timer)
     {
       clip_save(clip_inst->items, EINA_TRUE); // Save history before start timer */
       clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, cb_clipboard_save, NULL);
     }
-    else if (cfdata->save_timer != cfdata->init_save_timer)
+    else if (!EINA_DBL_EQ(cfdata->save_timer, cfdata->init_save_timer))
     {
       clip_save(clip_inst->items, EINA_TRUE); // Save history before stopping timer */
       ecore_timer_del(clip_inst->save_timer);
@@ -138,7 +138,8 @@ _basic_apply_data(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfdata)
      }
 
   /* Has clipboard label name length changed ? */
-  if (cfdata->label_length != cfdata->init_label_length) {
+  if (!EINA_DBL_EQ(cfdata->label_length, cfdata->init_label_length))
+  {
     clip_cfg->label_length_changed = EINA_TRUE;
     cfdata->init_label_length = cfdata->label_length;
   }
@@ -287,11 +288,11 @@ _basic_check_changed(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfda
   if (clip_cfg->sync           != cfdata->sync) return 1;
   if (clip_cfg->persistence    != cfdata->persistence) return 1;
   if (clip_cfg->hist_reverse   != cfdata->hist_reverse) return 1;
-  if (clip_cfg->hist_items     != cfdata->hist_items) return 1;
+  if (!EINA_DBL_EQ(clip_cfg->hist_items, cfdata->hist_items)) return 1;
   if (clip_cfg->confirm_clear  != cfdata->confirm_clear) return 1;
   if (clip_cfg->autosave       != cfdata->autosave) return 1;
-  if (clip_cfg->save_timer     != cfdata->save_timer) return 1;
-  if (clip_cfg->label_length   != cfdata->label_length) return 1;
+  if (!EINA_DBL_EQ(clip_cfg->save_timer, cfdata->save_timer)) return 1;
+  if (!EINA_DBL_EQ(clip_cfg->label_length, cfdata->label_length)) return 1;
   if (clip_cfg->ignore_ws      != cfdata->ignore_ws) return 1;
   if (clip_cfg->ignore_ws_copy != cfdata->ignore_ws_copy) return 1;
   if (clip_cfg->trim_ws        != cfdata->trim_ws) return 1;

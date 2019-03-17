@@ -771,7 +771,7 @@ e_modapi_init (E_Module *m)
 
   /* Read History file and set clipboard */
   clip_inst->update_history = EINA_TRUE;
-  hist_err = read_history(&(clip_inst->items), clip_cfg->ignore_ws, clip_cfg->label_length);
+  hist_err = read_history(&(clip_inst->items), clip_cfg->ignore_ws, (unsigned int) clip_cfg->label_length);
 
   if (hist_err == EET_ERROR_NONE && eina_list_count(clip_inst->items))
     _cb_menu_item(eina_list_data_get(clip_inst->items));
