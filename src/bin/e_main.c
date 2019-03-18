@@ -1984,7 +1984,7 @@ _e_main_cb_idle_after(void *data __UNUSED__)
 
    edje_freeze();
 
-#ifdef E17_RELEASE_BUILD
+#ifdef MOKSHA_RELEASE_BUILD
    first_idle = 1;
    if (first_idle)
      {
