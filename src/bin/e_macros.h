@@ -127,6 +127,10 @@
        }                                                          \
   }
 // E backports
-#define E_BITFIELD :1
+#ifdef MOKSHA_RELEASE_BUILD
+# define E_BITFIELD :1
+#else
+# define E_BITFIELD
+#endif
 
 #endif
