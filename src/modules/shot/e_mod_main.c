@@ -18,6 +18,7 @@ static E_Module *shot_module = NULL;
 static E_Action *border_act = NULL, *act = NULL;
 static E_Int_Menu_Augmentation *maug = NULL;
 static Ecore_Timer *timer, *border_timer=NULL, *timer_sec = NULL;
+static Eina_Bool cancel; 
 static E_Win *win = NULL;
 E_Confirm_Dialog *cd = NULL;
 
@@ -1055,6 +1056,7 @@ _shot_delay(void *data)
 {
    timer_sec = NULL;
    timer = NULL;
+   if (!cancel)
    _shot_now(data, NULL);
    return EINA_FALSE;
 }
@@ -1075,17 +1077,26 @@ _shot_border(E_Border *bd)
 }
 
 static void
-_shot(E_Zone *zone)
+_shot(E_Zone *zone, const char *params )
 {
-   shot_conf->count = shot_conf->delay;
-   
+   if (!strcmp(params, "shot"))
+   {
+       shot_conf->count = shot_conf->delay;
+       cancel = EINA_FALSE;
+   }
+   else if (!strcmp(params, "stop"))
+   {  
+	   shot_conf->count = 0;
+	   cancel = EINA_TRUE;
+   }
+
    if (timer) ecore_timer_del(timer);
    if (timer_sec) ecore_timer_del(timer_sec);
   
-   if (shot_conf->delay>0)
-     timer_sec = ecore_timer_add(1.0, _timer_cb, zone);
+   if (shot_conf->delay > 0)
+       timer_sec = ecore_timer_add(1.0, _timer_cb, zone);
    else
-     timer = ecore_timer_add(0.2, _shot_delay, zone);
+       timer = ecore_timer_add(0.2, _shot_delay, zone);
 }
 
 
@@ -1098,7 +1109,7 @@ _e_mod_menu_border_cb(void *data, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED
 static void
 _e_mod_menu_cb(void *data __UNUSED__, E_Menu *m, E_Menu_Item *mi __UNUSED__)
 {
-   if (m->zone) _shot(m->zone);
+   if (m->zone) _shot(m->zone, "shot");
 }
 
 static void
@@ -1116,7 +1127,7 @@ _e_mod_action_border_cb(E_Object *obj __UNUSED__, const char *params __UNUSED__)
 }
 
 static void
-_e_mod_action_cb(E_Object *obj, const char *params __UNUSED__)
+_e_mod_action_cb(E_Object *obj, const char *params)
 {
    E_Zone *zone = NULL;
    
@@ -1140,7 +1151,7 @@ _e_mod_action_cb(E_Object *obj, const char *params __UNUSED__)
          ecore_timer_del(timer_sec);
          timer_sec = NULL;
       }
-            _shot(zone);
+            _shot(zone, params);
 
    //_shot_now(zone, NULL);
 }
@@ -1210,8 +1221,11 @@ e_modapi_init(E_Module *m)
      {
         act->func.go = _e_mod_action_cb;
         e_action_predef_name_set(N_("Screen"), N_("Take Screenshot"),
-                                 "shot", NULL, NULL, 0);
+                                 "shot", "shot", NULL, 0);
+        e_action_predef_name_set(N_("Screen"), N_("Cancel Screenshot"),
+                                 "shot", "stop", NULL, 0);                         
      }
+     
    border_act = e_action_add("border_shot");
    if (border_act)
      {
