@@ -324,7 +324,6 @@ main(int argc, char **argv)
    if (getenv("DESKTOP_STARTUP_ID"))
      e_util_env_set("DESKTOP_STARTUP_ID", NULL);
    e_util_env_set("E_RESTART_OK", NULL);
-   e_util_env_set("PANTS", "ON");
    snprintf(moksha, 13, "Moksha-%.5s", VERSION);
    e_util_env_set("DESKTOP", moksha);
    e_util_env_set("MOKSHA_VERSION", PACKAGE_VERSION);
