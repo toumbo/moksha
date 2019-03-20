@@ -1310,8 +1310,16 @@ e_modapi_shutdown(E_Module *m __UNUSED__)
      {
         ecore_timer_del(timer);
         timer = NULL;
+     }
+   if (timer_sec)
+     {
         ecore_timer_del(timer_sec);
         timer_sec = NULL;
+     }
+   if (border_timer)
+     {
+        ecore_timer_del(border_timer);
+        border_timer = NULL;
      }
    if (maug)
      {
@@ -1321,8 +1329,15 @@ e_modapi_shutdown(E_Module *m __UNUSED__)
    if (act)
      {
         e_action_predef_name_del("Screen", "Take Screenshot");
+        e_action_predef_name_del("Screen", "Cancel Screenshot");
         e_action_del("shot");
         act = NULL;
+     }
+   if (border_act)
+     {
+        e_action_predef_name_del("Window : Actions", "Take Shot");
+        e_action_del("border_shot");
+        border_act = NULL;
      }
    shot_module = NULL;
    e_int_border_menu_hook_del(border_hook);
