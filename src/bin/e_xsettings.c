@@ -332,7 +332,7 @@ _e_xsettings_apply(Settings_Manager *sm)
    pos = data = calloc(1, len);
    if (!data) return;
 
-#if __BYTE_ORDER == __LITTLE_ENDIAN
+#if (__BYTE_ORDER == __LITTLE_ENDIAN) || (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
    *pos = LSBFirst;
 #else
    *pos = MSBFirst;
