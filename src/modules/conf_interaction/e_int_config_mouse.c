@@ -162,12 +162,13 @@ _basic_create_widgets(E_Config_Dialog *cfd __UNUSED__, Evas *evas, E_Config_Dial
 
    /* Cursor */
    ol = e_widget_list_add(evas, 0, 0);
+   
+   of = e_widget_framelist_add(evas, _("Settings"), 0);
 
    ob = e_widget_check_add(evas, _("Show Cursor"), &(cfdata->show_cursor));
    e_widget_on_change_hook_set(ob, _show_cursor_cb_change, cfdata);
-   e_widget_list_object_append(ol, ob, 1, 0, 0.5);
-
-   of = e_widget_framelist_add(evas, _("Settings"), 0);
+   e_widget_framelist_object_append(of, ob);
+   
    rg = e_widget_radio_group_new(&cfdata->use_e_cursor);
    cfdata->disable_list = eina_list_append(cfdata->disable_list, of);
 
