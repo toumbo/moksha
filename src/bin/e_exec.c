@@ -650,7 +650,8 @@ _e_exec_cb_exit(void *data __UNUSED__, int type __UNUSED__, void *event)
      }
    else
  */
-     _e_exec_instance_free(inst);
+   _e_exec_instance_free(inst);
+   inst->exe = NULL;
 
    return ECORE_CALLBACK_PASS_ON;
 }
