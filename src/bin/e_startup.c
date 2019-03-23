@@ -166,7 +166,6 @@ _e_startup_event_cb(void *data, int ev_type __UNUSED__, void *ev)
 
    if (timer) ecore_timer_del(timer);
    timer = NULL;
-#if (EFREET_VERSION_MAJOR > 1) || (EFREET_VERSION_MINOR >= 8)
    Efreet_Event_Cache_Update *e;
 
    e = ev;
@@ -176,9 +175,7 @@ _e_startup_event_cb(void *data, int ev_type __UNUSED__, void *ev)
       _e_startup_error_dialog("Moksha: Efreet did not update cache. "
                            "Please check your Efreet setup");
    }
-#else
-   (void)ev;
-#endif
+
    desktop_cache_update = EINA_TRUE;
    ecore_event_handler_del(desktop_cache_update_handler);
    buf = data;
