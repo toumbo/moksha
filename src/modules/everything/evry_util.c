@@ -356,7 +356,7 @@ _evry_items_sort_func(const void *data1, const void *data2)
    /* sort recently/most frequently used items first */
    if (it1->usage > 0.0 || it2->usage > 0.0)
      {
-        return it1->usage > it2->usage ? -1 E_BITFIELD;
+        return it1->usage > it2->usage ? -1 : 1;
      }
 
    /* sort items which match input better first */
