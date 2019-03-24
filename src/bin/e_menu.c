@@ -82,7 +82,6 @@ static Eina_Bool    _e_menu_cb_scroll_animator(void *data);
 static Eina_Bool    _e_menu_cb_window_shape(void *data, int ev_type, void *ev);
 static void         _e_menu_cb_item_submenu_post_default(void *data, E_Menu *m, E_Menu_Item *mi);
 static Eina_Bool    _e_menu_categories_free_cb(const Eina_Hash *hash, const void *key, void *data, void *fdata);
-static Eina_Bool    _is_edje(Evas_Object *obj);
 
 /* local subsystem globals */
 static Ecore_X_Window _e_menu_win = 0;
@@ -772,7 +771,7 @@ e_menu_item_submenu_set(E_Menu_Item *mi, E_Menu *sub)
      {
         if (mi->submenu_object)
           {
-             if (_is_edje(mi->submenu_object))
+             if (isedje(mi->submenu_object))
                {
                   /* already have a correct submenu object, don't re-set it */
                   _e_menu_lock = EINA_FALSE;
@@ -900,11 +899,11 @@ e_menu_item_toggle_set(E_Menu_Item *mi, int tog)
           edje_object_signal_emit(mi->bg_object, "e,state,on", "e");
         if (mi->icon_bg_object)
           edje_object_signal_emit(mi->icon_bg_object, "e,state,on", "e");
-        if (_is_edje(mi->label_object))
+        if (isedje(mi->label_object))
           edje_object_signal_emit(mi->label_object, "e,state,on", "e");
-        if (_is_edje(mi->submenu_object))
+        if (isedje(mi->submenu_object))
           edje_object_signal_emit(mi->submenu_object, "e,state,on", "e");
-        if (_is_edje(mi->toggle_object))
+        if (isedje(mi->toggle_object))
           edje_object_signal_emit(mi->toggle_object, "e,state,on", "e");
         if (mi->menu->bg_object)
           edje_object_signal_emit(mi->menu->bg_object, "e,state,on", "e");
@@ -916,11 +915,11 @@ e_menu_item_toggle_set(E_Menu_Item *mi, int tog)
           edje_object_signal_emit(mi->bg_object, "e,state,off", "e");
         if (mi->icon_bg_object)
           edje_object_signal_emit(mi->icon_bg_object, "e,state,off", "e");
-        if (_is_edje(mi->label_object))
+        if (isedje(mi->label_object))
           edje_object_signal_emit(mi->label_object, "e,state,off", "e");
-        if (_is_edje(mi->submenu_object))
+        if (isedje(mi->submenu_object))
           edje_object_signal_emit(mi->submenu_object, "e,state,off", "e");
-        if (_is_edje(mi->toggle_object))
+        if (isedje(mi->toggle_object))
           edje_object_signal_emit(mi->toggle_object, "e,state,off", "e");
         if (mi->menu->bg_object)
           edje_object_signal_emit(mi->menu->bg_object, "e,state,off", "e");
@@ -1023,17 +1022,17 @@ e_menu_item_active_set(E_Menu_Item *mi, int active)
           edje_object_signal_emit(mi->bg_object, "e,state,selected", "e");
         if (mi->icon_bg_object)
           edje_object_signal_emit(mi->icon_bg_object, "e,state,selected", "e");
-        if (_is_edje(mi->label_object))
+        if (isedje(mi->label_object))
           edje_object_signal_emit(mi->label_object, "e,state,selected", "e");
-        if (_is_edje(mi->submenu_object))
+        if (isedje(mi->submenu_object))
           edje_object_signal_emit(mi->submenu_object, "e,state,selected", "e");
-        if (_is_edje(mi->toggle_object))
+        if (isedje(mi->toggle_object))
           edje_object_signal_emit(mi->toggle_object, "e,state,selected", "e");
         if (mi->icon_key)
           {
              if (mi->icon_object)
                {
-                  if (_is_edje(mi->icon_object))
+                  if (isedje(mi->icon_object))
                     edje_object_signal_emit(mi->icon_object, "e,state,selected", "e");
                   else
                     e_icon_selected_set(mi->icon_object, EINA_TRUE);
@@ -1051,17 +1050,17 @@ e_menu_item_active_set(E_Menu_Item *mi, int active)
           edje_object_signal_emit(mi->bg_object, "e,state,unselected", "e");
         if (mi->icon_bg_object)
           edje_object_signal_emit(mi->icon_bg_object, "e,state,unselected", "e");
-        if (_is_edje(mi->label_object))
+        if (isedje(mi->label_object))
           edje_object_signal_emit(mi->label_object, "e,state,unselected", "e");
-        if (_is_edje(mi->submenu_object))
+        if (isedje(mi->submenu_object))
           edje_object_signal_emit(mi->submenu_object, "e,state,unselected", "e");
-        if (_is_edje(mi->toggle_object))
+        if (isedje(mi->toggle_object))
           edje_object_signal_emit(mi->toggle_object, "e,state,unselected", "e");
         if (mi->icon_key)
           {
              if (mi->icon_object)
                {
-                  if (_is_edje(mi->icon_object))
+                  if (isedje(mi->icon_object))
                     edje_object_signal_emit(mi->icon_object, "e,state,unselected", "e");
                   else
                     e_icon_selected_set(mi->icon_object, EINA_FALSE);
@@ -1096,9 +1095,9 @@ e_menu_item_disabled_set(E_Menu_Item *mi, int disable)
         mi->disable = 1;
         if (mi->icon_bg_object)
           edje_object_signal_emit(mi->icon_bg_object, "e,state,disable", "e");
-        if (_is_edje(mi->label_object))
+        if (isedje(mi->label_object))
           edje_object_signal_emit(mi->label_object, "e,state,disable", "e");
-        if (_is_edje(mi->toggle_object))
+        if (isedje(mi->toggle_object))
           edje_object_signal_emit(mi->toggle_object, "e,state,disable", "e");
      }
    else
@@ -1106,9 +1105,9 @@ e_menu_item_disabled_set(E_Menu_Item *mi, int disable)
         mi->disable = 0;
         if (mi->icon_bg_object)
           edje_object_signal_emit(mi->icon_bg_object, "e,state,enable", "e");
-        if (_is_edje(mi->label_object))
+        if (isedje(mi->label_object))
           edje_object_signal_emit(mi->label_object, "e,state,enable", "e");
-        if (_is_edje(mi->toggle_object))
+        if (isedje(mi->toggle_object))
           edje_object_signal_emit(mi->toggle_object, "e,state,enable", "e");
      }
 }
@@ -3213,14 +3212,4 @@ _e_menu_categories_free_cb(const Eina_Hash *hash __UNUSED__, const void *key __U
      free(cb);  /* free the callback struct */
    free(cat);
    return EINA_TRUE;
-}
-
-static Eina_Bool
-_is_edje(Evas_Object *obj)
-{
-   if (!obj) return EINA_FALSE;
-
-   if (strcmp(evas_object_type_get(obj), "edje") == 0) 
-      return EINA_TRUE;
-   return EINA_FALSE;
 }

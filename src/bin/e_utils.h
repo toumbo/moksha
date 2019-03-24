@@ -89,6 +89,13 @@ EAPI Ecore_Exe *e_util_exe_safe_run(const char *cmd, void *data);
 EAPI void e_util_size_debug(Evas_Object *obj);
 
 static inline Eina_Bool
+isedje(const Evas_Object *obj)
+{
+   return obj && !e_util_strcmp(evas_object_type_get(obj), "edje");
+}
+
+
+static inline Eina_Bool
 dblequal(double a, double b)
 {
    return fabs(a - b) < DBL_EPSILON;
