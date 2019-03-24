@@ -14,9 +14,9 @@ struct _E_Popup
 
    int                  x, y, w, h, zx, zy;
    E_Layer              layer;
-   unsigned char        visible : 1;
-   unsigned char        shaped : 1;
-   unsigned char        need_shape_export : 1;
+   unsigned char        visible E_BITFIELD;
+   unsigned char        shaped E_BITFIELD;
+   unsigned char        need_shape_export E_BITFIELD;
 
    Ecore_Evas          *ecore_evas;
    Evas                *evas;

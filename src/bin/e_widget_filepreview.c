@@ -40,12 +40,12 @@ struct _E_Widget_Data
    const char        *path;
    const char        *mime;
    double vid_pct;
-   Eina_Bool mime_icon : 1;
-   Eina_Bool is_dir : 1;
-   Eina_Bool is_txt : 1;
-   Eina_Bool prev_is_fm : 1;
-   Eina_Bool prev_is_txt : 1;
-   Eina_Bool prev_is_video : 1;
+   Eina_Bool mime_icon E_BITFIELD;
+   Eina_Bool is_dir E_BITFIELD;
+   Eina_Bool is_txt E_BITFIELD;
+   Eina_Bool prev_is_fm E_BITFIELD;
+   Eina_Bool prev_is_txt E_BITFIELD;
+   Eina_Bool prev_is_video E_BITFIELD;
 };
 
 static void  _e_wid_fprev_preview_update(void *data, Evas_Object *obj, void *event_info);

@@ -45,7 +45,7 @@ struct _Tasks_Item
    E_Border    *border; // The border this item points to
    Evas_Object *o_item; // The edje theme object
    Evas_Object *o_icon; // The icon
-   Eina_Bool skip_taskbar : 1;
+   Eina_Bool skip_taskbar E_BITFIELD;
 };
 
 static Tasks       *_tasks_new(Evas *evas, E_Zone *zone, const char *id);

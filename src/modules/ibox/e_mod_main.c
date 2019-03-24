@@ -62,8 +62,8 @@ struct _IBox_Icon
    E_Border    *border;
    struct
    {
-      unsigned char start : 1;
-      unsigned char dnd : 1;
+      unsigned char start E_BITFIELD;
+      unsigned char dnd E_BITFIELD;
       int           x, y;
       int           dx, dy;
    } drag;

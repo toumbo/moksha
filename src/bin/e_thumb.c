@@ -9,9 +9,9 @@ struct _E_Thumb
    const char   *file;
    const char   *key;
    char         *sort_id;
-   unsigned char queued : 1;
-   unsigned char busy : 1;
-   unsigned char done : 1;
+   unsigned char queued E_BITFIELD;
+   unsigned char busy E_BITFIELD;
+   unsigned char done E_BITFIELD;
 };
 
 /* local subsystem functions */

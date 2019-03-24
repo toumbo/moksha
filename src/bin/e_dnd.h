@@ -51,9 +51,9 @@ struct _E_Drag
    Ecore_X_Rectangle *shape_rects;
 
    E_Layer            layer;
-   unsigned char      visible : 1;
-   unsigned char      need_shape_export : 1;
-   unsigned char      xy_update : 1;
+   unsigned char      visible E_BITFIELD;
+   unsigned char      need_shape_export E_BITFIELD;
+   unsigned char      xy_update E_BITFIELD;
 
    unsigned int       num_types;
    const char        *types[];
@@ -74,8 +74,8 @@ struct _E_Drop_Handler
    E_Object     *obj;
    int           x, y, w, h;
 
-   unsigned char active : 1;
-   unsigned char entered : 1;
+   unsigned char active E_BITFIELD;
+   unsigned char entered E_BITFIELD;
    const char   *active_type;
    unsigned int  num_types;
    const char   *types[];

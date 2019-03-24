@@ -26,7 +26,7 @@ struct _E_Config_Dialog_Data
    Eio_File        *init[2];
    Eina_List       *theme_init; /* list of eio ops to load themes */
    Eina_List       *themes; /* eet file refs to work around load locking */
-   Eina_Bool        free : 1;
+   Eina_Bool        free E_BITFIELD;
 
    /* Advanced */
    Evas_Object     *o_categories_ilist;

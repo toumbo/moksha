@@ -21,8 +21,8 @@ struct _E_Desk
    const char          *name;
    const char          *window_profile;
    int                  x, y;
-   unsigned char        visible : 1;
-   unsigned int         deskshow_toggle : 1;
+   unsigned char        visible E_BITFIELD;
+   unsigned int         deskshow_toggle E_BITFIELD;
    int                  fullscreen_borders;
 
    Evas_Object         *bg_object;

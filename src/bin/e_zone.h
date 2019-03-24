@@ -56,7 +56,7 @@ struct _E_Zone
 
    struct
    {
-      unsigned char      switching : 1;
+      unsigned char      switching E_BITFIELD;
       E_Shelf           *es;
       E_Event_Zone_Edge *ev;
       E_Binding_Edge    *bind;
@@ -84,7 +84,7 @@ struct _E_Zone
    struct
    {
       int       x, y, w, h;
-      Eina_Bool dirty : 1;
+      Eina_Bool dirty E_BITFIELD;
    } useful_geometry;
 };
 

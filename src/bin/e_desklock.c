@@ -35,7 +35,7 @@ struct _E_Desklock_Data
    Ecore_X_Window elock_grab_break_wnd;
    char           passwd[PASSWD_LEN];
    int            state;
-   Eina_Bool      selected : 1;
+   Eina_Bool      selected E_BITFIELD;
 };
 
 struct _E_Desklock_Run

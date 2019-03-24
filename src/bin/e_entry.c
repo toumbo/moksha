@@ -18,10 +18,10 @@ struct _E_Entry_Smart_Data
    int preedit_start_pos;
    int preedit_end_pos;
    int changing;
-   Eina_Bool enabled : 1;
-   Eina_Bool noedit : 1;
-   Eina_Bool focused : 1;
-   Eina_Bool password_mode : 1;
+   Eina_Bool enabled E_BITFIELD;
+   Eina_Bool noedit E_BITFIELD;
+   Eina_Bool focused E_BITFIELD;
+   Eina_Bool password_mode E_BITFIELD;
 };
 
 /* local subsystem functions */

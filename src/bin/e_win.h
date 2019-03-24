@@ -25,7 +25,7 @@ struct _E_Win
    Ecore_Evas          *ecore_evas;
    Evas                *evas;
    Ecore_X_Window       evas_win;
-   unsigned char        placed : 1;
+   unsigned char        placed E_BITFIELD;
    int                  min_w, min_h, max_w, max_h, base_w, base_h;
    int                  step_x, step_y;
    double               min_aspect, max_aspect;
@@ -35,10 +35,10 @@ struct _E_Win
    void                *data;
 
    struct {
-      unsigned char     centered : 1;
-      unsigned char     dialog : 1;
-      unsigned char     no_remember : 1;
-      unsigned char     no_reopen : 1;
+      unsigned char     centered E_BITFIELD;
+      unsigned char     dialog E_BITFIELD;
+      unsigned char     no_remember E_BITFIELD;
+      unsigned char     no_reopen E_BITFIELD;
    } state;
 
    E_Pointer           *pointer;

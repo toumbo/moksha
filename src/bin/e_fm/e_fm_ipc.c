@@ -72,7 +72,7 @@ struct _E_Dir
    int                 sync_num;
    Eina_List          *recent_mods;
    Ecore_Timer        *recent_clean;
-   unsigned char       cleaning : 1;
+   unsigned char       cleaning E_BITFIELD;
 };
 
 struct _E_Fop
@@ -83,8 +83,8 @@ struct _E_Fop
    const char   *rel;
    int           rel_to;
    int           x, y;
-   unsigned char del_after : 1;
-   unsigned char gone_bad : 1;
+   unsigned char del_after E_BITFIELD;
+   unsigned char gone_bad E_BITFIELD;
    Ecore_Idler  *idler;
    void         *data;
 };
@@ -93,10 +93,10 @@ struct _E_Mod
 {
    const char   *path;
    double        timestamp;
-   unsigned char add : 1;
-   unsigned char del : 1;
-   unsigned char mod : 1;
-   unsigned char done : 1;
+   unsigned char add E_BITFIELD;
+   unsigned char del E_BITFIELD;
+   unsigned char mod E_BITFIELD;
+   unsigned char done E_BITFIELD;
 };
 
 struct _e_fm_ipc_slave

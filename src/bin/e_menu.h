@@ -31,7 +31,7 @@ struct _E_Menu
    const char	       *category;
 
    struct {
-      char              visible : 1;
+      char              visible E_BITFIELD;
       int               x, y, w, h;
    } cur, prev;
 
@@ -67,15 +67,15 @@ struct _E_Menu
       void (*func) (void *data, E_Menu *m);
    } pre_activate_cb, post_deactivate_cb;
 
-   Eina_Bool        realized : 1; /* 1 if it is realized */
-   Eina_Bool        active : 1; /* 1 if it is in active list */
-   Eina_Bool        changed : 1;
-   Eina_Bool        fast_mouse : 1;
-   Eina_Bool        pending_new_submenu : 1;
-   Eina_Bool        have_submenu : 1;
-   Eina_Bool        in_active_list : 1;
-   Eina_Bool        shaped : 1;
-   Eina_Bool        need_shape_export : 1;
+   Eina_Bool        realized E_BITFIELD; /* 1 if it is realized */
+   Eina_Bool        active E_BITFIELD; /* 1 if it is in active list */
+   Eina_Bool        changed E_BITFIELD;
+   Eina_Bool        fast_mouse E_BITFIELD;
+   Eina_Bool        pending_new_submenu E_BITFIELD;
+   Eina_Bool        have_submenu E_BITFIELD;
+   Eina_Bool        in_active_list E_BITFIELD;
+   Eina_Bool        shaped E_BITFIELD;
+   Eina_Bool        need_shape_export E_BITFIELD;
 };
 
 struct _E_Menu_Item
@@ -140,13 +140,13 @@ struct _E_Menu_Item
       int x, y;
    } drag;
 
-   Eina_Bool  separator : 1;
-   Eina_Bool  radio : 1;
-   Eina_Bool  check : 1;
-   Eina_Bool  toggle : 1;
-   Eina_Bool  changed : 1;
-   Eina_Bool  active : 1;
-   Eina_Bool  disable : 1;
+   Eina_Bool  separator E_BITFIELD;
+   Eina_Bool  radio E_BITFIELD;
+   Eina_Bool  check E_BITFIELD;
+   Eina_Bool  toggle E_BITFIELD;
+   Eina_Bool  changed E_BITFIELD;
+   Eina_Bool  active E_BITFIELD;
+   Eina_Bool  disable E_BITFIELD;
 };
 
 struct _E_Menu_Category_Callback

@@ -36,7 +36,7 @@ struct _E_Connman_Agent
    E_DBus_Object *obj;
    DBusMessage *msg;
    E_DBus_Connection *conn;
-   Eina_Bool canceled:1;
+   Eina_Bool canceled E_BITFIELD;
 };
 
 static void

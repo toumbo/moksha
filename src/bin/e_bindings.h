@@ -43,7 +43,7 @@ struct _E_Binding_Mouse
    E_Binding_Context ctxt;
    int button;
    E_Binding_Modifier mod;
-   unsigned char any_mod : 1;
+   unsigned char any_mod E_BITFIELD;
    const char *action;
    const char *params;
 };
@@ -53,7 +53,7 @@ struct _E_Binding_Key
    E_Binding_Context ctxt;
    const char *key;
    E_Binding_Modifier mod;
-   unsigned char any_mod : 1;
+   unsigned char any_mod E_BITFIELD;
    const char *action;
    const char *params;
 };
@@ -63,7 +63,7 @@ struct _E_Binding_Edge
    E_Binding_Context ctxt;
    E_Zone_Edge edge;
    E_Binding_Modifier mod;
-   unsigned char any_mod : 1;
+   unsigned char any_mod E_BITFIELD;
    const char *action;
    const char *params;
 
@@ -77,7 +77,7 @@ struct _E_Binding_Signal
    const char *sig;
    const char *src;
    E_Binding_Modifier mod;
-   unsigned char any_mod : 1;
+   unsigned char any_mod E_BITFIELD;
    const char *action;
    const char *params;
 };
@@ -88,7 +88,7 @@ struct _E_Binding_Wheel
    int direction;
    int z;
    E_Binding_Modifier mod;
-   unsigned char any_mod : 1;
+   unsigned char any_mod E_BITFIELD;
    const char *action;
    const char *params;
 };

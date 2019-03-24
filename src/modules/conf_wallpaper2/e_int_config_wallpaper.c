@@ -43,9 +43,9 @@ struct _Smart_Data
    int sort_num;
    double seltime;
    double selmove;
-   Eina_Bool selin : 1;
-   Eina_Bool selout : 1;
-   Eina_Bool jump2hi : 1;
+   Eina_Bool selin E_BITFIELD;
+   Eina_Bool selout E_BITFIELD;
+   Eina_Bool jump2hi E_BITFIELD;
 };
 
 struct _Item
@@ -55,13 +55,13 @@ struct _Item
    const char *file;
    char *sort_id;
    Evas_Object *frame, *image;
-   Eina_Bool selected : 1;
-   Eina_Bool have_thumb : 1;
-   Eina_Bool do_thumb : 1;
-   Eina_Bool remote : 1;
-   Eina_Bool theme : 1;
-   Eina_Bool visible : 1;
-   Eina_Bool hilighted : 1;
+   Eina_Bool selected E_BITFIELD;
+   Eina_Bool have_thumb E_BITFIELD;
+   Eina_Bool do_thumb E_BITFIELD;
+   Eina_Bool remote E_BITFIELD;
+   Eina_Bool theme E_BITFIELD;
+   Eina_Bool visible E_BITFIELD;
+   Eina_Bool hilighted E_BITFIELD;
 };
 
 static Info *global_info = NULL;

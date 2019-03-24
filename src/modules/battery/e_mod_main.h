@@ -80,10 +80,10 @@ struct _Battery
    Ecore_Poller *poll;
 #else
    E_DBus_Signal_Handler *prop_change;
-   Eina_Bool can_charge:1;
+   Eina_Bool can_charge E_BITFIELD;
 #endif
-   Eina_Bool present:1;
-   Eina_Bool charging:1;
+   Eina_Bool present E_BITFIELD;
+   Eina_Bool charging E_BITFIELD;
 #if defined HAVE_EEZE || defined __OpenBSD__
    double last_update;
    double percent;
@@ -107,7 +107,7 @@ struct _Battery
    const char *technology;
    const char *model;
    const char *vendor;
-   Eina_Bool got_prop:1;
+   Eina_Bool got_prop E_BITFIELD;
 #ifdef __OpenBSD__
    int * mib;
 #endif
@@ -119,7 +119,7 @@ struct _Ac_Adapter
 #ifndef HAVE_EEZE
    E_DBus_Signal_Handler *prop_change;
 #endif
-   Eina_Bool present:1;
+   Eina_Bool present E_BITFIELD;
    const char *product;
 #ifdef __OpenBSD__
    int * mib;

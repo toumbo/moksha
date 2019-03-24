@@ -19,7 +19,7 @@ struct _E_Manager
    Ecore_X_Window       win;
    int                  num;
    int                  x, y, w, h;
-   char                 visible : 1;
+   char                 visible E_BITFIELD;
    Ecore_X_Window       root;
    Eina_List           *handlers;
    Eina_List           *containers;

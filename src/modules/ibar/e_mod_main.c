@@ -57,7 +57,7 @@ struct _IBar
    Eina_List   *icons;
    IBar_Order  *io;
    Evas_Coord   dnd_x, dnd_y;
-   Eina_Bool    focused : 1;
+   Eina_Bool    focused E_BITFIELD;
 };
 
 struct _IBar_Icon
@@ -71,11 +71,11 @@ struct _IBar_Icon
    int              mouse_down;
    struct
    {
-      unsigned char start : 1;
-      unsigned char dnd : 1;
+      unsigned char start E_BITFIELD;
+      unsigned char dnd E_BITFIELD;
       int           x, y;
    } drag;
-   Eina_Bool       focused : 1;
+   Eina_Bool       focused E_BITFIELD;
 };
 
 static IBar        *_ibar_new(Evas *evas, Instance *inst);

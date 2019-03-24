@@ -12,6 +12,13 @@
 # include <E_DBus.h>
 #endif
 
+// E backports
+#ifdef MOKSHA_RELEASE_BUILD
+# define E_BITFIELD :1
+#else
+# define E_BITFIELD
+#endif
+
 # define E_DEVICE_TYPE_STORAGE 1
 # define E_DEVICE_TYPE_VOLUME  2
 typedef struct _E_Storage E_Storage;
@@ -68,8 +75,8 @@ struct _E_Storage
 
    Eina_List *volumes;
 
-   Eina_Bool validated : 1;
-   Eina_Bool trackable : 1;
+   Eina_Bool validated E_BITFIELD;
+   Eina_Bool trackable E_BITFIELD;
 #if @EEZE_MOUNT_CONFIG@
    Eeze_Disk *disk;
 #endif
@@ -93,9 +100,9 @@ struct _E_Volume
    E_Storage *storage;
    Eina_List *mounts;
 
-   Eina_Bool validated : 1;
+   Eina_Bool validated E_BITFIELD;
 
-   Eina_Bool auto_unmount : 1;                  // unmount, when last associated fm window closed
+   Eina_Bool auto_unmount E_BITFIELD;                  // unmount, when last associated fm window closed
    Eina_Bool first_time;                    // volume discovery in init sequence
    Ecore_Timer *guard;                 // operation guard timer
    E_Volume_Op_Type optype;
@@ -128,8 +135,8 @@ struct _E_Fm2_Mount
 
    E_Volume *volume;
 
-   Eina_Bool mounted : 1;
-   Eina_Bool deleted : 1;
+   Eina_Bool mounted E_BITFIELD;
+   Eina_Bool deleted E_BITFIELD;
 };
 
 #endif

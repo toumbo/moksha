@@ -49,12 +49,12 @@ struct _E_Smart_Data
         Ecore_X_Randr_Orientation orient;
         Ecore_X_Randr_Mode mode;
         double refresh_rate;
-        Eina_Bool enabled : 1;
+        Eina_Bool enabled E_BITFIELD;
      } crtc;
 
    /* output config */
    Ecore_X_Randr_Output output;
-   Eina_Bool primary : 1;
+   Eina_Bool primary E_BITFIELD;
 
    struct 
      {
@@ -103,7 +103,7 @@ struct _E_Smart_Data
         int refresh_rate;
 
         /* current enabled */
-        Eina_Bool enabled : 1;
+        Eina_Bool enabled E_BITFIELD;
      } current;
 
    struct 
@@ -112,19 +112,19 @@ struct _E_Smart_Data
      } prev;
 
    /* visibility flag */
-   Eina_Bool visible : 1;
+   Eina_Bool visible E_BITFIELD;
 
    /* resizing flag */
-   Eina_Bool resizing : 1;
+   Eina_Bool resizing E_BITFIELD;
 
    /* rotating flag */
-   Eina_Bool rotating : 1;
+   Eina_Bool rotating E_BITFIELD;
 
    /* moving flag */
-   Eina_Bool moving : 1;
+   Eina_Bool moving E_BITFIELD;
 
    /* cloned flag */
-   Eina_Bool cloned : 1;
+   Eina_Bool cloned E_BITFIELD;
 
    /* parent monitor we are cloned into */
    Evas_Object *parent;

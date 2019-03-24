@@ -45,7 +45,7 @@ struct _E_Container
 
    Ecore_X_Window       win;
    int                  x, y, w, h;
-   char                 visible : 1;
+   char                 visible E_BITFIELD;
    E_Manager           *manager;
 
    unsigned int         num;
@@ -83,7 +83,7 @@ struct _E_Container_Shape
 
    E_Container   *con;
    int            x, y, w, h;
-   unsigned char  visible : 1;
+   unsigned char  visible E_BITFIELD;
    struct {
       int x, y, w, h;
    } solid_rect;

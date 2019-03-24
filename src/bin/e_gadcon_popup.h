@@ -17,9 +17,9 @@ struct _E_Gadcon_Popup
    Evas_Coord		w, h;
    Evas_Object	       *o_bg;
 
-   Eina_Bool            pinned : 1;
-   Eina_Bool            gadcon_lock : 1;
-   Eina_Bool            gadcon_was_locked : 1;
+   Eina_Bool            pinned E_BITFIELD;
+   Eina_Bool            gadcon_lock E_BITFIELD;
+   Eina_Bool            gadcon_was_locked E_BITFIELD;
 };
 
 EAPI E_Gadcon_Popup *e_gadcon_popup_new(E_Gadcon_Client *gcc);

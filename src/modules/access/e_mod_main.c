@@ -18,9 +18,9 @@ typedef struct
    int             mouse_history[HISTORY_MAX];
    unsigned int    dt;
    Eina_Inlist    *history;
-   Eina_Bool       longpressed : 1;
-   Eina_Bool       two_finger_down : 1;
-   Eina_Bool       mouse_double_down : 1;
+   Eina_Bool       longpressed E_BITFIELD;
+   Eina_Bool       two_finger_down E_BITFIELD;
+   Eina_Bool       mouse_double_down E_BITFIELD;
 } Cover;
 
 #if DEBUG_INFO

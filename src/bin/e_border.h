@@ -201,7 +201,7 @@ struct _E_Border
    Ecore_X_Window event_win;
    const char    *internal_icon;
    const char    *internal_icon_key;
-   Eina_Bool      bg_evas_in : 1;
+   Eina_Bool      bg_evas_in E_BITFIELD;
 
    struct
    {
@@ -213,13 +213,13 @@ struct _E_Border
 
       struct
       {
-         unsigned char changed : 1;
-         unsigned char user_selected : 1;
+         unsigned char changed E_BITFIELD;
+         unsigned char user_selected E_BITFIELD;
          const char   *name;
       } border;
 
-      unsigned char  shaped : 1;
-      unsigned char  argb : 1;
+      unsigned char  shaped E_BITFIELD;
+      unsigned char  argb E_BITFIELD;
 
       /* ICCCM */
       struct
@@ -245,11 +245,11 @@ struct _E_Border
          Ecore_X_Window            client_leader;
          Ecore_X_Gravity           gravity;
          const char               *window_role;
-         unsigned char             take_focus : 1;
-         unsigned char             accepts_focus : 1;
-         unsigned char             urgent : 1;
-         unsigned char             delete_request : 1;
-         unsigned char             request_pos : 1;
+         unsigned char             take_focus E_BITFIELD;
+         unsigned char             accepts_focus E_BITFIELD;
+         unsigned char             urgent E_BITFIELD;
+         unsigned char             delete_request E_BITFIELD;
+         unsigned char             request_pos E_BITFIELD;
          struct
          {
             int    argc;
@@ -257,18 +257,18 @@ struct _E_Border
          } command;
          struct
          {
-            unsigned char title : 1;
-            unsigned char name_class : 1;
-            unsigned char icon_name : 1;
-            unsigned char machine : 1;
-            unsigned char hints : 1;
-            unsigned char size_pos_hints : 1;
-            unsigned char protocol : 1;
-            unsigned char transient_for : 1;
-            unsigned char client_leader : 1;
-            unsigned char window_role : 1;
-            unsigned char state : 1;
-            unsigned char command : 1;
+            unsigned char title E_BITFIELD;
+            unsigned char name_class E_BITFIELD;
+            unsigned char icon_name E_BITFIELD;
+            unsigned char machine E_BITFIELD;
+            unsigned char hints E_BITFIELD;
+            unsigned char size_pos_hints E_BITFIELD;
+            unsigned char protocol E_BITFIELD;
+            unsigned char transient_for E_BITFIELD;
+            unsigned char client_leader E_BITFIELD;
+            unsigned char window_role E_BITFIELD;
+            unsigned char state E_BITFIELD;
+            unsigned char command E_BITFIELD;
          } fetch;
       } icccm;
 
@@ -278,11 +278,11 @@ struct _E_Border
          Ecore_X_MWM_Hint_Func  func;
          Ecore_X_MWM_Hint_Decor decor;
          Ecore_X_MWM_Hint_Input input;
-         unsigned char          exists : 1;
-         unsigned char          borderless : 1;
+         unsigned char          exists E_BITFIELD;
+         unsigned char          borderless E_BITFIELD;
          struct
          {
-            unsigned char hints : 1;
+            unsigned char hints E_BITFIELD;
          } fetch;
       } mwm;
 
@@ -311,10 +311,10 @@ struct _E_Border
             int bottom_start_x;
             int bottom_end_x;
          } strut;
-         unsigned char ping : 1;
+         unsigned char ping E_BITFIELD;
          struct
          {
-            unsigned char        request : 1;
+            unsigned char        request E_BITFIELD;
             unsigned int         wait;
             Ecore_X_Sync_Alarm   alarm;
             Ecore_X_Sync_Counter counter;
@@ -325,31 +325,31 @@ struct _E_Border
          /* NetWM Window state */
          struct
          {
-            unsigned char modal : 1;
-            unsigned char sticky : 1;
-            unsigned char maximized_v : 1;
-            unsigned char maximized_h : 1;
-            unsigned char shaded : 1;
-            unsigned char skip_taskbar : 1;
-            unsigned char skip_pager : 1;
-            unsigned char hidden : 1;
-            unsigned char fullscreen : 1;
+            unsigned char modal E_BITFIELD;
+            unsigned char sticky E_BITFIELD;
+            unsigned char maximized_v E_BITFIELD;
+            unsigned char maximized_h E_BITFIELD;
+            unsigned char shaded E_BITFIELD;
+            unsigned char skip_taskbar E_BITFIELD;
+            unsigned char skip_pager E_BITFIELD;
+            unsigned char hidden E_BITFIELD;
+            unsigned char fullscreen E_BITFIELD;
             E_Stacking    stacking;
          } state;
 
          /* NetWM Window allowed actions */
          struct
          {
-            unsigned char move : 1;
-            unsigned char resize : 1;
-            unsigned char minimize : 1;
-            unsigned char shade : 1;
-            unsigned char stick : 1;
-            unsigned char maximized_h : 1;
-            unsigned char maximized_v : 1;
-            unsigned char fullscreen : 1;
-            unsigned char change_desktop : 1;
-            unsigned char close : 1;
+            unsigned char move E_BITFIELD;
+            unsigned char resize E_BITFIELD;
+            unsigned char minimize E_BITFIELD;
+            unsigned char shade E_BITFIELD;
+            unsigned char stick E_BITFIELD;
+            unsigned char maximized_h E_BITFIELD;
+            unsigned char maximized_v E_BITFIELD;
+            unsigned char fullscreen E_BITFIELD;
+            unsigned char change_desktop E_BITFIELD;
+            unsigned char close E_BITFIELD;
          } action;
 
          Ecore_X_Window_Type  type;
@@ -359,24 +359,24 @@ struct _E_Border
 
          struct
          {
-            unsigned char name : 1;
-            unsigned char icon_name : 1;
-            unsigned char icon : 1;
-            unsigned char user_time : 1;
-            unsigned char strut : 1;
-            unsigned char type : 1;
-            unsigned char state : 1;
+            unsigned char name E_BITFIELD;
+            unsigned char icon_name E_BITFIELD;
+            unsigned char icon E_BITFIELD;
+            unsigned char user_time E_BITFIELD;
+            unsigned char strut E_BITFIELD;
+            unsigned char type E_BITFIELD;
+            unsigned char state E_BITFIELD;
             /* No, fetch on new_client, shouldn't be changed after map.
-               unsigned char pid : 1;
+               unsigned char pid E_BITFIELD;
              */
             /* No, ignore this
-               unsigned char desktop : 1;
+               unsigned char desktop E_BITFIELD;
              */
          } fetch;
 
          struct
          {
-            unsigned char state : 1;
+            unsigned char state E_BITFIELD;
          } update;
       } netwm;
 
@@ -389,7 +389,7 @@ struct _E_Border
             {
                int           x, y;
 
-               unsigned char updated : 1;
+               unsigned char updated E_BITFIELD;
             } video_position;
             Ecore_X_Window video_parent;
             E_Border      *video_parent_border;
@@ -399,19 +399,19 @@ struct _E_Border
                const char     *name;
                const char    **available_list;
                int             num;
-               unsigned char   wait_for_done : 1;
-               unsigned char   use : 1;
+               unsigned char   wait_for_done E_BITFIELD;
+               unsigned char   use E_BITFIELD;
             } profile;
-            unsigned char  centered : 1;
-            unsigned char  video : 1;
+            unsigned char  centered E_BITFIELD;
+            unsigned char  video E_BITFIELD;
          } state;
 
          struct
          {
-            unsigned char state : 1;
-            unsigned char video_parent : 1;
-            unsigned char video_position : 1;
-            unsigned char profile : 1;
+            unsigned char state E_BITFIELD;
+            unsigned char video_parent E_BITFIELD;
+            unsigned char video_position E_BITFIELD;
+            unsigned char profile E_BITFIELD;
          } fetch;
       } e;
 
@@ -419,24 +419,24 @@ struct _E_Border
       {
          struct
          {
-            unsigned char soft_menu : 1;
-            unsigned char soft_menus : 1;
+            unsigned char soft_menu E_BITFIELD;
+            unsigned char soft_menus E_BITFIELD;
          } fetch;
 
-         unsigned char soft_menu : 1;
-         unsigned char soft_menus : 1;
+         unsigned char soft_menu E_BITFIELD;
+         unsigned char soft_menus E_BITFIELD;
       } qtopia;
 
       struct
       {
          struct
          {
-            unsigned char state : 1;
-            unsigned char vkbd : 1;
+            unsigned char state E_BITFIELD;
+            unsigned char vkbd E_BITFIELD;
          } fetch;
          Ecore_X_Virtual_Keyboard_State state;
-         unsigned char                  have_property : 1;
-         unsigned char                  vkbd : 1;
+         unsigned char                  have_property E_BITFIELD;
+         unsigned char                  vkbd E_BITFIELD;
       } vkbd;
 
       struct
@@ -445,47 +445,47 @@ struct _E_Border
          {
             struct
             {
-               unsigned char conformant : 1;
+               unsigned char conformant E_BITFIELD;
             } fetch;
-            unsigned char conformant : 1;
+            unsigned char conformant E_BITFIELD;
          } conformant;
          struct
          {
             struct
             {
-               unsigned char state : 1;
+               unsigned char state E_BITFIELD;
                struct
                {
-                  unsigned int major : 1;
-                  unsigned int minor : 1;
+                  unsigned int major E_BITFIELD;
+                  unsigned int minor E_BITFIELD;
                } priority;
-               unsigned char quickpanel : 1;
-               unsigned char zone : 1;
+               unsigned char quickpanel E_BITFIELD;
+               unsigned char zone E_BITFIELD;
             } fetch;
             Ecore_X_Illume_Quickpanel_State state;
             struct
             {
-               unsigned int major : 1;
-               unsigned int minor : 1;
+               unsigned int major E_BITFIELD;
+               unsigned int minor E_BITFIELD;
             } priority;
-            unsigned char                   quickpanel : 1;
+            unsigned char                   quickpanel E_BITFIELD;
             int                             zone;
          } quickpanel;
          struct
          {
             struct
             {
-               unsigned char drag : 1;
-               unsigned char locked : 1;
+               unsigned char drag E_BITFIELD;
+               unsigned char locked E_BITFIELD;
             } fetch;
-            unsigned char drag : 1;
-            unsigned char locked : 1;
+            unsigned char drag E_BITFIELD;
+            unsigned char locked E_BITFIELD;
          } drag;
          struct
          {
             struct
             {
-               unsigned char state : 1;
+               unsigned char state E_BITFIELD;
             } fetch;
             Ecore_X_Illume_Window_State state;
          } win_state;
@@ -496,75 +496,75 @@ struct _E_Border
 
    E_Container_Shape *shape;
 
-   unsigned int       visible : 1;
-   Eina_Bool          hidden : 1; // set when window has been hidden by api and should not be shown
+   unsigned int       visible E_BITFIELD;
+   Eina_Bool          hidden E_BITFIELD; // set when window has been hidden by api and should not be shown
    unsigned int       await_hide_event;
-   unsigned int       moving : 1;
-   unsigned int       focused : 1;
-   unsigned int       new_client : 1;
-   unsigned int       re_manage : 1;
-   unsigned int       placed : 1;
-   unsigned int       shading : 1;
-   unsigned int       shaded : 1;
-   unsigned int       iconic : 1;
-   unsigned int       deskshow : 1;
-   unsigned int       sticky : 1;
-   unsigned int       shaped : 1;
-   unsigned int       shaped_input : 1;
-   unsigned int       need_shape_merge : 1;
-   unsigned int       need_shape_export : 1;
-   unsigned int       fullscreen : 1;
-   unsigned int       need_fullscreen : 1;
-   unsigned int       already_unparented : 1;
-   unsigned int       need_reparent : 1;
-   unsigned int       button_grabbed : 1;
-   unsigned int       delete_requested : 1;
-   unsigned int       ping_ok : 1;
-   unsigned int       hung : 1;
-   unsigned int       take_focus : 1;
-   unsigned int       want_focus : 1;
-   unsigned int       user_skip_winlist : 1;
-   unsigned int       need_maximize : 1;
+   unsigned int       moving E_BITFIELD;
+   unsigned int       focused E_BITFIELD;
+   unsigned int       new_client E_BITFIELD;
+   unsigned int       re_manage E_BITFIELD;
+   unsigned int       placed E_BITFIELD;
+   unsigned int       shading E_BITFIELD;
+   unsigned int       shaded E_BITFIELD;
+   unsigned int       iconic E_BITFIELD;
+   unsigned int       deskshow E_BITFIELD;
+   unsigned int       sticky E_BITFIELD;
+   unsigned int       shaped E_BITFIELD;
+   unsigned int       shaped_input E_BITFIELD;
+   unsigned int       need_shape_merge E_BITFIELD;
+   unsigned int       need_shape_export E_BITFIELD;
+   unsigned int       fullscreen E_BITFIELD;
+   unsigned int       need_fullscreen E_BITFIELD;
+   unsigned int       already_unparented E_BITFIELD;
+   unsigned int       need_reparent E_BITFIELD;
+   unsigned int       button_grabbed E_BITFIELD;
+   unsigned int       delete_requested E_BITFIELD;
+   unsigned int       ping_ok E_BITFIELD;
+   unsigned int       hung E_BITFIELD;
+   unsigned int       take_focus E_BITFIELD;
+   unsigned int       want_focus E_BITFIELD;
+   unsigned int       user_skip_winlist E_BITFIELD;
+   unsigned int       need_maximize E_BITFIELD;
    E_Maximize         maximized;
    E_Fullscreen       fullscreen_policy;
-   unsigned int       borderless : 1;
-   unsigned char      offer_resistance : 1;
+   unsigned int       borderless E_BITFIELD;
+   unsigned char      offer_resistance E_BITFIELD;
    const char        *bordername;
 
-   unsigned int       lock_user_location : 1; /*DONE*/
-   unsigned int       lock_client_location : 1; /*DONE*/
-   unsigned int       lock_user_size : 1; /*DONE*/
-   unsigned int       lock_client_size : 1; /*DONE*/
-   unsigned int       lock_user_stacking : 1; /*DONE*/
-   unsigned int       lock_client_stacking : 1; /*DONE*/
-   unsigned int       lock_user_iconify : 1; /*DONE*/
-   unsigned int       lock_client_iconify : 1; /*DONE*/
-   unsigned int       lock_user_desk : 1;
-   unsigned int       lock_client_desk : 1;
-   unsigned int       lock_user_sticky : 1; /*DONE*/
-   unsigned int       lock_client_sticky : 1; /*DONE*/
-   unsigned int       lock_user_shade : 1; /*DONE*/
-   unsigned int       lock_client_shade : 1; /*DONE*/
-   unsigned int       lock_user_maximize : 1; /*DONE*/
-   unsigned int       lock_client_maximize : 1; /*DONE*/
-   unsigned int       lock_user_fullscreen : 1; /*DONE*/
-   unsigned int       lock_client_fullscreen : 1; /*DONE*/
-   unsigned int       lock_border : 1; /*DONE*/
-   unsigned int       lock_close : 1; /*DONE*/
-   unsigned int       lock_focus_in : 1; /*DONE*/
-   unsigned int       lock_focus_out : 1; /*DONE*/
-   unsigned int       lock_life : 1; /*DONE*/
+   unsigned int       lock_user_location E_BITFIELD; /*DONE*/
+   unsigned int       lock_client_location E_BITFIELD; /*DONE*/
+   unsigned int       lock_user_size E_BITFIELD; /*DONE*/
+   unsigned int       lock_client_size E_BITFIELD; /*DONE*/
+   unsigned int       lock_user_stacking E_BITFIELD; /*DONE*/
+   unsigned int       lock_client_stacking E_BITFIELD; /*DONE*/
+   unsigned int       lock_user_iconify E_BITFIELD; /*DONE*/
+   unsigned int       lock_client_iconify E_BITFIELD; /*DONE*/
+   unsigned int       lock_user_desk E_BITFIELD;
+   unsigned int       lock_client_desk E_BITFIELD;
+   unsigned int       lock_user_sticky E_BITFIELD; /*DONE*/
+   unsigned int       lock_client_sticky E_BITFIELD; /*DONE*/
+   unsigned int       lock_user_shade E_BITFIELD; /*DONE*/
+   unsigned int       lock_client_shade E_BITFIELD; /*DONE*/
+   unsigned int       lock_user_maximize E_BITFIELD; /*DONE*/
+   unsigned int       lock_client_maximize E_BITFIELD; /*DONE*/
+   unsigned int       lock_user_fullscreen E_BITFIELD; /*DONE*/
+   unsigned int       lock_client_fullscreen E_BITFIELD; /*DONE*/
+   unsigned int       lock_border E_BITFIELD; /*DONE*/
+   unsigned int       lock_close E_BITFIELD; /*DONE*/
+   unsigned int       lock_focus_in E_BITFIELD; /*DONE*/
+   unsigned int       lock_focus_out E_BITFIELD; /*DONE*/
+   unsigned int       lock_life E_BITFIELD; /*DONE*/
 
-   unsigned int       internal : 1;
-   unsigned int       internal_no_remember : 1;
-   unsigned int       internal_no_reopen : 1;
-   unsigned int       stolen : 1;
+   unsigned int       internal E_BITFIELD;
+   unsigned int       internal_no_remember E_BITFIELD;
+   unsigned int       internal_no_reopen E_BITFIELD;
+   unsigned int       stolen E_BITFIELD;
 
    Ecore_Evas        *internal_ecore_evas;
 
    double             ping;
 
-   unsigned char      changed : 1;
+   unsigned char      changed E_BITFIELD;
 
    unsigned char      icon_preference;
    unsigned char      ignore_first_unmap;
@@ -580,7 +580,7 @@ struct _E_Border
 
    struct
    {
-      unsigned char valid : 1;
+      unsigned char valid E_BITFIELD;
       int           x, y, w, h;
       struct
       {
@@ -613,23 +613,23 @@ struct _E_Border
 
    struct
    {
-      unsigned char visible : 1;
-      unsigned char pos : 1;
-      unsigned char size : 1;
-      unsigned char stack : 1;
-      unsigned char prop : 1;
-      unsigned char border : 1;
-      unsigned char reset_gravity : 1;
-      unsigned char shading : 1;
-      unsigned char shaded : 1;
-      unsigned char shape : 1;
-      unsigned char shape_input : 1;
-      unsigned char icon : 1;
+      unsigned char visible E_BITFIELD;
+      unsigned char pos E_BITFIELD;
+      unsigned char size E_BITFIELD;
+      unsigned char stack E_BITFIELD;
+      unsigned char prop E_BITFIELD;
+      unsigned char border E_BITFIELD;
+      unsigned char reset_gravity E_BITFIELD;
+      unsigned char shading E_BITFIELD;
+      unsigned char shaded E_BITFIELD;
+      unsigned char shape E_BITFIELD;
+      unsigned char shape_input E_BITFIELD;
+      unsigned char icon E_BITFIELD;
    } changes;
 
    struct
    {
-      unsigned char start : 1;
+      unsigned char start E_BITFIELD;
       int           x, y;
    } drag;
 
@@ -654,12 +654,12 @@ struct _E_Border
    Efreet_Desktop            *desktop;
    E_Pointer                 *pointer;
 
-   unsigned char              comp_hidden   : 1;
+   unsigned char              comp_hidden   E_BITFIELD;
 
-   unsigned char              post_move   : 1;
-   unsigned char              post_resize : 1;
-   unsigned char              post_show : 1;
-   unsigned char              during_lost : 1;
+   unsigned char              post_move   E_BITFIELD;
+   unsigned char              post_resize E_BITFIELD;
+   unsigned char              post_show E_BITFIELD;
+   unsigned char              during_lost E_BITFIELD;
 
    Ecore_Idle_Enterer        *post_job;
 
@@ -672,9 +672,9 @@ struct _E_Border
 struct _E_Border_Pending_Move_Resize
 {
    int           x, y, w, h;
-   unsigned char move : 1;
-   unsigned char resize : 1;
-   unsigned char without_border : 1;
+   unsigned char move E_BITFIELD;
+   unsigned char resize E_BITFIELD;
+   unsigned char without_border E_BITFIELD;
    unsigned int  serial;
 };
 
@@ -683,7 +683,7 @@ struct _E_Border_Hook
    E_Border_Hook_Point hookpoint;
    void                (*func)(void *data, void *bd);
    void               *data;
-   unsigned char       delete_me : 1;
+   unsigned char       delete_me E_BITFIELD;
 };
 
 struct _E_Event_Border_Simple

@@ -67,7 +67,7 @@ struct _E_Tty
    struct wl_event_source *vt_source;
    tty_vt_func_t vt_func;
    int vt, start_vt;
-   Eina_Bool has_vt : 1;
+   Eina_Bool has_vt E_BITFIELD;
 };
 
 struct _E_Sprite
@@ -159,8 +159,8 @@ struct _E_Evdev_Input_Device
 
    int type;
 
-   Eina_Bool is_pad : 1;
-   Eina_Bool is_mt : 1;
+   Eina_Bool is_pad E_BITFIELD;
+   Eina_Bool is_mt E_BITFIELD;
 };
 
 extern E_Drm_Compositor *_comp;

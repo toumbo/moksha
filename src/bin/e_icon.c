@@ -15,12 +15,12 @@ struct _E_Smart_Data
    double        last_resize;
    int           size;
    int           frame, frame_count;
-   unsigned char fill_inside : 1;
-   unsigned char scale_up : 1;
-   unsigned char preload : 1;
-   unsigned char loading : 1;
-   unsigned char animated : 1;
-   Eina_Bool edje : 1;
+   unsigned char fill_inside E_BITFIELD;
+   unsigned char scale_up E_BITFIELD;
+   unsigned char preload E_BITFIELD;
+   unsigned char loading E_BITFIELD;
+   unsigned char animated E_BITFIELD;
+   Eina_Bool edje E_BITFIELD;
 };
 
 struct _Cache_Item

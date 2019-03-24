@@ -143,8 +143,8 @@ struct _E_Before_Idler
 {
    int       (*func)(void *data);
    void     *data;
-   Eina_Bool once : 1;
-   Eina_Bool delete_me : 1;
+   Eina_Bool once E_BITFIELD;
+   Eina_Bool delete_me E_BITFIELD;
 };
 
 struct _E_Rect

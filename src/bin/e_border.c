@@ -793,7 +793,7 @@ e_border_res_change_geometry_restore(E_Border *bd)
 {
    struct
    {
-      unsigned char valid : 1;
+      unsigned char valid E_BITFIELD;
       int           x, y, w, h;
       struct
       {

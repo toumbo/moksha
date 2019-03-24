@@ -8,7 +8,7 @@ struct _E_Widget_Data
    void (*func) (void *data, void *data2);
    void *data;
    void *data2;
-   Eina_Bool have_pointer : 1;
+   Eina_Bool have_pointer E_BITFIELD;
 };
 
 /* local subsystem functions */

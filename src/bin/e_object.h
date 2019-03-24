@@ -68,7 +68,7 @@ struct _E_Object
    void                    *data;
    Ecore_Job               *delay_del_job;
    int                      walking_list;
-   Eina_Bool                deleted : 1;
+   Eina_Bool                deleted E_BITFIELD;
 };
 
 struct _E_Object_Delfn
@@ -77,7 +77,7 @@ struct _E_Object_Delfn
 
    void (*func) (void *data, void *obj);
    void  *data;
-   Eina_Bool delete_me : 1;
+   Eina_Bool delete_me E_BITFIELD;
 };
 
 EAPI void *e_object_alloc               (int size, int type, E_Object_Cleanup_Func cleanup_func);

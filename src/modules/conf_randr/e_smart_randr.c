@@ -26,7 +26,7 @@ struct _E_Smart_Data
    Evas_Coord vw, vh;
 
    /* visible flag */
-   Eina_Bool visible : 1;
+   Eina_Bool visible E_BITFIELD;
 
    /* list of monitors */
    Eina_List *monitors;

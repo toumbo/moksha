@@ -22,8 +22,8 @@ typedef struct _Elm_Win_Trap_Ctx
 {
    E_Border *border;
    Ecore_X_Window xwin;
-   Eina_Bool centered:1;
-   Eina_Bool placed:1;
+   Eina_Bool centered E_BITFIELD;
+   Eina_Bool placed E_BITFIELD;
 } Elm_Win_Trap_Ctx;
 
 static void *

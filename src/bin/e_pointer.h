@@ -12,9 +12,9 @@ struct _E_Pointer
 {
    E_Object e_obj_inherit;
 
-   unsigned char     e_cursor : 1;
-   unsigned char     color : 1;
-   unsigned char     idle : 1;
+   unsigned char     e_cursor E_BITFIELD;
+   unsigned char     color E_BITFIELD;
+   unsigned char     idle E_BITFIELD;
 
    Evas             *evas;
    Evas_Object      *pointer_object;
@@ -32,7 +32,7 @@ struct _E_Pointer
 
    struct {
       int            x, y;
-      unsigned char  update : 1;
+      unsigned char  update E_BITFIELD;
    } hot;
 };
 

@@ -13,7 +13,7 @@ struct _E_Widget_Desk_Data
    Evas_Object *icon, *thumb;
    int          zone, con, x, y;
    Ecore_Event_Handler *bg_upd_hdl;
-   Eina_Bool configurable : 1;
+   Eina_Bool configurable E_BITFIELD;
 };
 
 /* local function prototypes */

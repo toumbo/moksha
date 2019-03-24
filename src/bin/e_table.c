@@ -9,8 +9,8 @@ struct _E_Smart_Data
    Evas_Object  *obj;
    Evas_Object  *clip;
    int           frozen;
-   unsigned char changed : 1;
-   unsigned char homogenous : 1;
+   unsigned char changed E_BITFIELD;
+   unsigned char homogenous E_BITFIELD;
    Eina_List    *items;
    struct
    {
@@ -30,10 +30,10 @@ struct _E_Table_Item
 {
    E_Smart_Data *sd;
    int           col, row, colspan, rowspan;
-   unsigned char fill_w : 1;
-   unsigned char fill_h : 1;
-   unsigned char expand_w : 1;
-   unsigned char expand_h : 1;
+   unsigned char fill_w E_BITFIELD;
+   unsigned char fill_h E_BITFIELD;
+   unsigned char expand_w E_BITFIELD;
+   unsigned char expand_h E_BITFIELD;
    struct
    {
       Evas_Coord w, h;
