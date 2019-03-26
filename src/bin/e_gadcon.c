@@ -2075,7 +2075,7 @@ _e_gadcon_client_delfn(void *d __UNUSED__, void *o)
    if (gcc->scroll_timer) ecore_timer_del(gcc->scroll_timer);
    if (gcc->scroll_animator) ecore_animator_del(gcc->scroll_animator);
    e_object_ref(E_OBJECT(gcc));
-   ev = E_NEW(E_Event_Gadcon_Client_Add, 1);
+   ev = E_NEW(E_Event_Gadcon_Client_Del, 1);
    ev->gcc = gcc;
    ecore_event_add(E_EVENT_GADCON_CLIENT_DEL, ev, _e_gadcon_client_event_free, NULL);
 }
