@@ -356,6 +356,7 @@ _e_xsettings_apply(Settings_Manager *sm)
    *pos = 1; //MSBFirst
 #endif
 
+   pos += 4;
    tmp32 = sm->serial++;
    memcpy(pos, &tmp32, sizeof(C32));
    pos += 4;
