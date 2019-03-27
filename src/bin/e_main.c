@@ -118,6 +118,7 @@ static Eina_List *_idle_before_list = NULL;
 static Ecore_Idle_Enterer *_idle_before = NULL;
 static Ecore_Idle_Enterer *_idle_after = NULL;
 static Ecore_Idle_Enterer *_idle_flush = NULL;
+static Ecore_Event_Handler *mod_init_end = NULL;
 
 /* external variables */
 EAPI Eina_Bool e_precache_end = EINA_FALSE;
@@ -1880,6 +1881,14 @@ _e_main_efreet_paths_init(void)
      }
 }
 
+static Eina_Bool
+_e_main_modules_load_after(void *d __UNUSED__, int type __UNUSED__, void *ev __UNUSED__)
+{
+   e_int_config_modules(NULL, NULL);
+   E_FN_DEL(ecore_event_handler_del, mod_init_end);
+   return ECORE_CALLBACK_RENEW;
+}
+
 static void
 _e_main_modules_load(Eina_Bool safe_mode)
 {
@@ -1898,7 +1907,6 @@ _e_main_modules_load(Eina_Bool safe_mode)
              e_module_disable(m);
              e_object_del(E_OBJECT(m));
 
-             e_int_config_modules(e_container_current_get(e_manager_current_get()), NULL);
              e_error_message_show
                (_("Moksha crashed early on start and has<br>"
                   "been restarted. There was an error loading the<br>"
@@ -1913,7 +1921,6 @@ _e_main_modules_load(Eina_Bool safe_mode)
           }
         else
           {
-             e_int_config_modules(e_container_current_get(e_manager_current_get()), NULL);
              e_error_message_show
                (_("Moksha crashed early on start and has<br>"
                   "been restarted. All modules have been disabled<br>"
@@ -1929,6 +1936,7 @@ _e_main_modules_load(Eina_Bool safe_mode)
                  "The module configuration dialog should let you select your<br>"
                  "modules again."));
           }
+       mod_init_end = ecore_event_handler_add(E_EVENT_MODULE_INIT_END, _e_main_modules_load_after, NULL);
      }
 }
 
