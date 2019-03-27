@@ -596,6 +596,7 @@ e_gadcon_unpopulate(E_Gadcon *gc)
    E_OBJECT_CHECK(gc);
    E_OBJECT_TYPE_CHECK(gc, E_GADCON_TYPE);
    /* Be careful, e_object_del does remove gcc from gc->clients */
+   if (gc->o_container) e_gadcon_layout_freeze(gc->o_container);
    while (gc->clients)
      {
         gcc = eina_list_data_get(gc->clients);
@@ -610,6 +611,8 @@ e_gadcon_unpopulate(E_Gadcon *gc)
    if (gc->awaiting_classes)
      eina_hash_free(gc->awaiting_classes);
    gc->awaiting_classes = NULL;
+   if (gc->o_container && (!stopping) && (!e_object_is_del(E_OBJECT(gc))))
+     e_gadcon_layout_thaw(gc->o_container);
 }
 
 EAPI void
@@ -3750,7 +3753,8 @@ e_gadcon_layout_unpack(Evas_Object *obj)
    if (!sd) return;
    sd->items = eina_list_remove(sd->items, obj);
    _e_gadcon_layout_smart_disown(obj);
-   _e_gadcon_layout_smart_reconfigure(sd);
+   if (!stopping)
+      _e_gadcon_layout_smart_reconfigure(sd);
 }
 
 /* local subsystem functions */
