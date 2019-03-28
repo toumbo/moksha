@@ -61,8 +61,9 @@ static void
 _free_data(E_Config_Dialog *cfd  __UNUSED__,
            E_Config_Dialog_Data *cfdata)
 {
+   free(cfdata->custom_dat);
    clock_config->config_dialog = NULL;
-   free(cfdata);
+   E_FREE(cfdata);
 }
 
 static Evas_Object *
