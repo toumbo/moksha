@@ -567,6 +567,7 @@ _e_border_menu_cb_application_pre(void *data, E_Menu *m __UNUSED__, E_Menu_Item 
    E_Menu *subm;
    E_Menu_Item *submi;
    E_Border *bd;
+   Eina_Bool sflag = EINA_FALSE;
 
    if (!(bd = data)) return;
 
@@ -581,6 +582,7 @@ _e_border_menu_cb_application_pre(void *data, E_Menu *m __UNUSED__, E_Menu_Item 
         e_menu_item_label_set(submi, _("Edit Icon"));
         e_menu_item_callback_set(submi, _e_border_menu_cb_icon_edit, bd);
         e_util_desktop_menu_item_icon_add(bd->desktop, 16, submi);
+        sflag = EINA_TRUE;
      }
    else if (bd->client.icccm.class)
      {
@@ -588,10 +590,13 @@ _e_border_menu_cb_application_pre(void *data, E_Menu *m __UNUSED__, E_Menu_Item 
         submi = e_menu_item_new(subm);
         e_menu_item_label_set(submi, _("Create Icon"));
         e_menu_item_callback_set(submi, _e_border_menu_cb_icon_edit, bd);
+        sflag = EINA_TRUE;
      }
-
-   submi = e_menu_item_new(subm);
-   e_menu_item_separator_set(submi, 1);
+   if (sflag)
+     {
+        submi = e_menu_item_new(subm);
+        e_menu_item_separator_set(submi, 1);
+      }
 
    submi = e_menu_item_new(subm);
    e_menu_item_label_set(submi, _("Add to Favorites Menu"));
