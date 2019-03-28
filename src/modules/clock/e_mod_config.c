@@ -51,9 +51,9 @@ _create_data(E_Config_Dialog *cfd __UNUSED__)
 
    memcpy(&(cfdata->cfg), ci, sizeof(Config_Item));
     if (ci->custom_date_const) 
-		cfdata->custom_dat = strdup(ci->custom_date_const); 
-	else
-	   cfdata->custom_dat = strdup("");
+        cfdata->custom_dat = strdup(ci->custom_date_const); 
+    else
+        cfdata->custom_dat = strdup("");
    return cfdata;
 }
 
