@@ -218,7 +218,7 @@ e_intl_language_set(const char *lang)
                           "An error occurred setting your locale. \n\n"
 
                           "The locale you have chosen '%s' appears to \n"
-                          "be an alias, however, it can not be resloved.\n"
+                          "be an alias, however, it can not be resolved.\n"
                           "Please make sure you have a 'locale.alias' \n"
                           "file in your 'messages' path which can resolve\n"
                           "this alias.\n\n"
@@ -394,7 +394,7 @@ e_intl_imc_personal_path_get(void)
         e_user_dir_concat_static(buf, "input_methods");
         _e_intl_imc_personal_path = eina_stringshare_add(buf);
      }
-   return _e_intl_imc_personal_path; // fall through
+   return _e_intl_imc_personal_path;
 }
 
 const char *
@@ -417,11 +417,8 @@ _e_intl_cb_exit(void *data __UNUSED__, int type __UNUSED__, void *event)
 
    ev = event;
    if (!ev->exe) return ECORE_CALLBACK_PASS_ON;
-
-   if (!(ecore_exe_tag_get(ev->exe) &&
-         (!strcmp(ecore_exe_tag_get(ev->exe), "E/im_exec")))) return 1;
-
-   _e_intl_input_method_exec = NULL;
+   if (ev->exe == _e_intl_input_method_exec)
+     _e_intl_input_method_exec = NULL;
    return ECORE_CALLBACK_PASS_ON;
 }
 
@@ -540,7 +537,8 @@ _e_intl_locale_alias_get(const char *language)
 {
    Eina_Hash *alias_hash;
    char *alias;
-   char *lower_language;
+   char lbuf[256];
+   char *lower_language = lbuf;
 
    if ((!language) || (!strncmp(language, "POSIX", strlen("POSIX"))))
      return strdup("C");
@@ -549,9 +547,9 @@ _e_intl_locale_alias_get(const char *language)
    if (!alias_hash) /* No alias file available */
      return strdup(language);
 
-   lower_language = strdupa(language);
+   strncpy(lbuf, language, sizeof(lbuf) - 1);
+   lbuf[sizeof(lbuf) - 1] = '\0';
    eina_str_tolower(&lower_language);
-
    alias = eina_hash_find(alias_hash, lower_language);
 
    if (alias)
@@ -622,10 +620,10 @@ e_intl_locale_parts_get(const char *locale)
 {
    /* Parse Results */
    E_Locale_Parts *locale_parts;
-   char language[4];
+   char language[4] = {0};
    char territory[4] = {0};
-   char codeset[32];
-   char modifier[32];
+   char codeset[32] = {0};
+   char modifier[32] = {0};
 
    /* Parse State */
    int state = 0;   /* start out looking for the language */
@@ -716,18 +714,26 @@ e_intl_locale_parts_get(const char *locale)
       case 0:
         language[tmp_idx] = 0;
         tmp_idx = 0;
-        // fall through
+        EINA_FALLTHROUGH;
+        /* no break */
+
       case 1:
         territory[tmp_idx] = 0;
         tmp_idx = 0;
-        // fall through
+        EINA_FALLTHROUGH;
+        /* no break */
+
       case 2:
         codeset[tmp_idx] = 0;
         tmp_idx = 0;
-        // fall through
+        EINA_FALLTHROUGH;
+        /* no break */
+
       case 3:
         modifier[tmp_idx] = 0;
-        // fall through
+        EINA_FALLTHROUGH;
+        /* no break */
+
       default:
         break;
      }
@@ -1057,3 +1063,4 @@ _e_intl_imc_dir_scan(const char *dir)
      }
    return imcs;
 }
+
