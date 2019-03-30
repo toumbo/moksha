@@ -133,6 +133,7 @@ e_int_menus_main_new(void)
    Main_Data *dat;
    Eina_List *l = NULL;
    int separator = 0;
+   Eina_Bool sflag = EINA_FALSE;
 
    dat = calloc(1, sizeof(Main_Data));
    m = e_menu_new();
@@ -182,13 +183,20 @@ e_int_menus_main_new(void)
    e_menu_item_separator_set(mi, 1);
 
    l = _e_int_menus_augmentation_find("main/2");
-   if (l) _e_int_menus_augmentation_add(m, l);
+   if (l)
+      {
+         _e_int_menus_augmentation_add(m, l);
+         sflag = EINA_TRUE;
+      }
 
    l = _e_int_menus_augmentation_find("main/3");
    if (l) _e_int_menus_augmentation_add(m, l);
 
-   mi = e_menu_item_new(m);
-   e_menu_item_separator_set(mi, 1);
+   if (sflag)
+      {
+         mi = e_menu_item_new(m);
+         e_menu_item_separator_set(mi, 1);
+      }
 
    l = _e_int_menus_augmentation_find("main/4");
    if (l) _e_int_menus_augmentation_add(m, l);
