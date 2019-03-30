@@ -184,33 +184,6 @@ e_int_menus_main_new(void)
    l = _e_int_menus_augmentation_find("main/2");
    if (l) _e_int_menus_augmentation_add(m, l);
 
-#if 0    
-   //Code moved to classicmenu module 
-   subm = e_int_menus_desktops_new();
-   dat->desktops = subm;
-   mi = e_menu_item_new(m);
-   e_menu_item_label_set(mi, _("Desktop"));
-   e_util_menu_item_theme_icon_set(mi, "preferences-desktop");
-   e_menu_item_submenu_set(mi, subm);
-
-   subm = e_int_menus_clients_new();
-   dat->clients = subm;
-   mi = e_menu_item_new(m);
-   e_menu_item_label_set(mi, _("Windows"));
-   e_util_menu_item_theme_icon_set(mi, "preferences-system-windows");
-   e_menu_item_submenu_set(mi, subm);
-   e_object_data_set(E_OBJECT(subm), dat); 
-
-   // lost windows already handled inside "Windows" from main menu.
-   subm = e_int_menus_lost_clients_new();
-   e_object_data_set(E_OBJECT(subm), dat);
-   dat->lost_clients = subm;
-   mi = e_menu_item_new(m);
-   e_menu_item_label_set(mi, _("Lost Windows"));
-   e_util_menu_item_theme_icon_set(mi, "preferences-windows-lost");
-   e_menu_item_submenu_set(mi, subm);
-#endif
-
    l = _e_int_menus_augmentation_find("main/3");
    if (l) _e_int_menus_augmentation_add(m, l);
 
