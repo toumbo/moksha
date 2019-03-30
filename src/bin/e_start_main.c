@@ -368,13 +368,14 @@ main(int argc, char **argv)
      }
    putchar('\n');
 
-   /* mtrack memory tracker support */
+
    home = getenv("HOME");
    if (home)
      {
-        FILE *f;
         const char *tmps;
-
+#ifndef MOKSHA_RELEASE_BUILD
+        FILE *f;
+        /* mtrack memory tracker support */
         /* if you have ~/.e-mtrack, then the tracker will be enabled
          * using the content of this file as the path to the mtrack.so
          * shared object that is the mtrack preload */
@@ -399,6 +400,7 @@ main(int argc, char **argv)
              fclose(f);
              
           }
+#endif
         tmps = getenv("XDG_DATA_HOME");
         if (tmps) snprintf(buf, sizeof(buf), "%s/Applications/.bin", tmps);
         else snprintf(buf, sizeof(buf), "%s/Applications/.bin", home);
