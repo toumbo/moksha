@@ -553,6 +553,8 @@ gadman_update_bg(void)
    const char *ext;
 
    if (!Man->gc_top) return;
+   if (!Man->conf) return;
+
    obj = edje_object_part_swallow_get(Man->full_bg, "e.swallow.bg");
    if (obj)
      {
