@@ -137,7 +137,8 @@ _shot_conf_new(void)
    shot_conf->path = eina_stringshare_add(buf);
    shot_conf->notify = 1;
    shot_conf->full_dialog = 0;
-   shot_conf->delay = 0.0;
+   shot_conf->mode_dialog = 1;
+   shot_conf->delay = 5.0;
    shot_conf->pict_quality = 80.0;
    
    _shot_conf_item_get(NULL);
@@ -1160,8 +1161,8 @@ _shot_dialog_instant_cb(void *data, E_Dialog *dia)
 static void
 _shot_dialog_delayed_cb(void *data, E_Dialog *dia)
 {
+    e_object_del(E_OBJECT(dia));
    _e_mod_action_cb(data, EINA_FALSE);
-   e_object_del(E_OBJECT(dia));
 }
 
 static void
@@ -1191,7 +1192,12 @@ _show_dialog(E_Object *obj, const char *params __UNUSED__)
    char buf[128];
 
    if (_show_dialog_dia) return;
-
+   
+   if (!shot_conf->mode_dialog){
+       _e_mod_action_cb(obj, EINA_FALSE);
+       return;
+   }
+   
    if (!(man = e_manager_current_get())) return;
    if (!(con = e_container_current_get(man))) return;
    if (!(dia = e_dialog_new(con, "E", "_shot_dialog"))) return;
@@ -1204,10 +1210,10 @@ _show_dialog(E_Object *obj, const char *params __UNUSED__)
    e_dialog_text_set(dia,_(buf));
 
    e_object_del_attach_func_set(E_OBJECT(dia), _shot_dialog_del);
+
    e_dialog_button_add(dia, _("Instant shot"), NULL, _shot_dialog_instant_cb, obj);
    e_dialog_button_add(dia, _("Delayed shot"), NULL, _shot_dialog_delayed_cb, obj);
-   e_dialog_button_add(dia, _("Settings"), NULL,  _shot_dialog_settings_cb, NULL);
-   
+   e_dialog_button_add(dia, _("Settings"), NULL, _shot_dialog_settings_cb, NULL);
    e_dialog_button_add(dia, _("Close"), NULL, NULL, NULL);
 
    e_dialog_button_focus_num(dia, 0);
@@ -1293,7 +1299,7 @@ e_modapi_init(E_Module *m)
      {
         act->func.go = _show_dialog;
         e_action_predef_name_set(N_("Screen"), N_("Take Screenshot"),
-                                 "shot", NULL, NULL, 0);                
+                                 "shot", NULL, NULL, 0);
      }
      
    border_act = e_action_add("border_shot");
@@ -1309,8 +1315,7 @@ e_modapi_init(E_Module *m)
    
       
   e_configure_registry_category_add("extensions", 90, "Takescreenshot", 
-				     NULL, "preferences-extensions");
-				     
+                                 NULL, "preferences-extensions");
          
    e_configure_registry_item_add("extensions/takescreenshot", 20, _("Screenshot Settings"), 
                                  NULL, "screenshot", e_int_config_shot_module);
@@ -1334,6 +1339,7 @@ e_modapi_init(E_Module *m)
    E_CONFIG_VAL(D, T, view_enable, INT); /* our var from header */
    E_CONFIG_VAL(D, T, notify, INT); /* our var from header */
    E_CONFIG_VAL(D, T, full_dialog, INT); /* our var from header */
+   E_CONFIG_VAL(D, T, mode_dialog, INT); /* our var from header */
    E_CONFIG_VAL(D, T, delay, DOUBLE); /* our var from header */
    E_CONFIG_VAL(D, T, pict_quality, DOUBLE); /* our var from header */
    
