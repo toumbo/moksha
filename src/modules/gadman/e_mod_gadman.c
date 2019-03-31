@@ -1232,8 +1232,10 @@ on_top(void *data, Evas_Object *o __UNUSED__, const char *em __UNUSED__, const c
    int layer = Man->visible;
 
    drag_gcc = Man->drag_gcc[layer];
+   if (!drag_gcc) return;
 
    mover = _get_mover(drag_gcc);
+   if (!mover) return;
 
    if (action == DRAG_START)
      {
@@ -1287,8 +1289,10 @@ on_right(void *data, Evas_Object *o __UNUSED__, const char *em __UNUSED__, const
    int layer = Man->visible;
 
    drag_gcc = Man->drag_gcc[layer];
+   if (!drag_gcc) return;
 
    mover = _get_mover(drag_gcc);
+   if (!mover) return;
 
    action = (int)(long)data;
    if (action == DRAG_START)
@@ -1331,8 +1335,10 @@ on_down(void *data, Evas_Object *o __UNUSED__, const char *em __UNUSED__, const 
    int layer = Man->visible;
 
    drag_gcc = Man->drag_gcc[layer];
+   if (!drag_gcc) return;
 
    mover = _get_mover(drag_gcc);
+   if (!mover) return;
 
    if (action == DRAG_START)
      {
@@ -1374,8 +1380,11 @@ on_left(void *data, Evas_Object *o __UNUSED__, const char *em __UNUSED__, const 
    int layer = Man->visible;
 
    drag_gcc = Man->drag_gcc[layer];
+   if (!drag_gcc) return;
 
    mover = _get_mover(drag_gcc);
+   if (!mover) return;
+
    if (action == DRAG_START)
      {
         drag_gcc->resizing = 1;
