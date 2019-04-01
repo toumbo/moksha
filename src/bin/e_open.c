@@ -88,8 +88,8 @@ handler_find(const char *mime)
    char path[PATH_MAX];
    const char *name;
 
-   snprintf(path, sizeof(path), "%s/applications/defaults.list",
-            efreet_data_home_get());
+   snprintf(path, sizeof(path), "%s/mimeapps.list",
+            efreet_config_home_get());
    name = xdg_defaults_get(path, mime);
    if (!name)
      {
@@ -304,7 +304,8 @@ terminal_open(void)
    s = efreet_data_home_get();
    if (s)
      {
-        snprintf(buf, sizeof(buf), "%s/applications/defaults.list", s);
+        snprintf(buf, sizeof(buf), "%s/mimeapps.list",
+                 efreet_config_home_get());
         tdesktop = _terminal_get(buf);
      }
    if (tdesktop) goto have_desktop;
