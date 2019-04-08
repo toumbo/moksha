@@ -56,6 +56,51 @@ EINTERN Instance *instance = NULL; /* only one systray ever possible */
 static char tmpbuf[4096]; /* general purpose buffer, just use immediately */
 
 static Eina_Bool
+_is_horiz(Instance *inst)
+{
+   switch (inst->gcc->gadcon->orient)
+     {
+      case E_GADCON_ORIENT_FLOAT:
+      case E_GADCON_ORIENT_HORIZ:
+      case E_GADCON_ORIENT_TOP:
+      case E_GADCON_ORIENT_BOTTOM:
+      case E_GADCON_ORIENT_CORNER_TL:
+      case E_GADCON_ORIENT_CORNER_TR:
+      case E_GADCON_ORIENT_CORNER_BL:
+      case E_GADCON_ORIENT_CORNER_BR:
+        return EINA_TRUE;
+        break;
+      case E_GADCON_ORIENT_VERT:
+      case E_GADCON_ORIENT_LEFT:
+      case E_GADCON_ORIENT_RIGHT:
+      case E_GADCON_ORIENT_CORNER_LT:
+      case E_GADCON_ORIENT_CORNER_RT:
+      case E_GADCON_ORIENT_CORNER_LB:
+      case E_GADCON_ORIENT_CORNER_RB:
+      default:
+        return EINA_FALSE;
+        break;
+     }
+   return EINA_TRUE;
+}
+
+static void
+_redo_sizing(Instance *inst)
+{
+   Eina_List *l;
+   Evas_Object *o;
+   Evas_Coord w, h;
+
+   evas_object_geometry_get(inst->ui.gadget, NULL, NULL, &w, &h);
+   EINA_LIST_FOREACH(inst->icons, l, o)
+     {
+        if (_is_horiz(inst)) evas_object_size_hint_min_set(o, h, 0);
+        else evas_object_size_hint_min_set(o, 0, w);
+     }
+}
+
+
+static Eina_Bool
 _systray_site_is_safe(E_Gadcon_Site site)
 {
    /* NB: filter out sites we know are not safe for a systray to sit.
@@ -146,6 +191,14 @@ _systray_size_apply_delayed(void *data)
    Instance *inst = data;
    _systray_size_apply_do(inst);
    inst->job.size_apply = NULL;
+}
+
+void
+systray_size_updated(Instance *inst)
+{
+   EINA_SAFETY_ON_NULL_RETURN(inst);
+   if (inst->job.size_apply) return;
+   inst->job.size_apply = ecore_job_add(_systray_size_apply_delayed, inst);
 }
 
 static void
@@ -334,10 +387,15 @@ _systray_icon_add(Instance *inst, const Ecore_X_Window win)
      (o, EVAS_CALLBACK_RESIZE, _systray_icon_cb_resize, icon);
 
    inst->icons = eina_list_append(inst->icons, icon);
+   evas_object_size_hint_aspect_set(o, EVAS_ASPECT_CONTROL_BOTH, 1.0, 1.0);
+   evas_object_geometry_get(inst->ui.gadget, NULL, NULL, &w, &h);
+   if (_is_horiz(inst)) evas_object_size_hint_min_set(o, h, 0);
+   else evas_object_size_hint_min_set(o, 0, w);
    edje_object_part_box_append(inst->ui.gadget, _part_box, o);
    _systray_size_apply_do(inst);
    _systray_icon_geometry_apply(icon);
-
+   //_redo_sizing(inst);
+   //systray_size_updated(inst);
    ecore_x_window_show(win);
 
    return icon;
@@ -868,7 +926,8 @@ _gc_init(E_Gadcon *gc, const char *name, const char *id, const char *style)
    inst->win.selection = 0;
 
    inst->ui.gadget = edje_object_add(inst->evas);
-
+   evas_object_event_callback_add(inst->ui.gadget, EVAS_CALLBACK_RESIZE,
+                                  _systray_cb_resize, inst);
    _systray_theme(inst->ui.gadget, gc->shelf ? gc->shelf->style : NULL, style);
 
    inst->gcc = e_gadcon_client_new(gc, name, id, style, inst->ui.gadget);
@@ -1031,7 +1090,8 @@ _gc_orient(E_Gadcon_Client *gcc, E_Gadcon_Orient orient)
 
    edje_object_signal_emit(inst->ui.gadget, sig, _sig_source);
    edje_object_message_signal_process(inst->ui.gadget);
-   _systray_size_apply(inst);
+   _redo_sizing(inst);
+   systray_size_updated(inst);
 }
 
 static const char *
