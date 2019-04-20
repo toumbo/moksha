@@ -1130,7 +1130,7 @@ msgstr "Editor záznamov plochy"
 #: src/modules/conf_menus/e_int_config_menus.c:266
 #: src/modules/ibar/e_mod_config.c:130
 msgid "Name"
-msgstr "Meno"
+msgstr "Názov"
 
 #: src/bin/e_eap_editor.c:689 src/modules/ibar/e_mod_config.c:134
 msgid "Comment"
@@ -1148,7 +1148,7 @@ msgstr "Ikona"
 
 #: src/bin/e_eap_editor.c:746
 msgid "Generic Name"
-msgstr "Vešobecný názov"
+msgstr "Všeobecný názov"
 
 #: src/bin/e_eap_editor.c:752
 #: src/modules/conf_window_manipulation/e_int_config_clientlist.c:103
@@ -2463,9 +2463,8 @@ msgid "Gravity"
 msgstr "Príťažlivosť"
 
 #: src/bin/e_int_border_prop.c:469
-#, fuzzy
 msgid "States"
-msgstr "Stav"
+msgstr "Stavy"
 
 #: src/bin/e_int_border_prop.c:472
 msgid "Take Focus"
@@ -2943,9 +2942,8 @@ msgid "Show on specified Desktops"
 msgstr "Zobraziť na určených plochách"
 
 #: src/bin/e_main.c:291
-#, fuzzy
 msgid "Moksha cannot initialize Eina!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Eina!.\n"
 
 #: src/bin/e_main.c:297
 #, fuzzy
@@ -2953,19 +2951,16 @@ msgid "Moksha could not create a logging domain!\n"
 msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
 
 #: src/bin/e_main.c:345
-#, fuzzy
 msgid "Moksha cannot initialize Eet!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Eet!.\n"
 
 #: src/bin/e_main.c:354
-#, fuzzy
 msgid "Moksha cannot initialize Ecore!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Ecore!.\n"
 
 #: src/bin/e_main.c:363
-#, fuzzy
 msgid "Moksha cannot initialize EIO!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať EIO!\n"
 
 #: src/bin/e_main.c:375
 msgid ""
@@ -2993,44 +2988,36 @@ msgstr ""
 "Možno máte nedostatok pamäte."
 
 #: src/bin/e_main.c:398
-#, fuzzy
 msgid "Moksha cannot initialize Ecore_File!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Ecore_File!\n"
 
 #: src/bin/e_main.c:407
-#, fuzzy
 msgid "Moksha cannot initialize Ecore_Con!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Ecore_Con!\n"
 
 #: src/bin/e_main.c:416
-#, fuzzy
 msgid "Moksha cannot initialize Ecore_Ipc!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Ecore_Ipc!\n"
 
 #: src/bin/e_main.c:427
-#, fuzzy
 msgid "Moksha cannot initialize Ecore_X!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Ecore_X!\n"
 
 #: src/bin/e_main.c:439
-#, fuzzy
 msgid "Moksha cannot initialize Ecore_IMF!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Ecore_IMF!\n"
 
 #: src/bin/e_main.c:449
-#, fuzzy
 msgid "Moksha cannot initialize Ecore_Evas!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Ecore_Evas!\n"
 
 #: src/bin/e_main.c:459
-#, fuzzy
 msgid "Moksha cannot initialize Elementary!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Elementary!\n"
 
 #: src/bin/e_main.c:470
-#, fuzzy
 msgid "Moksha cannot initialize Emotion!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Emotion!\n"
 
 #: src/bin/e_main.c:485
 msgid ""
@@ -3054,14 +3041,12 @@ msgstr ""
 " Ecore podporujú engine s vykresľovaním cez softvérový  buffer."
 
 #: src/bin/e_main.c:503
-#, fuzzy
 msgid "Moksha cannot initialize Edje!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať Edje!\n"
 
 #: src/bin/e_main.c:515
-#, fuzzy
 msgid "Moksha cannot initialize E_Intl!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže zinicializovať E_Intl!\n"
 
 #: src/bin/e_main.c:525
 msgid ""
@@ -3090,9 +3075,8 @@ msgid "Moksha cannot set up its config system.\n"
 msgstr "Moksha nemôže spustiť systém nastavení."
 
 #: src/bin/e_main.c:605
-#, fuzzy
 msgid "Moksha cannot initialize E_Xinerama!\n"
-msgstr "Moksha nemôže zinicializovať Súborový manažér.\n"
+msgstr "Moksha nemôže inicializovať E_Xinerama!\\n"
 
 #: src/bin/e_main.c:614
 #, fuzzy
@@ -3118,14 +3102,12 @@ msgstr ""
 "Možno máte nedostatok pamäte."
 
 #: src/bin/e_main.c:665
-#, fuzzy
 msgid "Moksha cannot set up its font system.\n"
-msgstr "Moksha nemôže spustiť systém fontov."
+msgstr "Moksha nemôže spustiť systém fontov.\n"
 
 #: src/bin/e_main.c:682
-#, fuzzy
 msgid "Moksha cannot set up its theme system.\n"
-msgstr "Moksha nemôže spustiť systém tém."
+msgstr "Moksha nemôže spustiť systém tém.\n"
 
 #: src/bin/e_main.c:698
 #, fuzzy
@@ -3397,9 +3379,9 @@ msgid "Almost Done"
 msgstr "Takmer hotovo"
 
 #: src/bin/e_main.c:1296
-#, fuzzy, c-format
+#, c-format
 msgid "Version: %s\n"
-msgstr "Privilégiá"
+msgstr "Verzia: %s\n"
 
 #: src/bin/e_main.c:1306
 #, fuzzy, c-format
@@ -4448,7 +4430,6 @@ msgstr "Interné"
 
 #: src/modules/battery/e_mod_config.c:299
 #: src/modules/temperature/e_mod_config.c:313
-#, fuzzy
 msgid "udev"
 msgstr "udev"
 
