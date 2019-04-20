@@ -9767,7 +9767,6 @@ msgid "Use multiple monitor geometry"
 msgstr ""
 
 #: src/modules/clipboard/e_mod_config.c:175
-#, fuzzy
 msgid "Selection"
 msgstr "Výber"
 
@@ -9816,14 +9815,12 @@ msgid " Confirm before Clearing"
 msgstr " Potvrdiť pred vymazaním"
 
 #: src/modules/clipboard/e_mod_config.c:211
-#, fuzzy
 msgid " Save every Selection"
-msgstr " Použiť schránku (Výber)"
+msgstr " Uložiť každú kopírovanú položku"
 
 #: src/modules/clipboard/e_mod_config.c:215
-#, fuzzy
 msgid " Timer"
-msgstr "Časovače"
+msgstr " Časovač"
 
 #: src/modules/clipboard/e_mod_config.c:226
 msgid "Labels"
@@ -9834,9 +9831,8 @@ msgid " Label Length"
 msgstr " Śirka textu položky"
 
 #: src/modules/clipboard/e_mod_config.c:237
-#, fuzzy
 msgid "Items"
-msgstr "položiek"
+msgstr "Položky"
 
 #: src/modules/clipboard/e_mod_config.c:238
 msgid " Reverse Order"
