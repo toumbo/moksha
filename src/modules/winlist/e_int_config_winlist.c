@@ -169,7 +169,7 @@ _basic_check_changed(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfda
    DO(list_move_after_select, move_after_select);
    DO(warp_while_selecting, warp_while_selecting);
    DO(warp_at_end, warp_at_end);
-   DO(warp_speed, warp_speed);
+   DO_DBL(warp_speed, warp_speed);
    DO(scroll_animate, scroll_animate);
    DO_DBL(scroll_speed, scroll_speed);
    DO(list_focus_while_selecting, focus);

@@ -1102,8 +1102,8 @@ _e_winlist_activate(void)
      }
    if (((ww->border->shaded) ||
         ((ww->border->changes.shaded) &&
-         (ww->border->shade.val != ww->border->shaded) &&
-         (ww->border->shade.val))) &&
+         (!EINA_DBL_EQ(ww->border->shade.val, ww->border->shaded)) &&
+         (EINA_DBL_NONZERO(ww->border->shade.val)))) &&
        (ww->border->desk == e_desk_current_get(_winlist->zone)) &&
        (e_config->winlist_list_uncover_while_selecting))
      {
