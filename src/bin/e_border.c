@@ -3784,7 +3784,7 @@ static void
 _e_border_action_move_timeout_add(void)
 {
    E_FN_DEL(ecore_timer_del, action_timer);
-   if (e_config->border_keyboard.timeout)
+   if  (EINA_DBL_NONZERO(e_config->border_keyboard.timeout))
      action_timer = ecore_timer_add(e_config->border_keyboard.timeout, _e_border_action_move_timeout, NULL);
 }
 
@@ -3895,7 +3895,7 @@ static void
 _e_border_action_resize_timeout_add(void)
 {
    E_FN_DEL(ecore_timer_del, action_timer);
-   if (e_config->border_keyboard.timeout)
+   if ( EINA_DBL_NONZERO(e_config->border_keyboard.timeout))
      action_timer = ecore_timer_add(e_config->border_keyboard.timeout, _e_border_action_resize_timeout, NULL);
 }
 
@@ -4789,7 +4789,7 @@ e_border_resize_limit(E_Border *bd,
         if (tw < 1) tw = 1;
         if (th < 1) th = 1;
         a = (double)(tw) / (double)(th);
-        if ((bd->client.icccm.min_aspect != 0.0) &&
+        if (EINA_DBL_NONZERO(bd->client.icccm.min_aspect) &&
             (a < bd->client.icccm.min_aspect))
           {
              if (inc_h)
@@ -4799,7 +4799,7 @@ e_border_resize_limit(E_Border *bd,
              *w = tw + bd->client.icccm.base_w;
              *h = th + bd->client.icccm.base_h;
           }
-        else if ((bd->client.icccm.max_aspect != 0.0) &&
+        else if (EINA_DBL_NONZERO(bd->client.icccm.max_aspect) &&
                  (a > bd->client.icccm.max_aspect))
           {
              tw = th * bd->client.icccm.max_aspect;
@@ -4809,7 +4809,7 @@ e_border_resize_limit(E_Border *bd,
    else
      {
         a = (double)*w / (double)*h;
-        if ((bd->client.icccm.min_aspect != 0.0) &&
+        if (EINA_DBL_NONZERO(bd->client.icccm.min_aspect) &&
             (a < bd->client.icccm.min_aspect))
           {
              if (inc_h)
@@ -4817,7 +4817,7 @@ e_border_resize_limit(E_Border *bd,
              else
                *h = *w / bd->client.icccm.min_aspect;
           }
-        else if ((bd->client.icccm.max_aspect != 0.0) &&
+        else if (EINA_DBL_NONZERO(bd->client.icccm.max_aspect) &&
                  (a > bd->client.icccm.max_aspect))
           *w = *h * bd->client.icccm.max_aspect;
      }
@@ -9531,7 +9531,7 @@ _e_border_shade_animator(void *data)
    bd->changed = 1;
 
    /* we're done */
-   if (val == 1)
+   if (EINA_DBL_EQ(val,1))
      {
         E_Event_Border_Resize *ev;
 
