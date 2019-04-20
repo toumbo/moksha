@@ -467,9 +467,9 @@ _win_save_cb(void *data __UNUSED__, void *data2 __UNUSED__)
    tm = localtime(&tt);
    //~ if (quality == 100.0)
 
-   shot_conf->pict_quality=(int)quality;
+   shot_conf->pict_quality=(int) quality;
 
-   if (shot_conf->pict_quality == 100.0)
+   if (EINA_DBL_EQ(shot_conf->pict_quality, 100.0))
      strftime(buf, sizeof(buf), "shot-%Y-%m-%d_%H-%M-%S.png", tm);
    else
      strftime(buf, sizeof(buf), "shot-%Y-%m-%d_%H-%M-%S.jpg", tm);
@@ -651,7 +651,7 @@ _win_share_cb(void *data __UNUSED__, void *data2 __UNUSED__)
         int v = rand();
         
         //~ if (quality == 100.0)
-        if (shot_conf->pict_quality == 100.0)
+        if (EINA_DBL_EQ(shot_conf->pict_quality, 100.0))
           snprintf(buf, sizeof(buf), "/tmp/e-shot-%x.png", v);
         else
           snprintf(buf, sizeof(buf), "/tmp/e-shot-%x.jpg", v);
@@ -932,7 +932,7 @@ _shot_now(E_Zone *zone, E_Border *bd)
    o = e_widget_framelist_add(evas, _("Quality"), 0);
    ol = o;
 
-   if (shot_conf->pict_quality==100) quality=100;
+   if (EINA_DBL_EQ(shot_conf->pict_quality, 100.0)) quality=100;
    if ((shot_conf->pict_quality>=80) && (shot_conf->pict_quality<100)) quality=90;
    if ((shot_conf->pict_quality>=60) && (shot_conf->pict_quality<80)) quality=70;
    if (shot_conf->pict_quality<60) quality=50;
