@@ -1202,12 +1202,12 @@ _show_dialog(E_Object *obj, const char *params __UNUSED__)
    if (!(con = e_container_current_get(man))) return;
    if (!(dia = e_dialog_new(con, "E", "_shot_dialog"))) return;
 
-   snprintf(buf, sizeof(buf), "Select the screenshot mode...<br>"
+   snprintf(buf, sizeof(buf), _("Select the screenshot mode... <br>"
         "Delay time is set in the Screenshot module settings<br>"
-        "The current delay time: <b> %d s</b>", (int)shot_conf->delay);
+        "The current delay time: <b> %d s</b>"), (int)shot_conf->delay);
    e_dialog_title_set(dia, _("Screenshot"));
    e_dialog_icon_set(dia, "screenshot", 64);
-   e_dialog_text_set(dia,_(buf));
+   e_dialog_text_set(dia, buf);
 
    e_object_del_attach_func_set(E_OBJECT(dia), _shot_dialog_del);
 
