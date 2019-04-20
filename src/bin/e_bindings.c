@@ -668,7 +668,7 @@ e_bindings_edge_get(const char *action, E_Zone_Edge edge, int click)
    EINA_LIST_FOREACH(edge_bindings, l, binding)
      {
         if ((binding->edge == edge) &&
-            ((click && (binding->delay == -1.0 * click))
+            ((click && EINA_FLT_EQ(binding->delay, -1.0 * click))
              || (!click && (binding->delay >= 0.0))) &&
             (binding->action) && (action) &&
             (!strcmp(action, binding->action)))
@@ -690,7 +690,7 @@ e_bindings_edge_del(E_Binding_Context ctxt, E_Zone_Edge edge, E_Binding_Modifier
           {
              if ((binding->ctxt == ctxt) &&
                  (binding->mod == mod) &&
-                 ((binding->delay * 1000) == (delay * 1000)) &&
+                 EINA_FLT_EQ(binding->delay, delay) &&
                  (binding->any_mod == any_mod) &&
                  (((binding->action) && (action) && (!strcmp(binding->action, action))) ||
                   ((!binding->action) && (!action))) &&
@@ -817,7 +817,7 @@ e_bindings_edge_down_event_handle(E_Binding_Context ctxt, E_Object *obj, E_Event
    if (ev->modifiers & ECORE_EVENT_MODIFIER_WIN) mod |= E_BINDING_MODIFIER_WIN;
    EINA_LIST_FOREACH(edge_bindings, l, binding)
      {
-        if (((binding->edge == ev->edge)) && (binding->delay == -1.0 * ev->button) &&
+        if (((binding->edge == ev->edge)) && EINA_FLT_EQ(binding->delay, -1.0 * ev->button) &&
             ((binding->any_mod) || (binding->mod == mod)))
           {
              if (_e_bindings_context_match(binding->ctxt, ctxt))
@@ -850,7 +850,7 @@ e_bindings_edge_up_event_handle(E_Binding_Context ctxt, E_Object *obj, E_Event_Z
    if (ev->modifiers & ECORE_EVENT_MODIFIER_WIN) mod |= E_BINDING_MODIFIER_WIN;
    EINA_LIST_FOREACH(edge_bindings, l, binding)
      {
-        if (((binding->edge == ev->edge)) && (binding->delay == -1.0 * ev->button) &&
+        if (((binding->edge == ev->edge)) && EINA_FLT_EQ(binding->delay, -1.0 * ev->button) &&
             ((binding->any_mod) || (binding->mod == mod)))
           {
              if (_e_bindings_context_match(binding->ctxt, ctxt))
