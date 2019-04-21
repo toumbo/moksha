@@ -829,8 +829,8 @@ _shot_now(E_Zone *zone, E_Border *bd)
         xwin = root;
         x = E_CLAMP(bd->x, bd->zone->x, bd->zone->x + bd->zone->w);
         y = E_CLAMP(bd->y, bd->zone->y, bd->zone->y + bd->zone->h);
-        sw = E_CLAMP(sw, 0, bd->zone->x + bd->zone->w - x);
-        sh = E_CLAMP(sh, 0, bd->zone->y + bd->zone->h - y);
+        sw = E_CLAMP(sw, 1, bd->zone->x + bd->zone->w - x);
+        sh = E_CLAMP(sh, 1, bd->zone->y + bd->zone->h - y);
      }
    if (!ecore_x_window_attributes_get(xwin, &watt)) return;
    visual = watt.visual;
