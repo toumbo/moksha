@@ -52,7 +52,6 @@ static Eina_Bool _notify_cb(void *data __UNUSED__);
 
 
 static void _shot_conf_new(void);
-static Config_Item *_shot_conf_item_get(const char *id);
 static void _shot_conf_free(void);
 
 static E_Config_DD *conf_edd = NULL;
@@ -141,7 +140,6 @@ _shot_conf_new(void)
    shot_conf->delay = 5.0;
    shot_conf->pict_quality = 80.0;
    
-   _shot_conf_item_get(NULL);
    IFMODCFGEND;
    shot_conf->version = MOD_CONFIG_FILE_VERSION;
 
@@ -150,37 +148,10 @@ _shot_conf_new(void)
    e_config_save_queue();
 }
 
-static Config_Item *
-_shot_conf_item_get(const char *id) 
-{
-   Config_Item *ci;
-
-   //~ GADCON_CLIENT_CONFIG_GET(Config_Item, shot_conf->conf_items, _gc_class, id);
-
-   ci = E_NEW(Config_Item, 1);
-   ci->id = eina_stringshare_add(id);
-   shot_conf->conf_items = eina_list_append(shot_conf->conf_items, ci);
-   return ci;
-}
-
 static void 
 _shot_conf_free(void) 
 {
    /* cleanup any stringshares here */
-   while (shot_conf->conf_items) 
-     {
-        Config_Item *ci = NULL;
-
-        ci = shot_conf->conf_items->data;
-        shot_conf->conf_items = 
-          eina_list_remove_list(shot_conf->conf_items, 
-                                shot_conf->conf_items);
-        /* EPA */
-        if (ci->id) eina_stringshare_del(ci->id);
-        
-        E_FREE(ci);
-     }
-
    if (shot_conf->viewer) eina_stringshare_del(shot_conf->viewer);
    if (shot_conf->path) eina_stringshare_del(shot_conf->path);
    E_FREE(shot_conf);
@@ -1320,16 +1291,11 @@ e_modapi_init(E_Module *m)
    e_configure_registry_item_add("extensions/takescreenshot", 20, _("Screenshot Settings"), 
                                  NULL, "screenshot", e_int_config_shot_module);
   
-   conf_item_edd = E_CONFIG_DD_NEW("Shot_Config_Item", Config_Item);
    #undef T
    #undef D
-   #define T Config_Item
-   #define D conf_item_edd
-   E_CONFIG_VAL(D, T, id, STR);
 
    conf_edd = E_CONFIG_DD_NEW("Shot_Config", Config);
-   #undef T
-   #undef D
+
    #define T Config
    #define D conf_edd
    E_CONFIG_VAL(D, T, version, INT);
