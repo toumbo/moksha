@@ -17,7 +17,7 @@ static E_Module *shot_module = NULL;
 
 static E_Action *border_act = NULL, *act = NULL;
 static E_Int_Menu_Augmentation *maug = NULL;
-static Ecore_Timer *timer, *border_timer=NULL, *timer_sec = NULL;
+static Ecore_Timer *timer=NULL, *border_timer=NULL, *timer_sec = NULL;
 static E_Win *win = NULL;
 E_Confirm_Dialog *cd = NULL;
 
@@ -103,7 +103,7 @@ Eina_Bool _timer_cb(void *data)
      }
    else
      {
-       timer = ecore_timer_add(0.2, _shot_delay, data);
+       _shot_delay(data);
        return ECORE_CALLBACK_DONE;
      }
 }
@@ -111,8 +111,9 @@ Eina_Bool _timer_cb(void *data)
 static Eina_Bool
 _notify_cb(void *data __UNUSED__)
 {
- _notify(1,_("Screenshot stored in"),shot_conf->path,3000,0);
- return EINA_FALSE;
+   _notify(1,_("Screenshot stored in"),shot_conf->path,3000,0);
+   timer = NULL;
+   return ECORE_CALLBACK_DONE;
 }
 
 static void 
@@ -318,8 +319,8 @@ _save_to(const char *file)
         }
         else
         {
-        if (shot_conf->notify)
-        timer = ecore_timer_add(1.2, _notify_cb, NULL);
+           if (shot_conf->notify)
+              timer = ecore_timer_add(1.2, _notify_cb, NULL);
 	    }
   }
         
@@ -1028,8 +1029,7 @@ _shot_now(E_Zone *zone, E_Border *bd)
 static Eina_Bool
 _shot_delay(void *data)
 {
-   timer_sec = NULL;
-   timer = NULL;
+   timer_sec = timer = NULL;
    _shot_now(data, NULL);
    return EINA_FALSE;
 }
@@ -1347,7 +1347,7 @@ e_modapi_shutdown(E_Module *m __UNUSED__)
         e_object_del(E_OBJECT(win));
         win = NULL;
      }
-   E_FN_DEL(e_object_del, cd);
+   if (cd) E_FN_DEL(e_object_del, cd);
    if (timer)
      {
         ecore_timer_del(timer);
