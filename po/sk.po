@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e HEAD\n"
 "Report-Msgid-Bugs-To: enlightenment-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2019-04-20 22:11+0200\n"
+"POT-Creation-Date: 2019-04-21 08:25-0400\n"
 "PO-Revision-Date: 2009-08-07 11:08+0000\n"
 "Last-Translator: Štefan Uram <thewaiter@centrum.sk>\n"
 "Language-Team: Slovakian\n"
@@ -733,8 +733,8 @@ msgstr "Prepnúť pomenovaný modul"
 #: src/modules/conf_applications/e_int_config_apps.c:275
 #: src/modules/conf_display/e_int_config_desklock_fsel.c:87
 #: src/modules/conf_intl/e_int_config_imc.c:808
-#: src/modules/conf_theme/e_int_config_wallpaper.c:466
-#: src/modules/conf_theme/e_int_config_wallpaper.c:625
+#: src/modules/conf_theme/e_int_config_wallpaper.c:427
+#: src/modules/conf_theme/e_int_config_wallpaper.c:581
 #: src/modules/conf_theme/e_int_config_startup.c:258
 #: src/modules/conf_theme/e_int_config_theme.c:748
 #: src/modules/conf_theme/e_int_config_theme.c:1125
@@ -1967,12 +1967,10 @@ msgid "Use"
 msgstr "Použiť"
 
 #: src/bin/e_import_config_dialog.c:295
-#: src/modules/conf_theme/e_int_config_wallpaper.c:1143
 msgid "Picture Import Error"
 msgstr "Zlyhal import obrázku"
 
 #: src/bin/e_import_config_dialog.c:296
-#: src/modules/conf_theme/e_int_config_wallpaper.c:1144
 msgid "Moksha was unable to import the picture<br>due to conversion errors."
 msgstr ""
 "Moksha nie je schopný importovať obrázok<br><br>vzhľadom ku chybe konverzie."
@@ -3076,7 +3074,7 @@ msgstr "Moksha nemôže spustiť systém nastavení."
 
 #: src/bin/e_main.c:605
 msgid "Moksha cannot initialize E_Xinerama!\n"
-msgstr "Moksha nemôže inicializovať E_Xinerama!\\n"
+msgstr "Moksha nemôže inicializovať E_Xinerama!\n"
 
 #: src/bin/e_main.c:614
 #, fuzzy
@@ -4917,8 +4915,8 @@ msgstr "Vyberte pozadie ..."
 
 #: src/modules/conf_display/e_int_config_desklock_fsel.c:84
 #: src/modules/conf_intl/e_int_config_imc.c:803
-#: src/modules/conf_theme/e_int_config_wallpaper.c:462
-#: src/modules/conf_theme/e_int_config_wallpaper.c:621
+#: src/modules/conf_theme/e_int_config_wallpaper.c:423
+#: src/modules/conf_theme/e_int_config_wallpaper.c:577
 #: src/modules/conf_theme/e_int_config_startup.c:253
 #: src/modules/conf_theme/e_int_config_theme.c:744
 #: src/modules/conf_theme/e_int_config_theme.c:1122
@@ -6199,44 +6197,38 @@ msgstr "Ste si istý, že chcete zmazať tento \"%s\"?"
 msgid "Confirm Shelf Deletion"
 msgstr "Potvrdiť zmazanie lišty"
 
-#: src/modules/conf_theme/e_int_config_wallpaper.c:141
+#: src/modules/conf_theme/e_int_config_wallpaper.c:103
 msgid "Wallpaper Settings"
 msgstr "Nastavenia tapety"
 
-#: src/modules/conf_theme/e_int_config_wallpaper.c:472
-#: src/modules/conf_theme/e_int_config_wallpaper.c:631
+#: src/modules/conf_theme/e_int_config_wallpaper.c:433
+#: src/modules/conf_theme/e_int_config_wallpaper.c:587
 msgid "Go up a directory"
 msgstr "Prejsť do vyššieho priečinku"
 
-#: src/modules/conf_theme/e_int_config_wallpaper.c:504
-#: src/modules/conf_theme/e_int_config_wallpaper.c:656
+#: src/modules/conf_theme/e_int_config_wallpaper.c:465
+#: src/modules/conf_theme/e_int_config_wallpaper.c:612
 msgid "Use Theme Wallpaper"
 msgstr "Použiť tapetu témy"
 
-#: src/modules/conf_theme/e_int_config_wallpaper.c:509
-#: src/modules/conf_theme/e_int_config_wallpaper.c:661
+#: src/modules/conf_theme/e_int_config_wallpaper.c:470
+#: src/modules/conf_theme/e_int_config_wallpaper.c:617
 msgid "Picture..."
 msgstr "Obrázok..."
 
-#: src/modules/conf_theme/e_int_config_wallpaper.c:513
-#: src/modules/conf_theme/e_int_config_wallpaper.c:664
-#, fuzzy
-msgid "Color..."
-msgstr "Farby"
-
-#: src/modules/conf_theme/e_int_config_wallpaper.c:680
+#: src/modules/conf_theme/e_int_config_wallpaper.c:633
 msgid "Where to place the Wallpaper"
 msgstr "Kam umiestniť tapetu"
 
-#: src/modules/conf_theme/e_int_config_wallpaper.c:681
+#: src/modules/conf_theme/e_int_config_wallpaper.c:634
 msgid "All Desktops"
 msgstr "Všetky plochy"
 
-#: src/modules/conf_theme/e_int_config_wallpaper.c:683
+#: src/modules/conf_theme/e_int_config_wallpaper.c:636
 msgid "This Desktop"
 msgstr "Táto plocha"
 
-#: src/modules/conf_theme/e_int_config_wallpaper.c:685
+#: src/modules/conf_theme/e_int_config_wallpaper.c:638
 msgid "This Screen"
 msgstr "Táto obrazovka"
 
@@ -10029,6 +10021,10 @@ msgstr "Hlasitosť zmenená"
 #, fuzzy
 msgid "Volume Mute"
 msgstr "Hlasitosť zmenená"
+
+#, fuzzy
+#~ msgid "Color..."
+#~ msgstr "Farby"
 
 #~ msgid "%s is probably not an E17 theme!"
 #~ msgstr "%s zrejme nie je E/Moksha téma!"
