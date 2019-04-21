@@ -840,7 +840,7 @@ _shot_now(E_Zone *zone, E_Border *bd)
    display = ecore_x_display_get();
    scr = ecore_x_default_screen_get();
    colormap = ecore_x_default_colormap_get(display, scr);
-   dst = malloc(sw * sh * sizeof(int));
+   dst = malloc(sw * sh * sizeof(unsigned int));
    ecore_x_image_to_argb_convert(src, bpp, bpl, colormap, visual,
                                  0, 0, sw, sh,
                                  dst, (sw * sizeof(int)), 0, 0);
