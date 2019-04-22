@@ -138,7 +138,7 @@ _basic_check_changed(E_Config_Dialog *cfd __UNUSED__, E_Config_Dialog_Data *cfda
 
    return ((e_config->desk_flip_animate_mode != cfdata->flip_mode) ||
 	   (e_config->desk_flip_animate_interpolation != cfdata->flip_interp) ||
-	   (e_config->desk_flip_animate_time != cfdata->flip_speed) ||
+	   (!EINA_DBL_EQ(e_config->desk_flip_animate_time, cfdata->flip_speed)) ||
 	   (e_config->edge_flip_dragging != cfdata->edge_flip_dragging) ||
 	   (e_config->desk_flip_wrap != cfdata->flip_wrap) ||
        (e_config->use_desktop_window_profile != cfdata->use_desktop_window_profile)
