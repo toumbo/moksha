@@ -92,10 +92,10 @@ _fetch(Evry_Plugin *plugin, const char *input)
              /* give plugin item the highest priority of its items */
              EINA_LIST_FOREACH (pp->items, ll, it)
                {
-                  if (it->usage >= 0)
+                  if (it->usage > -1.0)
                     evry_history_item_usage_set(it, input, context);
 
-                  if (it->usage && (it->usage > max_usage))
+                  if (it->usage > max_usage)
                     max_usage = it->usage;
 
                   if (it->fuzzy_match == 0)
