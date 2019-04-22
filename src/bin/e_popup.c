@@ -332,7 +332,7 @@ _e_popup_free(E_Popup *pop)
    e_object_unref(E_OBJECT(pop->zone));
    pop->zone->popups = eina_list_remove(pop->zone->popups, pop);
    _e_popup_list = eina_list_remove(_e_popup_list, pop);
-   eina_hash_del(_e_popup_hash, e_util_winid_str_get(pop->evas_win), pop);
+   if (_e_popup_hash) eina_hash_del(_e_popup_hash, e_util_winid_str_get(pop->evas_win), pop);
    if (pop->name) eina_stringshare_del(pop->name);
    free(pop);
 }
