@@ -11,7 +11,7 @@ do {                                                 \
   long _digits_ = 1;                                 \
   long _tempn_ = n;                                  \
   while (_tempn_ /= 10) _digits_++;                  \
-  str = calloc(_digits_ + 1, sizeof(long));          \
+  str = calloc(_digits_ + 1, sizeof(char));          \
   if (!str) {                                        \
     /* This is bad, leave it to calling function */  \
     CRI("ERROR: Memory allocation Failed!!");        \
