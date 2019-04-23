@@ -1216,7 +1216,7 @@ _e_winlist_deactivate(void)
      }
    edje_object_part_text_set(_bg_object, "e.text.label", "");
    edje_object_signal_emit(ww->bg_object, "e,state,unselected", "e");
-   if (ww->icon_object)
+   if (ww->icon_object && e_icon_edje_get(ww->icon_object))
      edje_object_signal_emit(ww->icon_object,
                              "e,state,unselected", "e");
    if (!ww->border->lock_focus_in)
