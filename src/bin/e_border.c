@@ -3850,7 +3850,7 @@ _e_border_move_mouse_down(void *data __UNUSED__,
    if (!action_border)
      fputs("ERROR: no action_border!\n", stderr);
 
-   _e_border_move_end(action_border);
+   if (action_border) _e_border_move_end(action_border);
    _e_border_action_finish();
    return ECORE_CALLBACK_DONE;
 }
@@ -9864,7 +9864,7 @@ _e_border_resize_begin(E_Border *bd)
 static int
 _e_border_resize_end(E_Border *bd)
 {
-   if (grabbed)
+   if (grabbed && bd)
      {
         e_grabinput_release(bd->win, bd->win);
         grabbed = 0;
@@ -9940,7 +9940,7 @@ _e_border_move_begin(E_Border *bd)
 static int
 _e_border_move_end(E_Border *bd)
 {
-   if (grabbed)
+   if (grabbed && bd)
      {
         e_grabinput_release(bd->win, bd->win);
         grabbed = 0;
@@ -10229,7 +10229,7 @@ e_border_under_pointer_get(E_Desk *desk,
     * window, so return if neither is given */
    if (desk)
      ecore_x_pointer_xy_get(desk->zone->container->win, &x, &y);
-   else if (exclude)
+   else if (exclude && exclude->desk)
      ecore_x_pointer_xy_get(exclude->desk->zone->container->win, &x, &y);
    else
      return NULL;
