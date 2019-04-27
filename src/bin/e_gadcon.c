@@ -2515,7 +2515,7 @@ _e_gadcon_cb_client_resize(void *data, Evas *evas __UNUSED__, Evas_Object *obj, 
 static void
 _e_gadcon_client_move_start(E_Gadcon_Client *gcc)
 {
-   int x, y, gcx, gcy, gy, gx;
+   int x, y, gcx = 0, gcy = 0, gy, gx;
 
    evas_object_raise(gcc->o_event);
    evas_object_stack_below(gcc->o_control, gcc->o_event);
