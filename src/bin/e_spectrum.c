@@ -300,7 +300,10 @@ _e_spectrum_redraw(void *d)
        vz = sp->cv->v;
      break;
      case E_COLOR_COMPONENT_MAX:
-     break;
+     default:
+        WRN("Impossible spectrum mode");
+        sp->draw_timer = NULL;
+        return ECORE_CALLBACK_CANCEL;
     }
 
   for (i = 0; i < sp->ih; i++)
