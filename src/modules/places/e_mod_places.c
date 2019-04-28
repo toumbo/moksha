@@ -382,9 +382,9 @@ places_empty_box(Evas_Object *box)
    e_box_freeze(box);
    count = e_box_pack_count_get(box);
    while (count >= 0)
-     {
-        Evas_Object *o;
-        Evas_Object *swal;
+     {  Volume *vol;
+        Eina_List *l;
+        Evas_Object *o, *swal;
 
         o = e_box_pack_object_nth(box, count);
         swal = edje_object_part_swallow_get(o, "icon");
@@ -393,6 +393,8 @@ places_empty_box(Evas_Object *box)
              edje_object_part_unswallow(o, swal);
              evas_object_del(swal);
           }
+       EINA_LIST_FOREACH(volumes, l, vol)
+         vol->objs = eina_list_remove(vol->objs, o);
 
         e_box_unpack(o);
         evas_object_del(o);
