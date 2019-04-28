@@ -1106,7 +1106,7 @@ static Eina_List *
 _e_fwin_defaults_apps_get(const char *mime, const char *path)
 {
    Efreet_Ini *ini;
-   const char *str;
+   const char *str = NULL;
    Eina_List *apps = NULL;
    char **array, **itr;
 
@@ -1116,7 +1116,7 @@ _e_fwin_defaults_apps_get(const char *mime, const char *path)
    if (!ini) return NULL;
 
    efreet_ini_section_set(ini, "Default Applications");
-   str = efreet_ini_string_get(ini, mime);
+   if (ini->section) str = efreet_ini_string_get(ini, mime);
    if (!str) goto end;
 
    array = eina_str_split(str, ";", 0);
