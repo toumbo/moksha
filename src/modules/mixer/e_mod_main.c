@@ -773,7 +773,7 @@ _sink_changed_cb(void *data EINA_UNUSED, int type EINA_UNUSED,
     _actions_unregister();
     e_gadcon_provider_unregister((const E_Gadcon_Client_Class *)&_gadcon_class);
 
-    if (!mixer_context)
+    if (mixer_context)
       {
          if (mixer_context->theme)
             free(mixer_context->theme);
