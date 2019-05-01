@@ -1088,10 +1088,10 @@ EAPI E_Action *
 e_bindings_wheel_event_handle(E_Binding_Context ctxt, E_Object *obj, Ecore_Event_Mouse_Wheel *ev)
 {
    E_Action *act;
-   E_Binding_Wheel *binding;
+   E_Binding_Wheel *binding = NULL;
 
    act = e_bindings_wheel_find(ctxt, obj, ev, &binding);
-   if (act)
+   if ((act) && (binding))
      {
         if (act->func.go_wheel)
           act->func.go_wheel(obj, binding->params, ev);
