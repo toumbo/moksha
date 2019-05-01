@@ -23,7 +23,7 @@ static E_Gadcon_Client *_gc_init(E_Gadcon *gc, const char *name,
                                  const char *id, const char *style);
 static void             _gc_shutdown(E_Gadcon_Client *gcc);
 static void             _gc_orient(E_Gadcon_Client *gcc,
-                                   E_Gadcon_Orient orient);
+                                   E_Gadcon_Orient orient EINA_UNUSED);
 static const char      *_gc_label(const E_Gadcon_Client_Class *client_class);
 static Evas_Object     *_gc_icon(const E_Gadcon_Client_Class *client_class,
                                  Evas *evas);
@@ -80,7 +80,6 @@ typedef struct _Instance Instance;
 struct _Instance
 {
    E_Gadcon_Client *gcc;
-   E_Gadcon_Orient orient;
 
    E_Gadcon_Popup *popup;
    Evas_Object *gadget;
@@ -560,32 +559,10 @@ _gc_shutdown(E_Gadcon_Client *gcc)
 }
 
 static void
-_gc_orient(E_Gadcon_Client *gcc, E_Gadcon_Orient orient)
+_gc_orient(E_Gadcon_Client *gcc, E_Gadcon_Orient orient EINA_UNUSED)
 {
-   Instance *inst;
-   int w, h;
-
-   inst = gcc->data;
-   if (orient != E_GADCON_ORIENT_LAST)
-      inst->orient = orient;
-
-   switch (inst->orient)
-     {
-     case E_GADCON_ORIENT_VERT:
-     case E_GADCON_ORIENT_LEFT:
-     case E_GADCON_ORIENT_RIGHT:
-     case E_GADCON_ORIENT_CORNER_LT:
-     case E_GADCON_ORIENT_CORNER_RT:
-     case E_GADCON_ORIENT_CORNER_LB:
-     case E_GADCON_ORIENT_CORNER_RB:
-        w = 16;
-        h = 16;
-     default:
-        break;
-     }
-
-   e_gadcon_client_aspect_set(gcc, w, h);
-   e_gadcon_client_min_size_set(gcc, w, h);
+   e_gadcon_client_aspect_set(gcc, 16, 16);
+   e_gadcon_client_min_size_set(gcc, 16, 16);
 }
 
 static const char *
