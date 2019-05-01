@@ -606,7 +606,7 @@ _places_human_size_get(unsigned long long size)
                     }
                }
           }
-        snprintf(hum, sizeof(hum), "%.1f%s", dsize, suffix);
+        snprintf(hum, sizeof(hum), "%.1f %s", dsize, suffix);
      }
 
    return eina_stringshare_add(hum);
