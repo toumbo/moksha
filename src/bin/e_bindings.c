@@ -371,10 +371,10 @@ EAPI E_Action *
 e_bindings_mouse_up_event_handle(E_Binding_Context ctxt, E_Object *obj, Ecore_Event_Mouse_Button *ev)
 {
    E_Action *act;
-   E_Binding_Mouse *binding;
+   E_Binding_Mouse *binding = NULL;
 
    act = e_bindings_mouse_up_find(ctxt, obj, ev, &binding);
-   if (act)
+   if ((act) && (binding))
      {
         if (act->func.end_mouse)
           act->func.end_mouse(obj, binding->params, ev);
