@@ -159,7 +159,7 @@ _track(unsigned int mode)
 {
   Eina_Bool ret = EINA_TRUE;
   /* sanity check */
-  if (mode > CLIP_MAX_MODE) {
+  if (mode >= CLIP_MAX_MODE) {
     ERR("Clipboard tracking mode exceedes CLIP_MAX_MODE \n");
     mode = CLIP_MODE_DEFAULT;
     ret = EINA_FALSE;
