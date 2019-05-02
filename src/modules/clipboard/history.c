@@ -65,11 +65,14 @@ _set_data_path(char *path)
     EINA_SAFETY_ON_NULL_RETURN_VAL(path, EINA_FALSE);
 
     const char *temp_str = efreet_data_home_get();
+    if (!temp_str)
+       // Should never happen
+       return EINA_FALSE;
     Eina_Bool success = EINA_TRUE;
     const int len = snprintf(NULL, 0, "%s", temp_str)
                               + 1 + (temp_str[strlen(temp_str)] != '/');
 
-    if (temp_str && temp_str[0] == '/' ) {
+    if (temp_str[0] == '/' ) {
 
       if (len <= PATH_MAX) {
         snprintf(path, strlen(temp_str)+1, "%s", temp_str);
