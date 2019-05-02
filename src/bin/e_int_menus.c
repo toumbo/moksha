@@ -1207,7 +1207,7 @@ _e_int_menus_clients_add_by_desk(E_Desk *curr_desk, Eina_List *borders, E_Menu *
    /* Deal with present desk first */
    EINA_LIST_FOREACH(borders, l, bd)
      {
-        if (ec->iconic && (e_config->clientlist_separate_iconified_apps == E_CLIENTLIST_GROUPICONS_SEP)) 
+        if (bd->iconic && (e_config->clientlist_separate_iconified_apps == E_CLIENTLIST_GROUPICONS_SEP)) 
           {
              ico = eina_list_append(ico, bd);
              continue;
