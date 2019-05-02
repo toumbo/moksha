@@ -1678,6 +1678,7 @@ e_util_clipboard(Ecore_X_Window w, const char *text, Ecore_X_Selection type)
    if ( (unsigned int) n != size)
    {
 	 fprintf(stderr, "Moksha:clipboard pipe error\n");
+	 pclose(cmd);
      goto fallback;
    }
 
