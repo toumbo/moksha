@@ -73,7 +73,6 @@ static void         _e_menu_cb_ecore_evas_resize(Ecore_Evas *ee);
 static void         _e_menu_cb_item_in(void *data, Evas *evas, Evas_Object *obj, void *event_info);
 static void         _e_menu_cb_item_out(void *data, Evas *evas, Evas_Object *obj, void *event_info);
 static Eina_Bool    _e_menu_cb_key_down(void *data, int type, void *event);
-static Eina_Bool    _e_menu_cb_key_up(void *data, int type, void *event);
 static Eina_Bool    _e_menu_cb_mouse_down(void *data, int type, void *event);
 static Eina_Bool    _e_menu_cb_mouse_up(void *data, int type, void *event);
 static Eina_Bool    _e_menu_cb_mouse_move(void *data, int type, void *event);
@@ -103,7 +102,6 @@ static Ecore_X_Time _e_menu_time = 0;
 static int _e_menu_autoscroll_x = 0;
 static int _e_menu_autoscroll_y = 0;
 static Ecore_Event_Handler *_e_menu_key_down_handler = NULL;
-static Ecore_Event_Handler *_e_menu_key_up_handler = NULL;
 static Ecore_Event_Handler *_e_menu_mouse_down_handler = NULL;
 static Ecore_Event_Handler *_e_menu_mouse_up_handler = NULL;
 static Ecore_Event_Handler *_e_menu_mouse_move_handler = NULL;
@@ -165,8 +163,6 @@ e_menu_init(void)
 {
    _e_menu_key_down_handler =
      ecore_event_handler_add(ECORE_EVENT_KEY_DOWN, _e_menu_cb_key_down, NULL);
-   _e_menu_key_up_handler =
-     ecore_event_handler_add(ECORE_EVENT_KEY_UP, _e_menu_cb_key_up, NULL);
    _e_menu_mouse_down_handler =
      ecore_event_handler_add(ECORE_EVENT_MOUSE_BUTTON_DOWN,
                              _e_menu_cb_mouse_down, NULL);
@@ -193,7 +189,6 @@ EINTERN int
 e_menu_shutdown(void)
 {
    E_FN_DEL(ecore_event_handler_del, _e_menu_key_down_handler);
-   E_FN_DEL(ecore_event_handler_del, _e_menu_key_up_handler);
    E_FN_DEL(ecore_event_handler_del, _e_menu_mouse_down_handler);
    E_FN_DEL(ecore_event_handler_del, _e_menu_mouse_up_handler);
    E_FN_DEL(ecore_event_handler_del, _e_menu_mouse_move_handler);
@@ -2955,16 +2950,6 @@ _e_menu_cb_key_down(void *data __UNUSED__, int type __UNUSED__, void *event)
      _e_menu_item_activate_last();
    else if (ev->compose)
      _e_menu_item_activate_char(ev->compose);
-   return ECORE_CALLBACK_PASS_ON;
-}
-
-static Eina_Bool
-_e_menu_cb_key_up(void *data __UNUSED__, int type __UNUSED__, void *event)
-{
-   Ecore_Event_Key *ev;
-
-   ev = event;
-   if (ev->window != _e_menu_win) return ECORE_CALLBACK_PASS_ON;
    return ECORE_CALLBACK_PASS_ON;
 }
 
