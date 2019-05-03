@@ -166,15 +166,16 @@ _places_volume_sort_cb(const void *d1, const void *d2)
    const Volume *v1 = d1;
    const Volume *v2 = d2;
 
+   // order by label
+   if(!v1 || !v1->label) return(1);
+   if(!v2 || !v2->label) return(-1);
    // removable after interal
    if (v1->removable && !v2->removable) return(1);
    if (v2->removable && !v1->removable) return(-1);
    // filesystem root on top
    if (v1->mount_point && !strcmp(v1->mount_point, "/")) return -1;
    if (v2->mount_point && !strcmp(v2->mount_point, "/")) return 1;
-   // order by label
-   if(!v1 || !v1->label) return(1);
-   if(!v2 || !v2->label) return(-1);
+
    return strcmp(v1->label, v2->label);
 }
 
