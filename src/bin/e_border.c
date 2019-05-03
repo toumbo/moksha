@@ -870,7 +870,6 @@ e_border_zone_set(E_Border *bd,
    E_OBJECT_TYPE_CHECK(bd, E_BORDER_TYPE);
    E_OBJECT_CHECK(zone);
    E_OBJECT_TYPE_CHECK(zone, E_ZONE_TYPE);
-   if (!zone) return;
    if (bd->zone == zone) return;
 
    /* if the window does not lie in the new zone, move it so that it does */
