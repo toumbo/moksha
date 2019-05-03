@@ -70,8 +70,7 @@ _set_data_path(char *path)
        return EINA_FALSE;
     Eina_Bool success = EINA_TRUE;
     const int len = snprintf(NULL, 0, "%s", temp_str)
-                              + 1 + (temp_str[strlen(temp_str)] != '/');
-
+                              + 1 + (temp_str[strlen(temp_str)-1] != '/');
     if (temp_str[0] == '/' ) {
 
       if (len <= PATH_MAX) {
