@@ -44,6 +44,7 @@ e_config_dialog_new(E_Container *con, const char *title, const char *name, const
       }
    cfd = E_OBJECT_ALLOC(E_Config_Dialog, E_CONFIG_DIALOG_TYPE,
                         _e_config_dialog_free);
+   if (!cfd) return NULL;
    cfd->view = view;
    cfd->con = con;
    cfd->title = eina_stringshare_add(title);
