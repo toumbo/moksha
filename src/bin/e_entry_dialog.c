@@ -23,6 +23,7 @@ e_entry_dialog_show(const char *title, const char *icon, const char *text,
    int w, h;
 
    ed = E_OBJECT_ALLOC(E_Entry_Dialog, E_ENTRY_DIALOG_TYPE, _e_entry_dialog_free);
+   if (!ed) return NULL;
    ed->ok.func = ok_func;
    ed->ok.data = data;
    ed->cancel.func = cancel_func;
