@@ -26,6 +26,7 @@ e_confirm_dialog_show(const char *title, const char *icon, const char *text,
    E_Dialog *dia;
 
    cd = E_OBJECT_ALLOC(E_Confirm_Dialog, E_CONFIRM_DIALOG_TYPE, _e_confirm_dialog_free);
+   if (!cd) return NULL;
    cd->yes.func = func;
    cd->yes.data = data;
    cd->no.func = func2;
