@@ -312,7 +312,8 @@ e_syscon_menu_fill(E_Menu *m)
 {
    E_Config_Syscon_Action *sca;
    E_Menu_Item *it;
-
+   char *temp;
+   
    if (!m) return;
    if (m->items) return;
    if ((sca = _find_action("desk_lock")))
@@ -324,7 +325,8 @@ e_syscon_menu_fill(E_Menu *m)
           e_util_menu_item_theme_icon_set(it, sca->icon);
         /* Disable desk_lock for guest account with no password
          *   It is assumed that any user with HOME in tmp is guest session */
-        if(strncmp(getenv("HOME"), "/tmp/", 5) == 0) 
+        temp = getenv("HOME");
+        if(temp && strncmp(temp, "/tmp/", 5) == 0) 
           e_menu_item_disabled_set(it, EINA_TRUE);
         e_menu_item_callback_set(it, _cb_menu_sel, sca);
      }
