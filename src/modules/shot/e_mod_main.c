@@ -42,7 +42,7 @@ static char *url_ret = NULL;
 static E_Dialog *fsel_dia = NULL;
 static E_Dialog *_show_dialog_dia = NULL;
 static E_Border_Menu_Hook *border_hook = NULL;
-static Eina_Bool _shot_delay(void *data);
+static Eina_Bool _shot_no_delay(void *data);
 
 static void _file_select_ok_cb(void *data __UNUSED__, E_Dialog *dia);
 static void _file_select_cancel_cb(void *data __UNUSED__, E_Dialog *dia);
@@ -95,15 +95,15 @@ Eina_Bool _timer_cb(void *data)
 {
    if (shot_conf->count>0)
      {
-		if (shot_conf->notify)
-       _notify(shot_conf->count,_("Screenshot in: "),"... ",1020,1);
+       if (shot_conf->notify)
+         _notify(shot_conf->count,_("Screenshot in: "),"... ",1024,1);
        
        shot_conf->count--;
        return  ECORE_CALLBACK_PASS_ON;
      }
    else
      {
-       _shot_delay(data);
+       timer = ecore_timer_add(0.2, _shot_no_delay, data);
        return ECORE_CALLBACK_DONE;
      }
 }
@@ -835,17 +835,24 @@ _shot_now(E_Zone *zone, E_Border *bd)
    if (!ecore_x_window_attributes_get(xwin, &watt)) return;
    visual = watt.visual;
    img = ecore_x_image_new(w, h, visual, ecore_x_window_depth_get(xwin));
+   ecore_x_window_cursor_show(xwin,1);
    ecore_x_image_get(img, xwin, x, y, 0, 0, sw, sh);
+   ecore_x_window_cursor_show(xwin,1);
    src = ecore_x_image_data_get(img, &bpl, &rows, &bpp);
+   ecore_x_window_cursor_show(xwin,1);
    display = ecore_x_display_get();
+   ecore_x_window_cursor_show(xwin,1);
    scr = ecore_x_default_screen_get();
+   ecore_x_window_cursor_show(xwin,1);
    colormap = ecore_x_default_colormap_get(display, scr);
+   ecore_x_window_cursor_show(xwin,1);
    dst = malloc(sw * sh * sizeof(unsigned int));
    ecore_x_image_to_argb_convert(src, bpp, bpl, colormap, visual,
                                  0, 0, sw, sh,
                                  dst, (sw * sizeof(int)), 0, 0);
    
    if (win) e_object_del(E_OBJECT(win));
+   ecore_x_window_cursor_show(xwin,1);
    win = e_win_new(e_container_current_get(e_manager_current_get()));
    
    evas = e_win_evas_get(win);
@@ -1024,10 +1031,8 @@ _shot_now(E_Zone *zone, E_Border *bd)
    if (!shot_conf->full_dialog) _win_save_cb(win,NULL);
 }
 
-
-
 static Eina_Bool
-_shot_delay(void *data)
+_shot_no_delay(void *data)
 {
    timer_sec = timer = NULL;
    _shot_now(data, NULL);
@@ -1061,7 +1066,7 @@ _shot(E_Zone *zone, Eina_Bool instant)
    if (shot_conf->delay > 0)
        timer_sec = ecore_timer_add(1.0, _timer_cb, zone);
    else
-       timer = ecore_timer_add(0.2, _shot_delay, zone);
+       timer = ecore_timer_add(0.2, _shot_no_delay, zone);
 }
 
 
