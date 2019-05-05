@@ -1037,10 +1037,10 @@ _grab_key_down_cb(void *data,
    ev = event;
    cfdata = data;
 
-   if ((ev->key) && (ev->key) && (ev->compose))
+   if ((ev->keyname) && (ev->key) && (ev->compose))
      printf("'%s' '%s' '%s'\n", ev->key, ev->key, ev->compose);
-   else if ((ev->key) && (ev->key))
-     printf("'%s' '%s'\n", ev->key, ev->key);
+   else if ((ev->keyname) && (ev->key))
+     printf("'%s' '%s'\n", ev->keyname, ev->key);
    else
      printf("unknown key!!!!\n");
    if (!e_util_strcmp(ev->key, "Control_L") || !e_util_strcmp(ev->key, "Control_R") ||
