@@ -835,24 +835,17 @@ _shot_now(E_Zone *zone, E_Border *bd)
    if (!ecore_x_window_attributes_get(xwin, &watt)) return;
    visual = watt.visual;
    img = ecore_x_image_new(w, h, visual, ecore_x_window_depth_get(xwin));
-   ecore_x_window_cursor_show(xwin,1);
    ecore_x_image_get(img, xwin, x, y, 0, 0, sw, sh);
-   ecore_x_window_cursor_show(xwin,1);
    src = ecore_x_image_data_get(img, &bpl, &rows, &bpp);
-   ecore_x_window_cursor_show(xwin,1);
    display = ecore_x_display_get();
-   ecore_x_window_cursor_show(xwin,1);
    scr = ecore_x_default_screen_get();
-   ecore_x_window_cursor_show(xwin,1);
    colormap = ecore_x_default_colormap_get(display, scr);
-   ecore_x_window_cursor_show(xwin,1);
    dst = malloc(sw * sh * sizeof(unsigned int));
    ecore_x_image_to_argb_convert(src, bpp, bpl, colormap, visual,
                                  0, 0, sw, sh,
                                  dst, (sw * sizeof(int)), 0, 0);
    
    if (win) e_object_del(E_OBJECT(win));
-   ecore_x_window_cursor_show(xwin,1);
    win = e_win_new(e_container_current_get(e_manager_current_get()));
    
    evas = e_win_evas_get(win);
