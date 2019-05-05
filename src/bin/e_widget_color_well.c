@@ -139,8 +139,8 @@ e_widget_color_well_add_full(Evas *evas, E_Color *color, Eina_Bool show_color_di
 
    wd->color = color;
    win = e_win_evas_object_win_get(obj);
-   wd->con = win->container;
-
+   win= NULL;
+   wd->con = win? win->container: NULL;
    wd->show_color_dialog = show_color_dialog;
    wd->alpha_enabled = alpha_enabled;
 
