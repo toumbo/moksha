@@ -90,9 +90,12 @@ e_wizard_shutdown(void)
     FILE *f;
     snprintf(path, 4096, "%s/.e/e/applications/startup/.order", homedir);
     f = fopen(path, "w");
-    fputs("nm-applet.desktop\n", f);
-    fputs("elaptopcheck.desktop\n", f);
-    fclose(f);
+    if (f)
+      {
+         fputs("nm-applet.desktop\n", f);
+         fputs("elaptopcheck.desktop\n", f);
+         fclose(f);
+      }
    return 1;
 }
 
