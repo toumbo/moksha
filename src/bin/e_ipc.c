@@ -2,7 +2,6 @@
 
 #ifdef USE_IPC
 /* local subsystem functions */
-static Eina_Bool _e_ipc_cb_client_add(void *data __UNUSED__, int type __UNUSED__, void *event);
 static Eina_Bool _e_ipc_cb_client_del(void *data __UNUSED__, int type __UNUSED__, void *event);
 static Eina_Bool _e_ipc_cb_client_data(void *data __UNUSED__, int type __UNUSED__, void *event);
 
@@ -74,8 +73,6 @@ e_ipc_init(void)
    if (!_e_ipc_server) return 0;
 
    e_util_env_set("E_IPC_SOCKET", buf3);
-   ecore_event_handler_add(ECORE_IPC_EVENT_CLIENT_ADD,
-                           _e_ipc_cb_client_add, NULL);
    ecore_event_handler_add(ECORE_IPC_EVENT_CLIENT_DEL,
                            _e_ipc_cb_client_del, NULL);
    ecore_event_handler_add(ECORE_IPC_EVENT_CLIENT_DATA,
@@ -102,17 +99,6 @@ e_ipc_shutdown(void)
 
 #ifdef USE_IPC
 /* local subsystem globals */
-static Eina_Bool
-_e_ipc_cb_client_add(void *data __UNUSED__, int type __UNUSED__, void *event)
-{
-   Ecore_Ipc_Event_Client_Add *e;
-
-   e = event;
-   if (ecore_ipc_client_server_get(e->client) != _e_ipc_server)
-     return ECORE_CALLBACK_PASS_ON;
-   return ECORE_CALLBACK_PASS_ON;
-}
-
 static Eina_Bool
 _e_ipc_cb_client_del(void *data __UNUSED__, int type __UNUSED__, void *event)
 {
