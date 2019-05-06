@@ -261,7 +261,7 @@ e_module_new(const char *name)
         m->error = 1;
         goto init_done;
      }
-   if (m->api->version < E_MODULE_API_VERSION)
+   if (m->api->version != E_MODULE_API_VERSION)
      {
         snprintf(body, sizeof(body),
                  _("Module API Error<br>Error initializing Module: %s<br>"
