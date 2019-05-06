@@ -966,10 +966,7 @@ while (!e_config)
         _e_config_edd_shutdown();
         _e_config_edd_init(EINA_TRUE);
         e_config = e_config_domain_load("e", _e_config_edd);
-        /* I made a c&p error here and fucked the world, so this ugliness
-         * will be my public mark of shame until E19 :/
-         * -zmike, 2013
-         */
+
         if (e_config)
           {
              Eina_List *l;
