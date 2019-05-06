@@ -712,8 +712,8 @@ _e_module_whitelist_check(void)
    E_Module *m;
    unsigned int known = 0;
    int i;
-   const char *s;
-  if (strcmp(getenv("MOKSHA_MODULE_SECURITY"),"0") == 0)
+   const char *s = getenv("MOKSHA_MODULE_SECURITY");
+  if (s && (strcmp(s,"0") == 0))
   {
      #define MOKSHA_ONLY_CORE
  }
