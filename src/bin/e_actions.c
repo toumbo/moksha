@@ -1263,7 +1263,7 @@ ACT_FN_GO(window_jump_to_or_start,)
    if (!params) return;
 
    window_name = strdup(params);
-   start_name = window_name;
+   //start_name = window_name;
    start_name = strchr(window_name, ' ');
    if (start_name)
      {
