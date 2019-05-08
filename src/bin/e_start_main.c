@@ -535,8 +535,8 @@ main(int argc, char **argv)
 				 {
 				    if (read(fd, &c, sizeof (c)) == sizeof (c) && c != '0')
 				      bad_kernel = EINA_TRUE;
+				   close(fd); 
 				 }
-			       close(fd);
 			    }
 
                             if (home && !bad_kernel)
