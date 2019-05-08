@@ -1347,7 +1347,6 @@ _add_border(E_Border *bd)
                                        &_G.tinfo->pos[0], NULL,
                                        &_G.tinfo->size[0], NULL);
         }
-        stack = 0;
     }
     DBG("expected: %dx%d+%d+%d (%p)",
         extra->expected.w,
