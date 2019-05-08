@@ -293,19 +293,17 @@ _cb_dialog_cancel(void *data __UNUSED__)
 static void
 _save_to(const char *file)
 {
-   char *extn = strrchr(file, '.');
    char opts[256];
-   
-   if (!strcasecmp(extn, ".png"))
-      snprintf(opts, sizeof(opts), "compress=%i", 9);
+
+   if (eina_str_has_extension(file, ".png"))
+     snprintf(opts, sizeof(opts), "compress=%i", 9);
    else
-      //~ snprintf(opts, sizeof(opts), "quality=%i", quality);
+     //~ snprintf(opts, sizeof(opts), "quality=%i", quality);
       snprintf(opts, sizeof(opts), "quality=%i",  (int)shot_conf->pict_quality);
    if (screen == -1)
      {
         if (!evas_object_image_save(o_img, file, NULL, opts))
         {
-		  
           e_confirm_dialog_show(_("Error - Folder does not exist"),
                           "application-exit",
                           _("Change folder in Take Screenshot settings<br>"
