@@ -388,7 +388,7 @@ gadman_gadget_edit_start(E_Gadcon_Client *gcc)
 
    EINA_LIST_FOREACH(Man->gadcons[gcc->gadcon->id - ID_GADMAN_LAYER_BASE], l, gc)
      gc->editing = 1;
-   gc = gcc->gadcon;
+   //gc = gcc->gadcon;
 
    e_object_ref(E_OBJECT(gcc));
    //INF("START: %u", e_object_ref_get((void*)gcc));
