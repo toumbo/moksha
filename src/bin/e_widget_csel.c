@@ -122,8 +122,8 @@ _e_wid_cb_color_changed(void *data, Evas_Object *o)
      {
         if (o != so)
           e_widget_cslider_update(so);
-        else
-          changed = i;
+        /* else
+          changed = i; */
         i++;
      }
 
