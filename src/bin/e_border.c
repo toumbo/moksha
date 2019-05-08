@@ -9863,7 +9863,9 @@ _e_border_resize_begin(E_Border *bd)
 static int
 _e_border_resize_end(E_Border *bd)
 {
-   if (grabbed && bd)
+   
+  if (!bd) return 1;
+  if (grabbed)
      {
         e_grabinput_release(bd->win, bd->win);
         grabbed = 0;
