@@ -234,8 +234,8 @@ e_module_shutdown(void)
              m = _e_modules->data;
              if ((m) && (m->enabled) && !(m->error))
                {
-                  m->func.save(m);
-                  m->func.shutdown(m);
+                  if (m->func.save) m->func.save(m);
+                  if (m->func.shutdown) m->func.shutdown(m);
                   m->enabled = 0;
                }
              e_object_del(E_OBJECT(m));
@@ -367,7 +367,7 @@ e_module_new(const char *name)
    m->func.shutdown = dlsym(m->handle, "e_modapi_shutdown");
    m->func.save = dlsym(m->handle, "e_modapi_save");
 
-   if ((!m->func.init) || (!m->func.shutdown) || (!m->func.save) || (!m->api))
+   if ((!m->func.init) || (!m->api))
      {
         snprintf(body, sizeof(body),
                  _("There was an error loading the module named: %s<br>"
@@ -459,7 +459,7 @@ e_module_save(E_Module *m)
    E_OBJECT_CHECK_RETURN(m, 0);
    E_OBJECT_TYPE_CHECK_RETURN(m, E_MODULE_TYPE, 0);
    if ((!m->enabled) || (m->error)) return 0;
-   return m->func.save(m);
+   return m->func.save ? m->func.save(m) : 1;
 }
 
 EAPI const char *
@@ -519,7 +519,7 @@ e_module_disable(E_Module *m)
    E_OBJECT_CHECK_RETURN(m, 0);
    E_OBJECT_TYPE_CHECK_RETURN(m, E_MODULE_TYPE, 0);
    if ((!m->enabled) || (m->error)) return 0;
-   ret = m->func.shutdown(m);
+   ret = m->func.shutdown ? m->func.shutdown(m) : 1;
    m->data = NULL;
    m->enabled = 0;
    EINA_LIST_FOREACH(e_config->modules, l, em)
@@ -563,8 +563,9 @@ e_module_save_all(void)
           {
              if (m->func.save && (!m->func.save(m))) ret = 0;
           }
-        e_object_unref(E_OBJECT(m));
     }
+   EINA_LIST_FOREACH(_e_modules, l, m)
+     e_object_unref(E_OBJECT(m));
    return ret;
 }
 
@@ -716,8 +717,8 @@ _e_module_free(E_Module *m)
 
    if ((m->enabled) && (!m->error))
      {
-        m->func.save(m);
-        m->func.shutdown(m);
+        if (m->func.save) m->func.save(m);
+        if (m->func.shutdown) m->func.shutdown(m);
      }
    if (m->name) eina_stringshare_del(m->name);
    if (m->dir) eina_stringshare_del(m->dir);
