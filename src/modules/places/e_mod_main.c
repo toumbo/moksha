@@ -248,13 +248,16 @@ _gc_shutdown(E_Gadcon_Client *gcc)
         evas_object_del(inst->o_main);
      }
      
+   if (inst->popup)
+     {
+        e_object_del(E_OBJECT(inst->popup));
+        inst->popup = NULL;
+     }
+
    if (inst->o_icon)
      {
-        evas_object_event_callback_del(inst->o_icon, EVAS_CALLBACK_MOUSE_DOWN,
-                                     _places_icon_cb_mouse_down);
         evas_object_del(inst->o_icon);
-        if (inst->popup)
-           e_object_del(E_OBJECT(inst->popup));
+        inst->o_icon = NULL;
      }
 
    E_FREE(inst);
