@@ -900,7 +900,7 @@ _ibar_cb_icon_mouse_down(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUS
         e_menu_item_submenu_set(mi, mo);
         e_object_unref(E_OBJECT(mo));
         
-                if (ic->app->actions)
+        if (ic->app->actions)
           {
              EINA_LIST_FOREACH(ic->app->actions, it, action)
                {
