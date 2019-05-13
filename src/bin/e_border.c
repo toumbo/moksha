@@ -59,9 +59,6 @@ static Eina_Bool _e_border_cb_window_stack_request(void *data,
 static Eina_Bool _e_border_cb_window_property(void *data,
                                               int ev_type,
                                               void *ev);
-static Eina_Bool _e_border_cb_window_colormap(void *data,
-                                              int ev_type,
-                                              void *ev);
 static Eina_Bool _e_border_cb_window_shape(void *data,
                                            int ev_type,
                                            void *ev);
@@ -310,8 +307,6 @@ e_border_init(void)
                          _e_border_cb_window_stack_request, NULL);
    E_LIST_HANDLER_APPEND(handlers, ECORE_X_EVENT_WINDOW_PROPERTY,
                          _e_border_cb_window_property, NULL);
-   E_LIST_HANDLER_APPEND(handlers, ECORE_X_EVENT_WINDOW_COLORMAP,
-                         _e_border_cb_window_colormap, NULL);
    E_LIST_HANDLER_APPEND(handlers, ECORE_X_EVENT_WINDOW_SHAPE,
                          _e_border_cb_window_shape, NULL);
    E_LIST_HANDLER_APPEND(handlers, ECORE_X_EVENT_WINDOW_FOCUS_IN,
@@ -5940,20 +5935,6 @@ _e_border_cb_window_property(void *data  __UNUSED__,
         bd->changed = 1;
      }
 
-   return ECORE_CALLBACK_PASS_ON;
-}
-
-static Eina_Bool
-_e_border_cb_window_colormap(void *data  __UNUSED__,
-                             int ev_type __UNUSED__,
-                             void *ev)
-{
-   E_Border *bd;
-   Ecore_X_Event_Window_Colormap *e;
-
-   e = ev;
-   bd = e_border_find_by_client_window(e->win);
-   if (!bd) return ECORE_CALLBACK_PASS_ON;
    return ECORE_CALLBACK_PASS_ON;
 }
 
