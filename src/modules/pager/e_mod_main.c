@@ -1923,7 +1923,10 @@ _pager_window_cb_mouse_move(void *data, Evas *e __UNUSED__, Evas_Object *obj __U
         my = ev->cur.canvas.y;
 
         /* find desk at pointer */
-        pd = _pager_desk_at_coord(pw->desk->pager, mx, my);
+        if ((pw->desk) && (pw->desk->pager))
+           pd = _pager_desk_at_coord(pw->desk->pager, mx, my);
+        else
+           pd = NULL;
         if ((pd) && (!pw->drag.no_place))
           {
              int zx, zy;
