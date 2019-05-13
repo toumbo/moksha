@@ -194,7 +194,9 @@ _e_startup_event_cb(void *data, int ev_type __UNUSED__, void *ev)
          f = fopen(shfile, "w");
          fclose(f);
      }
-     chmod(shfile, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+     if (chmod(shfile, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) < 0)
+        fprintf(stderr, "Moksha: chmod failure\n");
+     // Let this fail when chmod fails so user is aware of problem
      e_exec(NULL, NULL, shfile, NULL, NULL);
    }
    return ECORE_CALLBACK_PASS_ON;
