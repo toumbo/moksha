@@ -192,7 +192,7 @@ _e_startup_event_cb(void *data, int ev_type __UNUSED__, void *ev)
      {
          FILE *f;
          f = fopen(shfile, "w");
-         fclose(f);
+         if (f) fclose(f);
      }
      if (chmod(shfile, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) < 0)
         fprintf(stderr, "Moksha: chmod failure\n");
