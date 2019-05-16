@@ -623,13 +623,7 @@ _e_int_menus_bodhi_about(void *data __UNUSED__, E_Menu *m __UNUSED__, E_Menu_Ite
 static void
 _e_int_menus_bodhi_quick_start(void *data __UNUSED__, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__)
 {
-   E_Zone *zone;
-   char buff[PATH_MAX];
-
-   snprintf(buff, sizeof(buff), "enlightenment_open "
-            "file:///usr/share/bodhi/quickstart/quickstartEN/index.html");
-   zone = e_util_zone_current_get(e_manager_current_get());
-   e_exec(zone, NULL, buff, NULL, NULL);
+   e_util_open_quick_start();
 }
 
 /*
