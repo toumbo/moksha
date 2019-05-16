@@ -857,6 +857,11 @@ _e_randr_event_cb_output_change(void *data EINA_UNUSED, int type EINA_UNUSED, vo
                     }
                }
           }
+          /* free this output_cfg */
+          /* Flagged by coverity as a resource leak */
+          if (output_cfg->clones) free(output_cfg->clones);
+          if (output_cfg->edid) free(output_cfg->edid);
+          E_FREE(output_cfg);
      }
 
    /* save the config if anything changed or we added a new one */
@@ -869,7 +874,7 @@ _e_randr_event_cb_output_change(void *data EINA_UNUSED, int type EINA_UNUSED, vo
    /* if we added or removed any outputs, we need to reset */
    if ((output_new) || (output_removed))
      ecore_x_randr_screen_reset(ev->win);
-
+ 
    return ECORE_CALLBACK_RENEW;
 }
 
