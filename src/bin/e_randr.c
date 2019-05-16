@@ -1184,8 +1184,8 @@ _e_randr_config_screen_size_calculate(int *sw, int *sh)
                     {
                        x = cinfo->x;
                        y = cinfo->y;
-                       w = cinfo->width;
-                       h = cinfo->height;
+                       //w = cinfo->width;
+                       //h = cinfo->height;
                        mode = cinfo->mode;
                        orient = cinfo->rotation;
 
