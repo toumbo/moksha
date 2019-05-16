@@ -417,8 +417,8 @@ _e_randr_config_restore(void)
                {
                   x = cfg->x;
                   y = cfg->y;
-                  w = cfg->width;
-                  h = cfg->height;
+                  //w = cfg->width;
+                  //h = cfg->height;
                   mode = cfg->mode;
                   orient = cfg->orient;
                }
@@ -433,8 +433,8 @@ _e_randr_config_restore(void)
                     {
                        x = cinfo->x;
                        y = cinfo->y;
-                       w = cinfo->width;
-                       h = cinfo->height;
+                       //w = cinfo->width;
+                       //h = cinfo->height;
                        mode = cinfo->mode;
                        orient = cinfo->rotation;
 
