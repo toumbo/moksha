@@ -323,7 +323,6 @@ _notification_popup_merge(E_Notification *n)
      }
    for (i = l, i2 = l2; i && i2; i = i->next, i2 = i2->next)
      {
-        if ((!!i) + (!!i2) == 1) return NULL;
         a = i->data, a2 = i2->data;
         if ((!!a) + (!!a2) == 1) return NULL;
         if (e_notification_action_id_get(a) != 
