@@ -1753,4 +1753,11 @@ e_util_elm_theme_set(const char *path)
    return ret;
 }
 
+EAPI void 
+e_util_copy_safely(char* dst, const char* src, uint32_t len)
+{
+    strncpy(dst, src, len - 1);
+    dst[len - 1] = '\0';
+}
+
 #endif
