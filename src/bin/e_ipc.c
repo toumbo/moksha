@@ -79,24 +79,18 @@ e_ipc_init(void)
      {
         snprintf(buf, sizeof(buf), "%s/e-%s@%x",
                  base, user, id1);
-        mkdir(buf, S_IRWXU);
-        if (stat(buf, &st) == 0)
+        if (!mkdir(buf, S_IRWXU))
           {
-             if ((st.st_uid == getuid()) &&
-                  ((st.st_mode & (S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO)) ==
-                      (S_IRWXU | S_IFDIR)))
-               {
 #ifdef USE_IPC
-                  snprintf(buf3, sizeof(buf3), "%s/%s-%i",
-                           buf, disp, pid);
-                  _e_ipc_server = ecore_ipc_server_add
-                    (ECORE_IPC_LOCAL_SYSTEM, buf3, 0, NULL);
-                 if (_e_ipc_server)
+             snprintf(buf3, sizeof(buf3), "%s/%i",
+                      buf, pid);
+             _e_ipc_server = ecore_ipc_server_add
+                (ECORE_IPC_LOCAL_SYSTEM, buf3, 0, NULL);
+             if (_e_ipc_server)
 #endif
-                  {
-                     e_ipc_socket = strdup(ecore_file_file_get(buf));
-                     break;
-                  }
+               {
+                  e_ipc_socket = strdup(ecore_file_file_get(buf));
+                  break;
                }
           }
         id1 = rand();
