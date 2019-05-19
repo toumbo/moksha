@@ -6980,7 +6980,7 @@ _e_fm2_cb_dnd_selection_notify(void *data, const char *type, void *event)
                          }
                        eina_stringshare_del(fp);
                     }
-                  if (!memerr)
+                  if (!memerr && sd->realpath)
                     {
                        args = e_util_string_append_quoted(args, &size, &length, sd->realpath);
                        if (!args) memerr = EINA_TRUE;
