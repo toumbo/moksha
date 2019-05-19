@@ -485,6 +485,8 @@ main(int argc, char **argv)
                             int r = 0;
                             int back;
 
+                            memset(&sig, 0, sizeof(siginfo_t));
+
 #if defined(HAVE_SYS_PTRACE_H) && defined(PT_GETSIGINFO)
                              if (!really_know)
                                r = ptrace(PT_GETSIGINFO, child, NULL, &sig);
