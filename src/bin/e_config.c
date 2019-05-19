@@ -37,7 +37,6 @@ static E_Config_DD *_e_config_desktop_bg_edd = NULL;
 static E_Config_DD *_e_config_desklock_bg_edd = NULL;
 static E_Config_DD *_e_config_desktop_name_edd = NULL;
 static E_Config_DD *_e_config_desktop_window_profile_edd = NULL;
-static E_Config_DD *_e_config_remember_edd = NULL;
 static E_Config_DD *_e_config_color_class_edd = NULL;
 static E_Config_DD *_e_config_gadcon_edd = NULL;
 static E_Config_DD *_e_config_gadcon_client_edd = NULL;
@@ -324,11 +323,11 @@ _e_config_edd_init(Eina_Bool old)
    E_CONFIG_VAL(D, T, action, STR);
    E_CONFIG_VAL(D, T, params, STR);
 
-   _e_config_remember_edd = E_CONFIG_DD_NEW("E_Remember", E_Remember);
+   e_remember_edd = E_CONFIG_DD_NEW("E_Remember", E_Remember);
 #undef T
 #undef D
 #define T E_Remember
-#define D _e_config_remember_edd
+#define D e_remember_edd
    E_CONFIG_VAL(D, T, match, INT);
    E_CONFIG_VAL(D, T, no_reopen, INT);
    E_CONFIG_VAL(D, T, apply_first_only, UCHAR);
@@ -562,7 +561,7 @@ _e_config_edd_init(Eina_Bool old)
    E_CONFIG_VAL(D, T, transition_start, STR); /**/
    E_CONFIG_VAL(D, T, transition_desk, STR); /**/
    E_CONFIG_VAL(D, T, transition_change, STR); /**/
-   E_CONFIG_LIST(D, T, remembers, _e_config_remember_edd);
+   E_CONFIG_LIST(D, T, remembers, e_remember_edd);
    E_CONFIG_VAL(D, T, remember_internal_windows, INT);
    E_CONFIG_VAL(D, T, move_info_follows, INT); /**/
    E_CONFIG_VAL(D, T, resize_info_follows, INT); /**/
@@ -812,7 +811,7 @@ _e_config_edd_shutdown(void)
    E_CONFIG_DD_FREE(_e_config_desklock_bg_edd);
    E_CONFIG_DD_FREE(_e_config_desktop_name_edd);
    E_CONFIG_DD_FREE(_e_config_desktop_window_profile_edd);
-   E_CONFIG_DD_FREE(_e_config_remember_edd);
+   E_CONFIG_DD_FREE(e_remember_edd);
    E_CONFIG_DD_FREE(_e_config_gadcon_edd);
    E_CONFIG_DD_FREE(_e_config_gadcon_client_edd);
    E_CONFIG_DD_FREE(_e_config_shelf_edd);
