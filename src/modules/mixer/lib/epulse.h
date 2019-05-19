@@ -60,7 +60,7 @@ EAPI Eina_Bool epulse_source_mute_set(int index, Eina_Bool mute);
 EAPI Eina_Bool epulse_sink_volume_set(int index, pa_cvolume* volume);
 EAPI Eina_Bool epulse_sink_mute_set(int index, Eina_Bool mute);
 EAPI Eina_Bool epulse_sink_port_set(int index, const char *port);
-EAPI Eina_Bool epulse_sink_input_volume_set(int index, pa_cvolume volume);
+EAPI Eina_Bool epulse_sink_input_volume_set(int index, pa_cvolume* volume);
 EAPI Eina_Bool epulse_sink_input_mute_set(int index, Eina_Bool mute);
 EAPI Eina_Bool epulse_sink_input_move(int index, int sink_index);
 EAPI void epulse_shutdown(void);
