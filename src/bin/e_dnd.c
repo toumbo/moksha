@@ -34,7 +34,6 @@ static Eina_Bool      _e_dnd_cb_mouse_move(void *data, int type, void *event);
 static Eina_Bool      _e_dnd_cb_event_dnd_enter(void *data, int type, void *event);
 static Eina_Bool      _e_dnd_cb_event_dnd_leave(void *data, int type, void *event);
 static Eina_Bool      _e_dnd_cb_event_dnd_position(void *data, int type, void *event);
-static Eina_Bool      _e_dnd_cb_event_dnd_status(void *data, int type, void *event);
 static Eina_Bool      _e_dnd_cb_event_dnd_finished(void *data, int type, void *event);
 static Eina_Bool      _e_dnd_cb_event_dnd_drop(void *data, int type, void *event);
 static Eina_Bool      _e_dnd_cb_event_dnd_selection(void *data, int type, void *event);
@@ -93,7 +92,6 @@ e_dnd_init(void)
    E_LIST_HANDLER_APPEND(_event_handlers, ECORE_X_EVENT_XDND_ENTER, _e_dnd_cb_event_dnd_enter, NULL);
    E_LIST_HANDLER_APPEND(_event_handlers, ECORE_X_EVENT_XDND_LEAVE, _e_dnd_cb_event_dnd_leave, NULL);
    E_LIST_HANDLER_APPEND(_event_handlers, ECORE_X_EVENT_XDND_POSITION, _e_dnd_cb_event_dnd_position, NULL);
-   E_LIST_HANDLER_APPEND(_event_handlers, ECORE_X_EVENT_XDND_STATUS, _e_dnd_cb_event_dnd_status, NULL);
    E_LIST_HANDLER_APPEND(_event_handlers, ECORE_X_EVENT_XDND_FINISHED, _e_dnd_cb_event_dnd_finished, NULL);
    E_LIST_HANDLER_APPEND(_event_handlers, ECORE_X_EVENT_XDND_DROP, _e_dnd_cb_event_dnd_drop, NULL);
    E_LIST_HANDLER_APPEND(_event_handlers, ECORE_X_EVENT_SELECTION_NOTIFY, _e_dnd_cb_event_dnd_selection, NULL);
@@ -1347,16 +1345,6 @@ _e_dnd_cb_event_dnd_position(void *data __UNUSED__, int type __UNUSED__, void *e
      }
 //   double t2 = ecore_time_get() - t1; ////
 //   printf("DND POS EV 2 %3.7f\n", t2); ////
-   return ECORE_CALLBACK_PASS_ON;
-}
-
-static Eina_Bool
-_e_dnd_cb_event_dnd_status(void *data __UNUSED__, int type __UNUSED__, void *event)
-{
-   Ecore_X_Event_Xdnd_Status *ev;
-
-   ev = event;
-   if (ev->win != _drag_win) return ECORE_CALLBACK_PASS_ON;
    return ECORE_CALLBACK_PASS_ON;
 }
 
