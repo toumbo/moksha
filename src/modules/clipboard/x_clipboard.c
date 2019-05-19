@@ -255,7 +255,7 @@ void
 init_clipboard_struct(Config *config) {
   int mode = CLIP_CONFIG_MODE(config);
 
-  if (mode > CLIP_MAX_MODE) {
+  if (mode >= CLIP_MAX_MODE) {
     ERR("Module configuration Error: Track Mode %d \n", mode);
     mode = CLIP_MODE_DEFAULT;
     // FIXME reset config here?
