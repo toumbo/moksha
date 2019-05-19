@@ -9586,7 +9586,7 @@ _e_fm2_new_thread_helper(Ecore_Thread *eth, Eina_Bool dir)
         else
           {
              fd = open(buf, O_WRONLY|O_CREAT|O_TRUNC, S_IRUSR | S_IWUSR);
-             if (fd)
+             if (fd && fd !=-1)
                {
                   close(fd);
                   ecore_thread_global_data_set("efm_pending_filename", strdup(buf), free);
