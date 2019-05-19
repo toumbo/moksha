@@ -197,7 +197,7 @@ _volume_increase_cb(E_Object *obj EINA_UNUSED, const char *params EINA_UNUSED)
    Sink *s = mixer_context->sink_default;
    pa_cvolume v = s->volume;
    pa_cvolume_inc(&v, VOLUME_STEP);
-   epulse_sink_volume_set(s->index, v);
+   epulse_sink_volume_set(s->index, &v);
 }
 
 static void
@@ -209,7 +209,7 @@ _volume_decrease_cb(E_Object *obj EINA_UNUSED, const char *params EINA_UNUSED)
    pa_cvolume v = s->volume;
    pa_cvolume_dec(&v, VOLUME_STEP);
 
-   epulse_sink_volume_set(s->index, v);
+   epulse_sink_volume_set(s->index, &v);
 }
 
 static void
@@ -357,7 +357,7 @@ _slider_changed_cb(void *data EINA_UNUSED, Evas_Object *obj,
    v = INT_TO_PA_VOLUME(val);
 
    pa_cvolume_set(&s->volume, s->volume.channels, v);
-   epulse_sink_volume_set(s->index, s->volume);
+   epulse_sink_volume_set(s->index, &s->volume);
 }
 
 static Evas_Object *
