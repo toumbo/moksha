@@ -217,7 +217,7 @@ _gc_init(E_Gadcon *gc, const char *gcname, const char *id, const char *style)
         if (inst->layout)                             
           e_xkb_e_icon_flag_setup(inst->o_xkbflag, inst->layout->name);
         else
-          e_xkb_e_icon_flag_setup(inst->o_xkbflag, "gb_flag");
+          e_xkb_e_icon_flag_setup(inst->o_xkbflag, "us_flag");
           
         /* The icon is part of the gadget. */
         edje_object_part_swallow(inst->o_xkbswitch, "e.swallow.flag",
