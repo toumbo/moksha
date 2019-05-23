@@ -23,10 +23,9 @@ static void _e_border_del(E_Border *bd);
 
 #ifdef PRINT_LOTS_OF_DEBUG
 #define E_PRINT_BORDER_INFO(X) \
-  _e_border_print(X, __PRETTY_FUNC__)
+  _e_border_print(X)
 
-static void _e_border_print(E_Border *bd,
-                            const char *func);
+static void _e_border_print(E_Border *bd);
 #endif
 
 /* FIXME: these likely belong in a separate icccm/client handler */
@@ -5229,8 +5228,7 @@ _e_border_del(E_Border *bd)
 
 #ifdef PRINT_LOTS_OF_DEBUG
 static void
-_e_border_print(E_Border *bd,
-                const char *func)
+_e_border_print(E_Border *bd)
 {
    if (!bd) return;
 
