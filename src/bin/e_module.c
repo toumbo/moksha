@@ -85,125 +85,22 @@ static void      _e_module_event_update_free(void *data, void *event);
 static Eina_Bool _e_module_cb_idler(void *data);
 static int       _e_module_sort_priority(const void *d1, const void *d2);
 static void      _e_module_whitelist_check(void);
-static Eina_Bool _e_module_desktop_list_cb(const Eina_Hash *hash EINA_UNUSED, const void *key, void *data, void *fdata);
 
 /* local subsystem globals */
 static Eina_List *_e_modules = NULL;
-static Eina_Hash *_e_modules_hash = NULL;
 static Ecore_Idle_Enterer *_e_module_idler = NULL;
 static Eina_List *_e_modules_delayed = NULL;
 static Eina_Bool _e_modules_initting = EINA_FALSE;
 
-static Eina_List *_e_module_path_monitors = NULL;
-static Eina_List *_e_module_path_lists = NULL;
-static Eina_List *handlers = NULL;
-static Eina_Hash *_e_module_path_hash = NULL;
-
 EAPI int E_EVENT_MODULE_UPDATE = 0;
 EAPI int E_EVENT_MODULE_INIT_END = 0;
-
-static Eina_Bool
-_module_filter_cb(void *d EINA_UNUSED, Eio_File *ls EINA_UNUSED, const Eina_File_Direct_Info *info)
-{
-   struct stat st;
-
-   if (lstat(info->path, &st)) return EINA_FALSE;
-   return (info->path[info->name_start] != '.');
-}
-
-static void
-_module_main_cb(void *d EINA_UNUSED, Eio_File *ls EINA_UNUSED, const Eina_File_Direct_Info *info)
-{
-   Eina_Stringshare *s;
-
-   s = eina_hash_set(_e_module_path_hash, info->path + info->name_start, eina_stringshare_add(info->path));
-   if (!s) return;
-   WRN("REPLACING DUPLICATE MODULE PATH: %s -> %s", s, info->path);
-   eina_stringshare_del(s);
-}
-
-static void
-_module_done_cb(void *d EINA_UNUSED, Eio_File *ls)
-{
-   _e_module_path_lists = eina_list_remove(_e_module_path_lists, ls);
-   if (_e_module_path_lists) return;
-   if (_e_modules_initting) e_module_all_load();
-}
-
-static void
-_module_error_cb(void *d EINA_UNUSED, Eio_File *ls, int error EINA_UNUSED)
-{
-   _e_module_path_lists = eina_list_remove(_e_module_path_lists, ls);
-   if (_e_module_path_lists) return;
-   if (_e_modules_initting) e_module_all_load();
-}
-
-static Eina_Bool
-_module_monitor_dir_create(void *d EINA_UNUSED, int type EINA_UNUSED, Eio_Monitor_Event *ev)
-{
-   Eina_Stringshare *s;
-   const char *path;
-
-   path = ecore_file_file_get(ev->filename);
-   s = eina_hash_set(_e_module_path_hash, path, eina_stringshare_ref(ev->filename));
-   if (s && (s != ev->filename))
-     WRN("REPLACING DUPLICATE MODULE PATH: %s -> %s", s, ev->filename);
-   eina_stringshare_del(s);
-
-   return ECORE_CALLBACK_RENEW;
-}
-
-static Eina_Bool
-_module_monitor_dir_del(void *d EINA_UNUSED, int type EINA_UNUSED, Eio_Monitor_Event *ev)
-{
-   Eina_Stringshare *s;
-   const char *path;
-
-   path = ecore_file_file_get(ev->filename);
-   s = eina_hash_find(_e_module_path_hash, path);
-   if (s == ev->filename)
-     eina_hash_del_by_key(_e_module_path_hash, path);
-
-   return ECORE_CALLBACK_RENEW;
-}
-
-static Eina_Bool
-_module_monitor_error(void *d EINA_UNUSED, int type EINA_UNUSED, Eio_Monitor_Error *ev)
-{
-   _e_module_path_monitors = eina_list_remove(_e_module_path_monitors, ev->monitor);
-   eio_monitor_del(ev->monitor);
-   return ECORE_CALLBACK_RENEW;
-}
 
 /* externally accessible functions */
 EINTERN int
 e_module_init(void)
 {
-   Eina_List *module_paths;
-   Eina_List *next_path;
-   E_Path_Dir *epd;
-
    E_EVENT_MODULE_UPDATE = ecore_event_type_new();
    E_EVENT_MODULE_INIT_END = ecore_event_type_new();
-   _e_module_path_hash = eina_hash_string_superfast_new((Eina_Free_Cb)eina_stringshare_del);
-   _e_modules_hash = eina_hash_string_superfast_new(NULL);
-
-   E_LIST_HANDLER_APPEND(handlers, EIO_MONITOR_DIRECTORY_CREATED, _module_monitor_dir_create, NULL);
-   E_LIST_HANDLER_APPEND(handlers, EIO_MONITOR_DIRECTORY_DELETED, _module_monitor_dir_del, NULL);
-   E_LIST_HANDLER_APPEND(handlers, EIO_MONITOR_ERROR, _module_monitor_error, NULL);
-
-   module_paths = e_path_dir_list_get(path_modules);
-   EINA_LIST_FOREACH(module_paths, next_path, epd)
-     {
-        Eio_Monitor *mon;
-        Eio_File *ls;
-
-        mon = eio_monitor_stringshared_add(epd->dir);
-        ls = eio_file_direct_ls(epd->dir, _module_filter_cb, _module_main_cb, _module_done_cb, _module_error_cb, NULL);
-        _e_module_path_monitors = eina_list_append(_e_module_path_monitors, mon);
-        _e_module_path_lists = eina_list_append(_e_module_path_lists, ls);
-     }
-   e_path_dir_list_free(module_paths);
    return 1;
 }
 
@@ -229,19 +126,13 @@ e_module_shutdown(void)
              m = _e_modules->data;
              if ((m) && (m->enabled) && !(m->error))
                {
-                  if (m->func.save) m->func.save(m);
-                  if (m->func.shutdown) m->func.shutdown(m);
+                  m->func.save(m);
+                  m->func.shutdown(m);
                   m->enabled = 0;
                }
              e_object_del(E_OBJECT(m));
           }
      }
-
-   E_FN_DEL(eina_hash_free, _e_module_path_hash);
-   E_FN_DEL(eina_hash_free, _e_modules_hash);
-   E_FREE_LIST(handlers, ecore_event_handler_del);
-   E_FREE_LIST(_e_module_path_monitors, eio_monitor_del);
-   E_FREE_LIST(_e_module_path_lists, eio_file_cancel);
 
    return 1;
 }
@@ -254,8 +145,7 @@ e_module_all_load(void)
    char buf[128];
 
    _e_modules_initting = EINA_TRUE;
-   if (_e_module_path_lists) return;
-
+   
    e_config->modules =
      eina_list_sort(e_config->modules, 0, _e_module_sort_priority);
 
@@ -318,19 +208,8 @@ e_module_new(const char *name)
    m = E_OBJECT_ALLOC(E_Module, E_MODULE_TYPE, _e_module_free);
    if (name[0] != '/')
      {
-        Eina_Stringshare *path;
-
-        path = eina_hash_find(_e_module_path_hash, name);
-        if (path)
-          {
-             snprintf(buf, sizeof(buf), "%s/%s/module.so", path, MODULE_ARCH);
-             modpath = eina_stringshare_add(buf);
-          }
-        else
-          {
-             snprintf(buf, sizeof(buf), "%s/%s/module.so", name, MODULE_ARCH);
-             modpath = e_path_find(path_modules, buf);
-          }
+        snprintf(buf, sizeof(buf), "%s/%s/module.so", name, MODULE_ARCH);
+        modpath = e_path_find(path_modules, buf);
      }
    else if (eina_str_has_extension(name, ".so"))
      modpath = eina_stringshare_add(name);
@@ -362,7 +241,7 @@ e_module_new(const char *name)
    m->func.shutdown = dlsym(m->handle, "e_modapi_shutdown");
    m->func.save = dlsym(m->handle, "e_modapi_save");
 
-   if ((!m->func.init) || (!m->api))
+   if ((!m->func.init) || (!m->func.shutdown) || (!m->func.save) || (!m->api))
      {
         snprintf(body, sizeof(body),
                  _("There was an error loading the module named: %s<br>"
@@ -407,7 +286,6 @@ e_module_new(const char *name)
 init_done:
 
    _e_modules = eina_list_append(_e_modules, m);
-   eina_hash_add(_e_modules_hash, name, m);
    m->name = eina_stringshare_add(name);
    if (modpath)
      {
@@ -454,7 +332,7 @@ e_module_save(E_Module *m)
    E_OBJECT_CHECK_RETURN(m, 0);
    E_OBJECT_TYPE_CHECK_RETURN(m, E_MODULE_TYPE, 0);
    if ((!m->enabled) || (m->error)) return 0;
-   return m->func.save ? m->func.save(m) : 1;
+   return m->func.save(m);
 }
 
 EAPI const char *
@@ -514,7 +392,7 @@ e_module_disable(E_Module *m)
    E_OBJECT_CHECK_RETURN(m, 0);
    E_OBJECT_TYPE_CHECK_RETURN(m, E_MODULE_TYPE, 0);
    if ((!m->enabled) || (m->error)) return 0;
-   ret = m->func.shutdown ? m->func.shutdown(m) : 1;
+   ret = m->func.shutdown(m);
    m->data = NULL;
    m->enabled = 0;
    EINA_LIST_FOREACH(e_config->modules, l, em)
@@ -552,13 +430,12 @@ e_module_save_all(void)
    int ret = 1;
 
    EINA_LIST_FOREACH(_e_modules, l, m)
-    {
-        e_object_ref(E_OBJECT(m));
-        if ((m->enabled) && (!m->error))
-          {
-             if (m->func.save && (!m->func.save(m))) ret = 0;
-          }
-    }
+     e_object_ref(E_OBJECT(m));
+   EINA_LIST_FOREACH(_e_modules, l, m)
+     if ((m->enabled) && (!m->error))
+       {
+          if (!m->func.save(m)) ret = 0;
+       }
    EINA_LIST_FOREACH(_e_modules, l, m)
      e_object_unref(E_OBJECT(m));
    return ret;
@@ -567,8 +444,13 @@ e_module_save_all(void)
 EAPI E_Module *
 e_module_find(const char *name)
 {
-   EINA_SAFETY_ON_NULL_RETURN_VAL(name, NULL);
-   return eina_hash_find(_e_modules_hash, name);
+   Eina_List *l;
+   E_Module *m;
+
+   if (!name) return NULL;
+   EINA_LIST_FOREACH(_e_modules, l, m)
+     if (!e_util_strcmp(name, m->name)) return m;
+   return NULL;
 }
 
 EAPI Eina_List *
@@ -672,24 +554,6 @@ e_module_priority_set(E_Module *m, int priority)
      }
 }
 
-EAPI Eina_List *
-e_module_desktop_list(void)
-{
-   Eina_List *l = NULL;
-
-   eina_hash_foreach(_e_module_path_hash, _e_module_desktop_list_cb, &l);
-   return l;
-}
-
-EAPI void
-e_module_desktop_free(E_Module_Desktop *md)
-{
-   if (!md) return;
-   eina_stringshare_del(md->dir);
-   efreet_desktop_free(md->desktop);
-   free(md);
-}
-
 /* local subsystem functions */
 
 static void
@@ -712,34 +576,14 @@ _e_module_free(E_Module *m)
 
    if ((m->enabled) && (!m->error))
      {
-        if (m->func.save) m->func.save(m);
-        if (m->func.shutdown) m->func.shutdown(m);
+        m->func.save(m);
+        m->func.shutdown(m);
      }
    if (m->name) eina_stringshare_del(m->name);
    if (m->dir) eina_stringshare_del(m->dir);
 //   if (m->handle) dlclose(m->handle); DONT dlclose! causes problems with deferred callbacks for free etc. - when their code goes away!
    _e_modules = eina_list_remove(_e_modules, m);
    free(m);
-}
-
-static Eina_Bool
-_e_module_desktop_list_cb(const Eina_Hash *hash EINA_UNUSED, const void *key EINA_UNUSED, void *data, void *fdata)
-{
-   char buf[PATH_MAX];
-   Eina_List **l = fdata;
-   Efreet_Desktop *desktop;
-   E_Module_Desktop *md;
-
-   snprintf(buf, sizeof(buf), "%s/module.desktop", (char*)data);
-   desktop = efreet_desktop_new(buf);
-   if (desktop)
-     {
-        md = E_NEW(E_Module_Desktop, 1);
-        md->desktop = desktop;
-        md->dir = eina_stringshare_ref(data);
-        *l = eina_list_append(*l, md);
-     }
-   return EINA_TRUE;
 }
 
 static void
