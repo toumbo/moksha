@@ -337,6 +337,11 @@ _basic_create_widgets(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dia
                     {
                        Efreet_Desktop *desktop;
 
+                       if (!ecore_file_exists(imc->e_im_setup_exec))
+                         {
+                            e_intl_input_method_config_free(imc);
+                            goto out;
+                         }
                        desktop = efreet_util_desktop_exec_find(imc->e_im_setup_exec);
                        if (desktop)
                          {
@@ -357,6 +362,7 @@ _basic_create_widgets(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dia
                   eina_hash_add(cfdata->imc_basic_map, imc_path, imc);
                }
           }
+out:
         free(imc_path);
         imc_basic_list = eina_list_remove_list(imc_basic_list, imc_basic_list);
      }
