@@ -1672,7 +1672,7 @@ e_util_clipboard(Ecore_X_Window w, const char *text, Ecore_X_Selection type)
    }
    else
    if (ecore_file_app_installed("xsel"))
-   { WRN("XSEL");
+   {
      if (type == ECORE_X_SELECTION_CLIPBOARD)
         cmd = popen("xsel -ib", "w");
      else if (type == ECORE_X_SELECTION_PRIMARY)
