@@ -739,7 +739,6 @@ e_modapi_init (E_Module *m)
   /* Initialize Einna_log for developers */
   _e_clipboard_log_dom = eina_log_domain_register("Clipboard", EINA_COLOR_ORANGE);
   eina_log_domain_level_set("Clipboard", EINA_LOG_LEVEL_INFO);
-  INF("Initialized Clipboard Module");
 
   //e_module_delayed_set(m, 1);
 
@@ -791,6 +790,11 @@ e_modapi_init (E_Module *m)
   }
 
   clip_inst->update_history = EINA_FALSE;
+  /* Don't let this be zero, for any reason.
+   *    If it is the timer call back function uses 100% cpu */
+  if (!EINA_DBL_NONZERO(clip_cfg->save_timer))
+       clip_cfg->save_timer   = 1;
+  /* Start timer if needed */
   if (clip_cfg->persistence && !clip_cfg->autosave)
     clip_inst->save_timer = ecore_timer_loop_add(clip_cfg->save_timer, cb_clipboard_save, NULL);
   /* Tell any gadget containers (shelves, etc) that we provide a module */
@@ -871,7 +875,6 @@ noconfig:
   E_CONFIG_DD_FREE(conf_edd);
   E_CONFIG_DD_FREE(conf_item_edd);
 
-  INF("Shutting down Clipboard Module");
   /* Shutdown Logger */
     eina_log_domain_unregister(_e_clipboard_log_dom);
    _e_clipboard_log_dom = -1;
