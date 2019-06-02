@@ -15,7 +15,7 @@
  * compatible anymore, it creates an entire new one.
  * You need to increment GENERATION when you add new values to the
  * configuration file but is not needed to delete the existing conf  */
-#define MOD_CONFIG_FILE_EPOCH 0x0001
+#define MOD_CONFIG_FILE_EPOCH 0x0002
 #define MOD_CONFIG_FILE_GENERATION 0x008d
 #define MOD_CONFIG_FILE_VERSION \
    ((MOD_CONFIG_FILE_EPOCH << 16) | MOD_CONFIG_FILE_GENERATION)
