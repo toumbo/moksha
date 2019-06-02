@@ -63,7 +63,8 @@ release_info="v_rel"
 AC_SUBST(version_info)
 AC_SUBST(release_info)
 ##--   To debug easily, remove the define below
-AC_DEFINE_UNQUOTED(MOKSHA_RELEASE_BUILD, [1], [enable for release])
+##       broken causes issue with engage module
+# AC_DEFINE_UNQUOTED(MOKSHA_RELEASE_BUILD, [1], [enable for release])
 ##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##
 ##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##
 
