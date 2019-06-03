@@ -246,7 +246,7 @@ _volume_changed_cb(void *data, Evas_Object *o,
 
    pa_cvolume_set(&input->volume, input->volume.channels, v);
 
-   epulse_sink_input_volume_set(input->index, &input->volume);
+   epulse_sink_input_volume_set(input->index, input->volume);
 }
 
 static void

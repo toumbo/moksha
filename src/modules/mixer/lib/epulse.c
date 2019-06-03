@@ -686,13 +686,13 @@ epulse_shutdown(void)
 }
 
 Eina_Bool
-epulse_source_volume_set(int index, pa_cvolume* volume)
+epulse_source_volume_set(int index, pa_cvolume volume)
 {
    pa_operation* o;
    EINA_SAFETY_ON_FALSE_RETURN_VAL((ctx && ctx->context), EINA_FALSE);
 
    if (!(o = pa_context_set_source_volume_by_index(ctx->context,
-                                                   index, volume, NULL, NULL)))
+                                                   index, &volume, NULL, NULL)))
      {
         ERR("pa_context_set_source_volume_by_index() failed");
         return EINA_FALSE;
@@ -718,13 +718,13 @@ epulse_source_mute_set(int index, Eina_Bool mute)
 }
 
 Eina_Bool
-epulse_sink_volume_set(int index, pa_cvolume* volume)
+epulse_sink_volume_set(int index, pa_cvolume volume)
 {
    pa_operation* o;
    EINA_SAFETY_ON_FALSE_RETURN_VAL((ctx && ctx->context), EINA_FALSE);
 
    if (!(o = pa_context_set_sink_volume_by_index(ctx->context,
-                                                 index, volume, NULL, NULL)))
+                                                 index, &volume, NULL, NULL)))
      {
         ERR("pa_context_set_sink_volume_by_index() failed");
         return EINA_FALSE;
@@ -750,13 +750,13 @@ epulse_sink_mute_set(int index, Eina_Bool mute)
 }
 
 Eina_Bool
-epulse_sink_input_volume_set(int index, pa_cvolume* volume)
+epulse_sink_input_volume_set(int index, pa_cvolume volume)
 {
    pa_operation* o;
    EINA_SAFETY_ON_FALSE_RETURN_VAL((ctx && ctx->context), EINA_FALSE);
 
    if (!(o = pa_context_set_sink_input_volume(ctx->context,
-                                              index, volume, NULL, NULL)))
+                                              index, &volume, NULL, NULL)))
      {
         ERR("pa_context_set_sink_input_volume_by_index() failed");
         return EINA_FALSE;
