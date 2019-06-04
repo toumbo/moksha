@@ -1,8 +1,8 @@
-moksha (20190512bodhi0.3.1-beta) bionic; urgency=low
+moksha (20190603bodhi0.3.1-beta) bionic; urgency=low
 
   *  Beta release for testing
 
- -- Robert Wiley <ylee@bodhilinux.com>  Sun, 12 May 2019 10:28:12 +0004
+ -- Robert Wiley <ylee@bodhilinux.com>  Mon, 03 Jun 2019 10:09:12 +0004
 
 moksha (20181122bodhi30.3.0) bionic; urgency=low
 
