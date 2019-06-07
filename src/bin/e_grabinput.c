@@ -134,6 +134,12 @@ e_grabinput_key_win_get(void)
    return grab_key_win;
 }
 
+EAPI Ecore_X_Window
+e_grabinput_mouse_win_get(void)
+{
+   return grab_mouse_win;
+}
+
 static Eina_Bool
 _e_grabinput_focus_check(void *data __UNUSED__)
 {
