@@ -245,7 +245,7 @@ static Efreet_Desktop *tdesktop = NULL;
 /* externally accessible functions */
 int
 e_fwin_init(void)
-{  INF("EFM INIT SHIT");
+{
    tdesktop = e_util_terminal_desktop_get();
    if (!tdesktop) return 1;
    dir_handler = e_fm2_mime_handler_new(_("Open Terminal here"),
@@ -1866,7 +1866,7 @@ _e_fwin_cb_key_down(void *data,
    Evas_Event_Key_Down *ev;
    E_Fwin *fwin;
    E_Fwin_Page *page;
-   INF("EFM KEY");
+
    page = data;
    fwin = page->fwin;
    ev = event_info;
