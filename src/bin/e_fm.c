@@ -388,9 +388,9 @@ static void          _e_fm2_file_properties(void *data, E_Menu *m, E_Menu_Item *
 static void          _e_fm2_file_properties_delete_cb(void *obj);
 static int           _e_fm2_file_do_rename(const char *text, E_Fm2_Icon *ic);
 
-//static Evas_Object  *_e_fm2_icon_entry_widget_add(E_Fm2_Icon *ic);
+static Evas_Object  *_e_fm2_icon_entry_widget_add(E_Fm2_Icon *ic);
 static void          _e_fm2_icon_entry_widget_del(E_Fm2_Icon *ic);
-//static void          _e_fm2_icon_entry_widget_cb_key_down(void *data, Evas *e, Evas_Object *obj, void *event_info);
+static void          _e_fm2_icon_entry_widget_cb_key_down(void *data, Evas *e, Evas_Object *obj, void *event_info);
 static void          _e_fm2_icon_entry_widget_accept(E_Fm2_Icon *ic);
 
 static E_Dialog     *_e_fm_retry_abort_dialog(int pid, const char *str);
@@ -10228,12 +10228,8 @@ _e_fm2_file_rename(void *data, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__)
    if ((ic->entry_dialog) || (ic->entry_widget)) return;
    if (ic->sd->icon_menu.flags & E_FM2_MENU_NO_RENAME) return;
 
-
-   //~ I removed this condiction because EVAS_CALLBACK_KEY_DOWN under the icon do not work
-   //~ look the function _e_fm2_icon_entry_widget_add under
-
-   //~ if (!_e_fm2_icon_entry_widget_add(ic))
-     //~ {
+   if (!_e_fm2_icon_entry_widget_add(ic))
+     {
         snprintf(text, PATH_MAX + 256,
                  _("Rename %s to:"),
                  ic->info.file);
@@ -10244,10 +10240,10 @@ _e_fm2_file_rename(void *data, E_Menu *m __UNUSED__, E_Menu_Item *mi __UNUSED__)
         E_OBJECT(ic->entry_dialog)->data = ic;
         e_object_del_attach_func_set(E_OBJECT(ic->entry_dialog),
                                      _e_fm2_file_rename_delete_cb);
-     //~ }
+      }
 }
 
-#if 0
+#if 1
 static Evas_Object *
 _e_fm2_icon_entry_widget_add(E_Fm2_Icon *ic)
 {
@@ -10302,7 +10298,7 @@ _e_fm2_icon_entry_widget_del(E_Fm2_Icon *ic)
    ic->keygrab = 0;
 }
 
-#if 0
+#if 1
 static void
 _e_fm2_icon_entry_widget_cb_key_down(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {

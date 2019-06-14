@@ -245,7 +245,7 @@ static Efreet_Desktop *tdesktop = NULL;
 /* externally accessible functions */
 int
 e_fwin_init(void)
-{
+{  INF("EFM INIT SHIT");
    tdesktop = e_util_terminal_desktop_get();
    if (!tdesktop) return 1;
    dir_handler = e_fm2_mime_handler_new(_("Open Terminal here"),
@@ -421,8 +421,8 @@ e_fwin_zone_new(E_Zone *zone, void *p)
 
    o = e_fm2_add(zone->container->bg_evas);
    page->fm_obj = o;
-   evas_event_callback_add(zone->container->bg_evas, EVAS_CALLBACK_CANVAS_FOCUS_IN, _e_fwin_zone_focus_in, fwin);
-   evas_object_event_callback_add(o, EVAS_CALLBACK_FOCUS_OUT, _e_fwin_zone_focus_out, fwin);
+   //evas_event_callback_add(zone->container->bg_evas, EVAS_CALLBACK_CANVAS_FOCUS_IN, _e_fwin_zone_focus_in, fwin);
+   //evas_object_event_callback_add(o, EVAS_CALLBACK_FOCUS_OUT, _e_fwin_zone_focus_out, fwin);
    _e_fwin_config_set(page);
 
    e_fm2_custom_theme_content_set(o, "desktop");
@@ -1866,7 +1866,7 @@ _e_fwin_cb_key_down(void *data,
    Evas_Event_Key_Down *ev;
    E_Fwin *fwin;
    E_Fwin_Page *page;
-
+   INF("EFM KEY");
    page = data;
    fwin = page->fwin;
    ev = event_info;
@@ -1938,8 +1938,8 @@ _e_fwin_zone_focus_out(void *data __UNUSED__,
                        Evas *evas       __UNUSED__,
                        Evas_Object *obj,
                        void *event_info __UNUSED__)
-{
-   evas_object_focus_set(obj, EINA_TRUE);
+{  return;
+   //evas_object_focus_set(obj, EINA_TRUE);
 }
 
 static void
@@ -1948,10 +1948,11 @@ _e_fwin_zone_focus_in(void *data,
                        void *event_info __UNUSED__)
 {
    E_Fwin *fwin;
-
+   return;
+   /*
    fwin = data;
    if ((!fwin) || (!fwin->cur_page) || (!fwin->cur_page->fm_obj)) return;
-   evas_object_focus_set(fwin->cur_page->fm_obj, EINA_TRUE);
+   evas_object_focus_set(fwin->cur_page->fm_obj, EINA_TRUE);*/
 }
 
 static Eina_Bool
