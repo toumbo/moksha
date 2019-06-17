@@ -274,7 +274,7 @@ _evry_hide_func(Evry_Window *win, int finished)
 void
 evry_hide(Evry_Window *win, int clear)
 {
-   Ecore_Event_Handler *ev;
+   // Ecore_Event_Handler *ev; Why is this here?
    int i;
 
    if (!win) return;
@@ -337,8 +337,8 @@ evry_hide(Evry_Window *win, int clear)
 
    E_FREE(win->sel_list);
 
-   EINA_LIST_FREE (win->handlers, ev)
-     ecore_event_handler_del(ev);
+   /*EINA_LIST_FREE (win->handlers, ev)
+     ecore_event_handler_del(ev);*/
 
    if (win->delay_hide_action)
      ecore_timer_del(win->delay_hide_action);
@@ -1007,10 +1007,15 @@ _evry_window_free(Evry_Window *win)
      ecore_x_window_hide(win->ewin->evas_win);
 
    evas_event_freeze(win->evas);
+
    evas_object_del(win->o_main);
-   if (!e_object_is_del(E_OBJECT(win->ewin)))
-     e_object_del(E_OBJECT(win->ewin));
-   E_FREE(win);
+#if 0
+  // I know this is wrong but we get a segfault here  
+  if (!e_object_is_del(E_OBJECT(win->ewin)))
+    e_object_del(E_OBJECT(win->ewin));
+
+#endif
+    E_FREE(win);
 }
 
 static void
