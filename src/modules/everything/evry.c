@@ -1005,17 +1005,11 @@ _evry_window_free(Evry_Window *win)
      ecore_x_window_hide(win->ewin->border->win);
    else
      ecore_x_window_hide(win->ewin->evas_win);
-
    evas_event_freeze(win->evas);
-
    evas_object_del(win->o_main);
-#if 0
-  // I know this is wrong but we get a segfault here  
   if (!e_object_is_del(E_OBJECT(win->ewin)))
     e_object_del(E_OBJECT(win->ewin));
-
-#endif
-    E_FREE(win);
+  E_FREE(win);
 }
 
 static void
