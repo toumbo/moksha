@@ -28,10 +28,12 @@ static void
 _show_keybidings_cb()
 {
    Eina_List *l = NULL;
-   E_Config_Binding_Key *bi, *bi2;
-   
-   Evas_Object *o, *of, *ob, *ol;
+   E_Config_Binding_Key *bi;
+   Eina_Strbuf *eina_buf, *eina_buf2;
+   Evas_Object *o, *ob, *oc, *ot;
    Evas_Coord mw, mh;
+   char buf[PATH_MAX], mod_buf[64];
+   
    if (dia) e_util_defer_object_del(E_OBJECT(dia)); 
    
    dia = e_dialog_new(e_container_current_get(e_manager_current_get()),
@@ -43,64 +45,74 @@ _show_keybidings_cb()
    e_win_centered_set(dia->win, 1);
    e_dialog_resizable_set(dia, 0);
    
-   o = dia->win->evas;
+   o = e_widget_list_add(dia->win->evas, 0, 0);
    
-   ol = e_widget_list_add(o, 0, 0);
-   of = e_widget_framelist_add(o, _("The current key bindings"), 0);
-   ob = e_widget_ilist_add(of, 32 * e_scale, 32 * e_scale, NULL);
-   e_widget_size_min_set(ob, 300 * e_scale, 260 * e_scale);
-  
+   ot = e_widget_frametable_add(o, _("The current key bindings"), 0);
+   ob = e_widget_textblock_add(ot);
+   e_widget_size_min_set(ob, 160 * e_scale, 480 * e_scale);
+   oc = e_widget_textblock_add(ot);
+   e_widget_size_min_set(oc, 200 * e_scale, 480 * e_scale);
+   
+   eina_buf = eina_strbuf_new();
+   eina_buf2 = eina_strbuf_new();
+   
+   int i = 1;
    EINA_LIST_FOREACH(e_config->key_bindings, l, bi)
      {
-        char mod_buf[64];
-        char buf[PATH_MAX];
-        if (!bi) continue;
-
-        bi2 = E_NEW(E_Config_Binding_Key, 1);
-        bi2->key = eina_stringshare_add(bi->key);
-        bi2->modifiers = bi->modifiers;
-        bi2->params = eina_stringshare_ref(bi->params);
-        bi2->action = eina_stringshare_ref(bi->action);
-         
-        switch (bi2->modifiers){
+        bi->key = eina_stringshare_add(bi->key);
+        bi->modifiers = bi->modifiers;
+        bi->params = eina_stringshare_ref(bi->params);
+        bi->action = eina_stringshare_ref(bi->action);
+        //~ if (strcmp(bi->action, "window_raise") == 0)
+          //~ e_util_dialog_internal(" ",bi->key);
+        switch (bi->modifiers){
           case 1:
-                 sprintf(mod_buf, "SHIFT %s", bi2->key);
+                 sprintf(mod_buf, "SHIFT %s", bi->key);
                  break;
           case 2:
-                 sprintf(mod_buf, "CTRL %s", bi2->key);
+                 sprintf(mod_buf, "CTRL %s", bi->key);
                  break;
           case 3:
-                 sprintf(mod_buf, "CTRL SHIFT %s", bi2->key);
+                 sprintf(mod_buf, "CTRL SHIFT %s", bi->key);
                  break;
           case 4:
-                 sprintf(mod_buf, "ALT %s", bi2->key);
+                 sprintf(mod_buf, "ALT %s", bi->key);
                  break;
           case 5:
-                 sprintf(mod_buf, "ALT SHIFT %s", bi2->key);
+                 sprintf(mod_buf, "ALT SHIFT %s", bi->key);
                  break;
           case 6:
-                 sprintf(mod_buf, "CTRL ALT %s", bi2->key);
+                 sprintf(mod_buf, "CTRL ALT %s", bi->key);
                  break;
           case 8:
-                 sprintf(mod_buf, "WIN %s", bi2->key);
+                 sprintf(mod_buf, "WIN %s", bi->key);
                  break;
         }
         
-        if (bi2->modifiers > 0)
+        if (bi->modifiers > 0)
         {
-          e_widget_ilist_header_append(ob, NULL, mod_buf);
-          sprintf(buf, "%s", e_action_predef_label_get(bi2->action, bi2->params));
-          e_widget_ilist_append(ob, NULL, buf, NULL, NULL, NULL);
+          const char *numb = "0";
+          (i > 9) ? numb++ : numb;  
+          sprintf(buf, "%s%d. %s\n", numb, i, mod_buf);
+          eina_strbuf_append(eina_buf, buf);
+          sprintf(buf, "%s%d. %s\n", numb, i, e_action_predef_label_get(bi->action, bi->params));
+          eina_strbuf_append(eina_buf2, buf);
+          i++;
         }
       }
-      
-   e_widget_framelist_object_append(of, ob);
-   e_widget_list_object_append(ol, of, 0, 0, 0.5);
-   e_widget_size_min_get(ol, &mw, &mh);
-   e_dialog_content_set(dia, ol, mw, mh);
+
+   e_widget_textblock_plain_set(ob, eina_strbuf_string_get(eina_buf));
+   e_widget_textblock_plain_set(oc, eina_strbuf_string_get(eina_buf2));
+   e_widget_frametable_object_append(ot, ob, 0, 0, 1, 1, 1, 0, 1, 0);
+   e_widget_frametable_object_append(ot, oc, 1, 0, 1, 1, 1, 0, 1, 0);
+   e_widget_list_object_append(o, ot, 1, 1, 0.5);
+
+   //~ e_widget_list_object_append(ol, of, 0, 0, 0.5);
+   e_widget_size_min_get(o, &mw, &mh);
+   e_dialog_content_set(dia, o, mw, mh);
+   eina_strbuf_free(eina_buf);
+   eina_strbuf_free(eina_buf2);
    e_dialog_show(dia);
-    
-      
 }
 
 EAPI void *
