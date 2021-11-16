@@ -126,7 +126,6 @@ _show_keybidings_cb()
    ob = e_widget_label_add(o, _(" Show Favorites Menu:"));
    e_widget_size_min_get(ob, &sw, &sh);
    e_widget_frametable_object_append_full(ot, ob, 0, 2, 1, 1, 1, 0, 1, 0, 1.0, 0.5, sw, sh, sw, sh);
-   ob = e_widget_label_add(o, _(" ALT Menu"));
    ob = e_widget_button_add(o, _("ALT Menu"), NULL, NULL, NULL, NULL); 
    e_widget_frametable_object_append(ot, ob, 1, 2, 1, 1, 1, 0, 1, 0);
    
