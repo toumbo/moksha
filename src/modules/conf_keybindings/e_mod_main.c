@@ -110,7 +110,7 @@ _show_keybidings_cb()
    
    
    //~ ----------------------------------------------
-   ot = e_widget_frametable_add(o, _("SYSTEM"), 1);
+   ot = e_widget_frametable_add(o, _("SYSTEM"), 0);
    ob = e_widget_label_add(o, _(" Lock system:"));
    e_widget_size_min_get(ob, &sw, &sh);
    e_widget_frametable_object_append_full(ot, ob, 0, 0, 1, 1, 1, 0, 1, 0, 1.0, 0.5, sw, sh, sw, sh);
@@ -221,7 +221,7 @@ _show_keybidings_cb()
    e_widget_table_object_append(o, ot, 1, 0, 1, 1, 1, 1, 1, 1);
    
     //~ ----------------------------------------------
-   ot = e_widget_frametable_add(o, _("MISCELLANEOUS"), 1);
+   ot = e_widget_frametable_add(o, _("MISCELLANEOUS"), 0);
    ob = e_widget_label_add(o, _(" Quick Launcher:"));
    e_widget_size_min_get(ob, &sw, &sh);
    e_widget_frametable_object_append_full(ot, ob, 0, 0, 1, 1, 1, 0, 1, 0, 1.0, 0.5, sw, sh, sw, sh);
