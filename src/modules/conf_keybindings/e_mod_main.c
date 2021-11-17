@@ -302,6 +302,12 @@ _show_keybidings_cb()
    ob = e_widget_button_add(o, _key_binding_get("desk_deskshow_toggle", NULL), NULL, NULL, NULL, NULL);
    e_widget_frametable_object_append(ot, ob, 1, 2, 1, 1, 1, 0, 1, 0);
    
+   ob = e_widget_label_add(o, _(" Terminal console:"));
+   e_widget_size_min_get(ob, &sw, &sh);
+   e_widget_frametable_object_append_full(ot, ob, 0, 4, 1, 1, 1, 0, 1, 0, 1.0, 0.5, sw, sh, sw, sh);
+   ob = e_widget_button_add(o, "CTRL ALT F1...F7", NULL, NULL, NULL, NULL);
+   e_widget_frametable_object_append(ot, ob, 1, 4, 1, 1, 1, 0, 1, 0);
+   
    ob = e_widget_label_add(o, _(" This Help:"));
    e_widget_size_min_get(ob, &sw, &sh);
    e_widget_frametable_object_append_full(ot, ob, 0, 3, 1, 1, 1, 0, 1, 0, 1.0, 0.5, sw, sh, sw, sh);
@@ -321,7 +327,7 @@ _e_mod_menu_add(void *data __UNUSED__, E_Menu *m)
    E_Menu_Item *mi;
    
    mi = e_menu_item_new(m);
-   e_menu_item_label_set(mi, _("Key bindings"));
+   e_menu_item_label_set(mi, _("Key Bindings"));
    e_util_menu_item_theme_icon_set(mi, "preferences-desktop-keyboard-shortcuts");
    e_menu_item_callback_set(mi, _show_keybidings_cb, NULL);
 }
