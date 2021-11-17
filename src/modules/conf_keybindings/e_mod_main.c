@@ -322,7 +322,7 @@ _e_mod_menu_add(void *data __UNUSED__, E_Menu *m)
    
    mi = e_menu_item_new(m);
    e_menu_item_label_set(mi, _("Key bindings"));
-   e_util_menu_item_theme_icon_set(mi, "screenshot");
+   e_util_menu_item_theme_icon_set(mi, "preferences-desktop-keyboard-shortcuts");
    e_menu_item_callback_set(mi, _show_keybidings_cb, NULL);
 }
 
@@ -354,7 +354,7 @@ e_modapi_init(E_Module *m)
      }
   
    maug = e_int_menus_menu_augmentation_add_sorted
-      ("main/2",  _("Show bindings"), _e_mod_menu_add, NULL, NULL, NULL);
+      ("config/1",  _("Show bindings"), _e_mod_menu_add, NULL, NULL, NULL);
 
    conf_module = m;
    e_module_delayed_set(m, 1);
