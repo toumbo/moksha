@@ -109,7 +109,7 @@ msgstr "Έξοδος"
 
 #: src/bin/e_actions.c:2279
 msgid "Are you sure you want to exit Moksha?"
-msgstr "Σίγουρα επιθυμείτε την έξοδο από το Enlightenmet;"
+msgstr "Σίγουρα επιθυμείτε την έξοδο από το Moksha;"
 
 #: src/bin/e_actions.c:2281 src/bin/e_actions.c:2375 src/bin/e_actions.c:2435
 #: src/bin/e_actions.c:2495 src/bin/e_actions.c:2560 src/bin/e_actions.c:2625
