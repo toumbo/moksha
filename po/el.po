@@ -4639,12 +4639,12 @@ msgstr "Χρόνος"
 #: src/modules/clock/e_mod_config.c:209
 #, fuzzy
 msgid "Hours"
-msgstr "2 Ώρες"
+msgstr "Ώρες"
 
 #: src/modules/clock/e_mod_config.c:214
 #, fuzzy
 msgid "Minutes"
-msgstr "5 Λεπτά"
+msgstr "Λεπτά"
 
 #: src/modules/clock/e_mod_config.c:222
 #, fuzzy
